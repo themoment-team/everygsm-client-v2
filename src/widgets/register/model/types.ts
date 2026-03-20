@@ -14,6 +14,7 @@ export const RegisterFormSchema = z.object({
         stackName: z.string().min(1, '기술 스택을 입력해주세요'),
       }),
     )
+    .min(1, '기술 스택을 최소 하나 이상 선택하거나 입력해주세요')
     .max(50, '기술 스택은 최대 50개까지 추가할 수 있습니다.'),
   repository: z
     .array(
@@ -21,6 +22,7 @@ export const RegisterFormSchema = z.object({
         repoUrl: z.string().min(1, '깃허브 레포지토리의 URL을 입력해주세요'),
       }),
     )
+    .min(1, 'GitHub 레포지토리를 최소 하나 이상 입력해주세요')
     .max(10, 'GitHub 레포지토리는 최대 10개까지 추가할 수 있습니다.'),
   prodUrl: z.string().min(1, '프로젝트 배포 URL을 입력해주세요'),
 });
