@@ -33,3 +33,12 @@ body:
       placeholder: |
         - 관련 이슈: #123
         - 관련 문서: docs/CodeConvention.md
+
+  - type: textarea
+    id: subtasks
+    attributes:
+      label: 세부 작업 (선택)
+      description: 작업을 완료하기 위해 필요한 세부 작업 목록을 작성해주세요.
+      placeholder: |
+        - [ ] 세부 작업 1
+        - [ ] 세부 작업 2
