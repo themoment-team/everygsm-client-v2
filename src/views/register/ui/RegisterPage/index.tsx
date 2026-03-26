@@ -222,39 +222,43 @@ const RegisterPage = () => {
             >
               <div className={cn('flex flex-wrap content-start gap-2')}>
                 {/* 기본 기술 스택 칩 */}
-                {defaultTechStack.map((item) => {
-                  const isSelected = techFields.some((f) => f.stackName === item);
-                  return (
-                    <div
-                      key={item}
-                      onClick={() => toggleTech(item)}
-                      className={cn(
-                        `flex cursor-pointer items-center justify-center rounded-[62.5rem] px-3 py-[0.38rem] font-normal ${
-                          isSelected ? 'bg-[#FC335A]' : 'bg-[#4F4F4F]'
-                        }`,
-                      )}
-                    >
-                      <label className={cn(`cursor-pointer ${TextStyle}`)}>{item}</label>
-                    </div>
-                  );
-                })}
-                {/* 직접 추가한 기술 스택 칩 (기본 목록에 없는 것들만 표시) */}
-                {techFields.map((field, index) => {
-                  if (defaultTechStack.includes(field.stackName)) return null;
-                  return (
-                    <div
-                      key={field.id}
-                      className={cn(
-                        'flex max-w-fit items-center gap-[0.65rem] rounded-[62.5rem] bg-[#FC335A] px-3 py-[0.38rem]',
-                      )}
-                    >
-                      <span className={TextStyle}>{field.stackName}</span>
-                      <div onClick={() => removeTech(index)} className="cursor-pointer">
-                        <XIcon />
+                <div className="flex flex-wrap content-start gap-2">
+                  {defaultTechStack.map((item) => {
+                    const isSelected = techFields.some((f) => f.stackName === item);
+                    return (
+                      <div
+                        key={item}
+                        onClick={() => toggleTech(item)}
+                        className={cn(
+                          `flex cursor-pointer items-center justify-center rounded-[62.5rem] px-3 py-[0.38rem] font-normal ${
+                            isSelected ? 'bg-[#FC335A]' : 'bg-[#4F4F4F]'
+                          }`,
+                        )}
+                      >
+                        <label className={cn(`cursor-pointer ${TextStyle}`)}>{item}</label>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+                {/* 직접 추가한 기술 스택 칩 (기본 목록에 없는 것들만 표시) */}
+                <div className="flex flex-wrap content-start gap-2">
+                  {techFields.map((field, index) => {
+                    if (defaultTechStack.includes(field.stackName)) return null;
+                    return (
+                      <div
+                        key={field.id}
+                        className={cn(
+                          'flex max-w-fit items-center gap-[0.65rem] rounded-[62.5rem] bg-[#FC335A] px-3 py-[0.38rem]',
+                        )}
+                      >
+                        <span className={TextStyle}>{field.stackName}</span>
+                        <div onClick={() => removeTech(index)} className="cursor-pointer">
+                          <XIcon />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
             {errors.techStack?.message && (
