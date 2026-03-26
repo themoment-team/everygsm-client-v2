@@ -27,4 +27,4 @@ export const RegisterFormSchema = z.object({
   prodUrl: z.string().min(1, '프로젝트 배포 URL을 입력해주세요'),
 });
 
-export type RegisterFormSchemaType = z.infer<typeof RegisterFormSchema>;
+export type RegisterFormType = z.infer<typeof RegisterFormSchema>;

@@ -5,40 +5,40 @@ import { useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 
+import { UploadIcon, XIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import {
-  ErrorTextStyle,
-  InputForm,
-  InputTextStyle,
-  RegisterFormSchema,
-  RegisterFormSchemaType,
-  TextStyle,
-  UploadIcon,
-  XIcon,
   annotationStyle,
+  errorTextStyle,
+  InputForm,
+  inputTextStyle,
+  RegisterFormSchema,
+  RegisterFormType,
+  textStyle,
 } from '@/widgets';
 
+const DEFAULT_TECH_STACK = [
+  'HTML5 / CSS3',
+  'React',
+  'Spring Boot',
+  'Python',
+  'JavaScript',
+  'MySQL',
+  'Next.js',
+  'MongoDB',
+  'Tailwind CSS',
+  'Node.js',
+  'AWS',
+  'Docker',
+  'TypeScript',
+  'Nginx',
+];
+
 const RegisterPage = () => {
+  // 1. 변수/훅 선언
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [customTech, setCustomTech] = useState('');
-
-  const defaultTechStack = [
-    'HTML5 / CSS3',
-    'React',
-    'Spring Boot',
-    'Python',
-    'JavaScript',
-    'MySQL',
-    'Next.js',
-    'MongoDB',
-    'Tailwind CSS',
-    'Node.js',
-    'AWS',
-    'Docker',
-    'TypeScript',
-    'Nginx',
-  ];
 
   const {
     register,
@@ -46,7 +46,7 @@ const RegisterPage = () => {
     handleSubmit,
     control,
     formState: { errors, isValid },
-  } = useForm<RegisterFormSchemaType>({
+  } = useForm<RegisterFormType>({
     resolver: zodResolver(RegisterFormSchema),
     mode: 'onChange',
     defaultValues: {
@@ -78,10 +78,11 @@ const RegisterPage = () => {
     name: 'repository',
   });
 
+  // 2. 핸들러 함수 및 기타 로직
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
     setFile(files[0]);
-    setValue('logo', files[0].name);
+    setValue('logo', files[0].name, { shouldValidate: true });
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -93,7 +94,7 @@ const RegisterPage = () => {
     e.preventDefault();
   };
 
-  const onSubmit = (data: RegisterFormSchemaType) => {
+  const onSubmit = (data: RegisterFormType) => {
     console.log('최종 데이터:', data);
   };
 
@@ -106,7 +107,6 @@ const RegisterPage = () => {
     return `${front} ... ${extension}`;
   };
 
-  // 기술 스택 토글 함수
   const toggleTech = (stackName: string) => {
     const index = techFields.findIndex((f) => f.stackName === stackName);
     if (index !== -1) {
@@ -116,7 +116,6 @@ const RegisterPage = () => {
     }
   };
 
-  // 직접 입력 기술 스택 추가
   const handleAddCustomTech = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && customTech.trim()) {
       e.preventDefault();
@@ -127,19 +126,25 @@ const RegisterPage = () => {
     }
   };
 
+  // 3. useEffect (없음)
+
+  // 4. return
   return (
-    <div className={cn('flex min-h-full w-full justify-center bg-[#191919] pt-10')}>
-      <div className={cn('h-370.7 flex w-200 flex-col gap-[2.19rem]')}>
+    <div className={cn('flex min-h-full w-full justify-center bg-[#191919] py-10')}>
+      <div className={cn('flex w-200 flex-col gap-[2.19rem]')}>
         <div>
           <h1
-            className={cn('text-[2.25rem] leading-[1.2] font-bold tracking-[-0.045rem] text-white')}
+            className={cn(
+              'text-[2.25rem] font-bold tracking-[-0.045rem] text-white underline decoration-white decoration-solid underline-offset-[1.2rem]',
+            )}
           >
             프로젝트 등록
           </h1>
         </div>
         <form className={cn('flex flex-col gap-9')} onSubmit={handleSubmit(onSubmit)}>
+          {/* 프로젝트 로고 */}
           <div className={cn('flex flex-col gap-3')}>
-            <p className={TextStyle}>프로젝트 로고</p>
+            <p className={textStyle}>프로젝트 로고</p>
             <div
               onDrop={handleDrop}
               onDragOver={handleDragOver}
@@ -156,27 +161,28 @@ const RegisterPage = () => {
                     'flex w-fit items-center gap-4 rounded-xl border border-solid border-[#2F2F2F] p-4',
                   )}
                 >
-                  <strong className={TextStyle}>{formatFileName(file.name)}</strong>
+                  <strong className={textStyle}>{formatFileName(file.name)}</strong>
                   <div
                     onClick={(e) => {
                       e.stopPropagation();
                       setFile(null);
-                      setValue('logo', '');
+                      setValue('logo', '', { shouldValidate: true });
                     }}
+                    className="cursor-pointer"
                   >
                     <XIcon />
                   </div>
                 </div>
               ) : (
                 <>
-                  <p className={InputTextStyle}>
+                  <p className={inputTextStyle}>
                     파일을 여기에 끌어서 놓거나 , 직접 파일을 선택해주세요
                   </p>
                   <div
                     className={cn('flex w-40 items-center gap-6 rounded-xl bg-[#191919] px-4 py-3')}
                   >
                     <UploadIcon />
-                    <p className={InputTextStyle}>직접 파일 선택</p>
+                    <p className={inputTextStyle}>직접 파일 선택</p>
                   </div>
                 </>
               )}
@@ -187,7 +193,7 @@ const RegisterPage = () => {
                 onChange={(e) => handleFiles(e.target.files)}
               />
             </div>
-            {errors.logo?.message && <p className={ErrorTextStyle}>{errors.logo.message}</p>}
+            {errors.logo?.message && <p className={errorTextStyle}>{errors.logo.message}</p>}
           </div>
 
           <InputForm
@@ -210,9 +216,10 @@ const RegisterPage = () => {
             type="textArea"
           />
 
+          {/* 기술 스택 선택 */}
           <div className={cn('flex flex-col gap-3')}>
-            <div className={cn('align-center flex justify-start gap-3')}>
-              <div className={TextStyle}>기술 스택</div>
+            <div className={cn('flex items-center justify-start gap-3')}>
+              <div className={textStyle}>기술 스택</div>
               <div className={annotationStyle}>최대 50개 추가 입력</div>
             </div>
             <div
@@ -221,29 +228,26 @@ const RegisterPage = () => {
               )}
             >
               <div className={cn('flex flex-wrap content-start gap-2')}>
-                {/* 기본 기술 스택 칩 */}
                 <div className="flex flex-wrap content-start gap-2">
-                  {defaultTechStack.map((item) => {
+                  {DEFAULT_TECH_STACK.map((item) => {
                     const isSelected = techFields.some((f) => f.stackName === item);
                     return (
                       <div
                         key={item}
                         onClick={() => toggleTech(item)}
                         className={cn(
-                          `flex cursor-pointer items-center justify-center rounded-[62.5rem] px-3 py-[0.38rem] font-normal ${
-                            isSelected ? 'bg-[#FC335A]' : 'bg-[#4F4F4F]'
-                          }`,
+                          'flex cursor-pointer items-center justify-center rounded-[62.5rem] px-3 py-[0.38rem] font-normal transition-colors',
+                          isSelected ? 'bg-[#FC335A]' : 'bg-[#4F4F4F]',
                         )}
                       >
-                        <label className={cn(`cursor-pointer ${TextStyle}`)}>{item}</label>
+                        <span className={cn('cursor-pointer', textStyle)}>{item}</span>
                       </div>
                     );
                   })}
                 </div>
-                {/* 직접 추가한 기술 스택 칩 (기본 목록에 없는 것들만 표시) */}
                 <div className="flex flex-wrap content-start gap-2">
                   {techFields.map((field, index) => {
-                    if (defaultTechStack.includes(field.stackName)) return null;
+                    if (DEFAULT_TECH_STACK.includes(field.stackName)) return null;
                     return (
                       <div
                         key={field.id}
@@ -251,7 +255,7 @@ const RegisterPage = () => {
                           'flex max-w-fit items-center gap-[0.65rem] rounded-[62.5rem] bg-[#FC335A] px-3 py-[0.38rem]',
                         )}
                       >
-                        <span className={TextStyle}>{field.stackName}</span>
+                        <span className={textStyle}>{field.stackName}</span>
                         <div onClick={() => removeTech(index)} className="cursor-pointer">
                           <XIcon />
                         </div>
@@ -262,13 +266,14 @@ const RegisterPage = () => {
               </div>
             </div>
             {errors.techStack?.message && (
-              <div className={ErrorTextStyle}>{errors.techStack?.message}</div>
+              <div className={errorTextStyle}>{errors.techStack?.message}</div>
             )}
           </div>
 
+          {/* 기술 스택 추가 입력 */}
           <div className={cn('flex flex-col gap-3')}>
-            <div className={cn('align-center flex justify-start gap-3')}>
-              <div className={TextStyle}>기술 스택 추가 입력</div>
+            <div className={cn('flex items-center justify-start gap-3')}>
+              <div className={textStyle}>기술 스택 추가 입력</div>
               <div className={annotationStyle}>최대 50개 추가 입력</div>
             </div>
             <input
@@ -278,14 +283,16 @@ const RegisterPage = () => {
               onChange={(e) => setCustomTech(e.target.value)}
               onKeyDown={handleAddCustomTech}
               className={cn(
-                `rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 ${InputTextStyle}`,
+                'rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors outline-none focus:border-[#FC335A]',
+                inputTextStyle,
               )}
             />
           </div>
 
+          {/* 깃허브 레포지토리 */}
           <div className={cn('flex flex-col gap-3')}>
-            <div className={cn('align-center flex justify-start gap-3')}>
-              <div className={TextStyle}>깃허브 레포지토리</div>
+            <div className={cn('flex items-center justify-start gap-3')}>
+              <div className={textStyle}>깃허브 레포지토리</div>
               <div className={annotationStyle}>최대 10개 입력</div>
             </div>
             <div className={cn('flex flex-col gap-3')}>
@@ -296,14 +303,15 @@ const RegisterPage = () => {
                     placeholder="GitHub 레포지토리 URL을 입력해주세요"
                     {...register(`repository.${index}.repoUrl`)}
                     className={cn(
-                      `w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 pr-12 ${InputTextStyle}`,
+                      'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 pr-12 transition-colors outline-none focus:border-[#FC335A]',
+                      inputTextStyle,
                     )}
                   />
                   {repoFields.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeRepo(index)}
-                      className={cn('absolute right-4 cursor-pointer')}
+                      className={cn('absolute right-4 cursor-pointer text-white')}
                     >
                       <XIcon />
                     </button>
@@ -316,14 +324,15 @@ const RegisterPage = () => {
                 type="button"
                 onClick={() => appendRepo({ repoUrl: '' })}
                 className={cn(
-                  `${InputTextStyle} w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4`,
+                  'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors hover:bg-[#2F2F2F]',
+                  inputTextStyle,
                 )}
               >
                 레포지토리 추가
               </button>
             )}
             {errors.repository && (
-              <div className={ErrorTextStyle}>깃허브 레포지토리의 URL을 입력해주세요</div>
+              <div className={errorTextStyle}>깃허브 레포지토리의 URL을 입력해주세요</div>
             )}
           </div>
 
@@ -333,13 +342,14 @@ const RegisterPage = () => {
             error={errors.prodUrl?.message}
             register={register('prodUrl')}
           />
+
           <button
             type="submit"
             disabled={!isValid}
             className={cn(
-              'mt-6 w-full rounded-xl py-4 text-lg font-bold transition-opacity hover:opacity-90',
+              'mt-6 w-full rounded-xl py-4 text-lg font-bold transition-all',
               isValid
-                ? 'cursor-pointer bg-[#FC335A] text-white'
+                ? 'cursor-pointer bg-[#FC335A] text-white hover:opacity-90 active:scale-[0.98]'
                 : 'cursor-not-allowed bg-[#272727] text-[#565656]',
             )}
           >

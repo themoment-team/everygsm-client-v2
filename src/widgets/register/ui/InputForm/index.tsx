@@ -2,9 +2,9 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 
 import { cn } from '@/shared/utils';
 
-import { ErrorTextStyle, InputTextStyle, TextStyle, annotationStyle } from '../../style';
+import { annotationStyle, errorTextStyle, inputTextStyle, textStyle } from '../../style';
 
-type InputFormProps = {
+interface InputFormProps {
   inputTitle: string;
   inputPlaceholder?: string;
   annotation?: string;
@@ -14,7 +14,7 @@ type InputFormProps = {
   state?: string;
   setState?: React.Dispatch<React.SetStateAction<string>>;
   type?: 'input' | 'textArea';
-};
+}
 
 const InputForm = ({
   inputTitle,
@@ -29,7 +29,7 @@ const InputForm = ({
   return (
     <div className={cn('flex flex-col gap-3')}>
       <div className={cn('align-center flex justify-start gap-3')}>
-        <div className={TextStyle}>{inputTitle}</div>
+        <div className={textStyle}>{inputTitle}</div>
         {annotation && <div className={annotationStyle}>{annotation}</div>}
       </div>
 
@@ -44,7 +44,8 @@ const InputForm = ({
             register?.onChange(e);
           }}
           className={cn(
-            `rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 ${InputTextStyle}`,
+            'rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4',
+            inputTextStyle,
           )}
         />
       )}
@@ -55,7 +56,6 @@ const InputForm = ({
           {...register}
           onInput={(e) => {
             const el = e.currentTarget;
-
             const scrollY = window.scrollY;
 
             el.style.height = 'auto';
@@ -66,12 +66,13 @@ const InputForm = ({
             });
           }}
           className={cn(
-            `rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 ${InputTextStyle} min-h-34.5 resize-none overflow-hidden`,
+            'min-h-34.5 resize-none overflow-hidden rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4',
+            inputTextStyle,
           )}
         />
       )}
 
-      {error && <div className={ErrorTextStyle}>{error}</div>}
+      {error && <div className={errorTextStyle}>{error}</div>}
     </div>
   );
 };
