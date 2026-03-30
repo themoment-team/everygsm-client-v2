@@ -336,34 +336,27 @@ const RegisterPage = () => {
 
           {/* 깃허브 레포지토리 */}
           <div className={cn('flex flex-col gap-3')}>
-            <div className={cn('flex items-center justify-start gap-3')}>
-              <div className={textStyle}>깃허브 레포지토리</div>
-              <div className={annotationStyle}>최대 10개 입력</div>
-            </div>
-            <div className={cn('flex flex-col gap-3')}>
-              {repoFields.map((field, index) => (
-                <div className={cn('relative flex items-center')} key={field.id}>
-                  <input
-                    type="text"
-                    placeholder="GitHub 레포지토리 URL을 입력해주세요"
-                    {...register(`repository.${index}.repoUrl`)}
-                    className={cn(
-                      'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 pr-12 transition-colors outline-none focus:border-white',
-                      inputTextStyle,
-                    )}
-                  />
-                  {repoFields.length > 1 && (
+            {repoFields.map((field, index) => (
+              <InputForm
+                key={field.id}
+                inputTitle={index === 0 ? '깃허브 레포지토리' : undefined}
+                annotation={index === 0 ? '최대 10개 입력' : undefined}
+                inputPlaceholder="GitHub 레포지토리 URL을 입력해주세요"
+                register={register(`repository.${index}.repoUrl`)}
+                error={errors.repository?.[index]?.repoUrl?.message}
+                rightElement={
+                  repoFields.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeRepo(index)}
-                      className={cn('absolute right-4 cursor-pointer text-white')}
+                      className={cn('cursor-pointer text-white')}
                     >
                       <XIcon />
                     </button>
-                  )}
-                </div>
-              ))}
-            </div>
+                  )
+                }
+              />
+            ))}
             {repoFields.length < 10 && (
               <button
                 type="button"
@@ -377,7 +370,7 @@ const RegisterPage = () => {
                 <PlusIcon />
               </button>
             )}
-            {errors.repository && (
+            {errors.repository && !Array.isArray(errors.repository) && (
               <div className={errorTextStyle}>깃허브 레포지토리의 URL을 입력해주세요</div>
             )}
           </div>
