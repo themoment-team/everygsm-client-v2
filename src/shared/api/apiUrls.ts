@@ -22,4 +22,5 @@ export const projectUrl = {
   getMyPendingProjects: () => '/api/v2/projects/my/pending',
   postProjectRegistration: () => '/api/v2/projects/registration',
   postProjectLike: (projectId: number) => `/api/v2/projects/like/${projectId}`,
+  postProjectLogo: () => '/api/v2/images',
 } as const;

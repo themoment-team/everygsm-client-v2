@@ -2,9 +2,13 @@
 
 import { useRef, useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
+import { usePostProjectRegistration } from '@/entities/project/model/usePostProjectRegistration';
 import { UploadIcon, XIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import {
@@ -16,6 +20,8 @@ import {
   RegisterFormType,
   textStyle,
 } from '@/widgets';
+
+import { usePostProjectLogo } from '../../model';
 
 const DEFAULT_TECH_STACK = [
   'HTML5 / CSS3',
@@ -35,10 +41,25 @@ const DEFAULT_TECH_STACK = [
 ];
 
 const RegisterPage = () => {
-  // 1. 변수/훅 선언
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [customTech, setCustomTech] = useState('');
+
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+  const { mutate: postProject, isPending } = usePostProjectRegistration({
+    onSuccess: () => {
+      router.push('/');
+      toast.success('프로젝트 등록에 성공했습니다.');
+    },
+    onError: (error) => {
+      console.error('프로젝트 등록 실패:', error);
+      toast.error('프로젝트 등록에 실패했습니다.');
+    },
+  });
+
+  const { mutateAsync: postImage } = usePostProjectLogo();
 
   const {
     register,
@@ -81,8 +102,27 @@ const RegisterPage = () => {
   // 2. 핸들러 함수 및 기타 로직
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
-    setFile(files[0]);
-    setValue('logo', files[0].name, { shouldValidate: true });
+    const selectedFile = files[0];
+    if (selectedFile.size >= MAX_FILE_SIZE) {
+      toast.error('파일 크기가 5MB가 넘었어요.');
+      return;
+    }
+    setFile(selectedFile);
+    setValue('logo', selectedFile.name, { shouldValidate: true });
+  };
+
+  const handlePhotoUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await postImage(formData);
+      return response.data.key;
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+      toast.error('이미지 업로드에 실패했습니다.');
+      throw error;
+    }
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -94,8 +134,26 @@ const RegisterPage = () => {
     e.preventDefault();
   };
 
-  const onSubmit = (data: RegisterFormType) => {
-    console.log('최종 데이터:', data);
+  const onSubmit = async (data: RegisterFormType) => {
+    if (!file) {
+      toast.error('프로젝트 로고를 등록해주세요.');
+      return;
+    }
+
+    try {
+      const logoKey = await handlePhotoUpload(file);
+
+      console.log(logoKey);
+
+      const updatedData = {
+        ...data,
+        logo: logoKey,
+      };
+
+      postProject(updatedData);
+    } catch {
+      console.log('error');
+    }
   };
 
   const formatFileName = (name: string, maxLength = 36) => {
@@ -126,17 +184,12 @@ const RegisterPage = () => {
     }
   };
 
-  // 3. useEffect (없음)
-
-  // 4. return
   return (
     <div className={cn('flex min-h-full w-full justify-center bg-[#191919] py-10')}>
       <div className={cn('flex w-200 flex-col gap-[2.19rem]')}>
         <div>
           <h1
-            className={cn(
-              'text-[2.25rem] font-bold tracking-[-0.045rem] text-white underline decoration-white decoration-solid underline-offset-[1.2rem]',
-            )}
+            className={cn('text-[2.25rem] leading-[1.2] font-bold tracking-[-0.045rem] text-white')}
           >
             프로젝트 등록
           </h1>
@@ -345,15 +398,15 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || isPending}
             className={cn(
               'mt-6 w-full rounded-xl py-4 text-lg font-bold transition-all',
-              isValid
+              isValid && !isPending
                 ? 'cursor-pointer bg-[#FC335A] text-white hover:opacity-90 active:scale-[0.98]'
                 : 'cursor-not-allowed bg-[#272727] text-[#565656]',
             )}
           >
-            프로젝트 등록
+            {isPending ? '등록 중...' : '프로젝트 등록'}
           </button>
         </form>
       </div>
