@@ -25,18 +25,18 @@ import { usePostProjectRegistration } from '../../model/usePostProjectRegistrati
 
 const DEFAULT_TECH_STACK = [
   'HTML5 / CSS3',
+  'JavaScript',
   'React',
+  'Next.js',
+  'Tailwind CSS',
+  'TypeScript',
+  'Node.js',
   'Spring Boot',
   'Python',
-  'JavaScript',
   'MySQL',
-  'Next.js',
   'MongoDB',
-  'Tailwind CSS',
-  'Node.js',
   'AWS',
   'Docker',
-  'TypeScript',
   'Nginx',
 ];
 
