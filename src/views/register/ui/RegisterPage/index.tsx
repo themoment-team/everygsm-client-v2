@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { usePostProjectRegistration } from '@/entities/project/model/usePostProjectRegistration';
 import { UploadIcon, XIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import {
@@ -22,6 +21,7 @@ import {
 } from '@/widgets';
 
 import { usePostProjectLogo } from '../../model';
+import { usePostProjectRegistration } from '../../model/usePostProjectRegistration';
 
 const DEFAULT_TECH_STACK = [
   'HTML5 / CSS3',

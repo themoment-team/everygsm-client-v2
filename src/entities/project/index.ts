@@ -8,7 +8,6 @@ export * from './model/useGetMyProjects';
 export * from './model/useGetMyRejectedProjects';
 export * from './model/useGetPendingProjects';
 export * from './model/useGetProjects';
-export * from './model/usePostProjectRegistration';
 export { default as ProjectCard } from './ui/ProjectCard';
 export { default as ProjectDetailModal } from './ui/ProjectDetailModal';
 export { default as ProjectRequestCard } from './ui/ProjectRequestCard';

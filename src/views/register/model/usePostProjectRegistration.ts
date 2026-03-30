@@ -1,9 +1,11 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import {
+  ProjectRegisterRegistrationType,
+  ProjectResponseType,
+} from '@/entities/project/model/types';
 import { post, projectQueryKeys, projectUrl } from '@/shared/api';
-
-import { ProjectRegisterRegistrationType, ProjectResponseType } from './types';
 
 export const usePostProjectRegistration = (
   options?: Omit<
