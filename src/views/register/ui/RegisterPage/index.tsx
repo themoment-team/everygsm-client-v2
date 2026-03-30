@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { UploadIcon, XIcon } from '@/shared/assets';
+import { PlusIcon, UploadIcon, XIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import {
   annotationStyle,
@@ -75,7 +75,7 @@ const RegisterPage = () => {
       title: '',
       affiliation: '',
       description: '',
-      techStack: [],
+      techStack: [{ stackName: '' }],
       repository: [{ repoUrl: '' }],
       prodUrl: '',
     },
@@ -99,7 +99,6 @@ const RegisterPage = () => {
     name: 'repository',
   });
 
-  // 2. 핸들러 함수 및 기타 로직
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
     const selectedFile = files[0];
@@ -179,6 +178,8 @@ const RegisterPage = () => {
       e.preventDefault();
       if (!techFields.some((f) => f.stackName === customTech.trim())) {
         appendTech({ stackName: customTech.trim() });
+      } else {
+        toast.error('중복된 기술 스택입니다');
       }
       setCustomTech('');
     }
@@ -280,8 +281,8 @@ const RegisterPage = () => {
                 'flex min-h-27.5 flex-col gap-2 rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4',
               )}
             >
-              <div className={cn('flex flex-wrap content-start gap-2')}>
-                <div className="flex flex-wrap content-start gap-2">
+              <div className={cn('flex flex-wrap content-start gap-4')}>
+                <div className={cn('flex flex-wrap content-start gap-4')}>
                   {DEFAULT_TECH_STACK.map((item) => {
                     const isSelected = techFields.some((f) => f.stackName === item);
                     return (
@@ -324,23 +325,14 @@ const RegisterPage = () => {
           </div>
 
           {/* 기술 스택 추가 입력 */}
-          <div className={cn('flex flex-col gap-3')}>
-            <div className={cn('flex items-center justify-start gap-3')}>
-              <div className={textStyle}>기술 스택 추가 입력</div>
-              <div className={annotationStyle}>최대 50개 추가 입력</div>
-            </div>
-            <input
-              type="text"
-              placeholder="직접 입력 후 Enter를 눌러주세요"
-              value={customTech}
-              onChange={(e) => setCustomTech(e.target.value)}
-              onKeyDown={handleAddCustomTech}
-              className={cn(
-                'rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors outline-none focus:border-[#FC335A]',
-                inputTextStyle,
-              )}
-            />
-          </div>
+          <InputForm
+            inputTitle="기술 스택 추가 입력"
+            inputPlaceholder="직접 입력 후 Enter를 눌러주세요"
+            annotation="최대 50개 추가 입력"
+            value={customTech}
+            onChange={(e) => setCustomTech(e.target.value)}
+            onKeyDown={handleAddCustomTech}
+          />
 
           {/* 깃허브 레포지토리 */}
           <div className={cn('flex flex-col gap-3')}>
@@ -356,7 +348,7 @@ const RegisterPage = () => {
                     placeholder="GitHub 레포지토리 URL을 입력해주세요"
                     {...register(`repository.${index}.repoUrl`)}
                     className={cn(
-                      'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 pr-12 transition-colors outline-none focus:border-[#FC335A]',
+                      'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 pr-12 transition-colors outline-none focus:border-white',
                       inputTextStyle,
                     )}
                   />
@@ -377,11 +369,12 @@ const RegisterPage = () => {
                 type="button"
                 onClick={() => appendRepo({ repoUrl: '' })}
                 className={cn(
-                  'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors hover:bg-[#2F2F2F]',
+                  'flex w-full items-center justify-center gap-3 rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors hover:bg-[#2F2F2F]',
                   inputTextStyle,
                 )}
               >
                 레포지토리 추가
+                <PlusIcon />
               </button>
             )}
             {errors.repository && (
