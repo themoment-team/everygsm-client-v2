@@ -1,5 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
+
+import { toast } from 'sonner';
+
 import { useGetUserInfo, UserInfoResponseType } from '@/entities/auth';
 import { ProjectsListResponseType, useGetProjects } from '@/entities/project';
 import { COOKIE_KEYS } from '@/shared/constants';
@@ -29,6 +33,18 @@ const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) =
     errorType: 'forbidden-admin',
     message: '관리자 권한이 필요한 페이지입니다.',
   });
+
+  useEffect(() => {
+    if (sessionStorage.getItem('login_success')) {
+      toast.success('로그인에 성공했습니다.');
+      sessionStorage.removeItem('login_success');
+    }
+
+    if (sessionStorage.getItem('login_error')) {
+      toast.error('로그인에 실패했습니다.');
+      sessionStorage.removeItem('login_error');
+    }
+  }, []);
 
   return (
     <main className="min-h-[calc(100vh-72px)] bg-[#191919]">

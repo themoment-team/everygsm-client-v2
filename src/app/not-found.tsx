@@ -27,7 +27,7 @@ const NotFound = () => {
       <Link
         href="/"
         className={cn(
-          'flex items-center gap-4 px-3 py-1.5 text-base leading-6 font-medium text-[#DDD]',
+          'flex items-center gap-4 rounded-xl px-3 py-1.5 text-base leading-6 font-medium text-[#DDD] hover:bg-[rgba(51,51,51,0.50)]',
         )}
       >
         메인페이지로 <ArrowIcon color="#DDD" />

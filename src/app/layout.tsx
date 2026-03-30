@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { Toaster } from 'sonner';
 
 import { getUserInfo } from '@/entities/auth/index.server';
 import { TanStackProvider } from '@/shared/lib';
 import { pretendard } from '@/shared/styles';
 import { ModalContainer } from '@/shared/ui';
+import { AppToaster } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
 import '@/shared/styles/globals.css';
@@ -27,7 +27,7 @@ const RootLayout = async ({
         <TanStackProvider>
           <Header initialUserInfoData={initialUserInfoData} />
           {children}
-          <Toaster position="bottom-right" richColors />
+          <AppToaster />
           <ModalContainer />
         </TanStackProvider>
       </body>

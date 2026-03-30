@@ -39,12 +39,14 @@ const CallbackContent = () => {
         const { data: signInData } = await signIn({ authCode, redirectUri, codeVerifier });
 
         setCookie(COOKIE_KEYS.ACCESS_TOKEN, signInData.accessToken);
+        sessionStorage.setItem('login_success', 'true');
 
         router.replace('/');
       } catch (error) {
         const message = error instanceof Error ? error.message : '로그인 중 오류가 발생했습니다.';
 
         setErrorMessage(message);
+        sessionStorage.setItem('login_error', 'true');
 
         setTimeout(() => {
           router.replace('/');
