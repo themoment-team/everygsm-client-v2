@@ -176,8 +176,13 @@ const RegisterPage = () => {
   const handleAddCustomTech = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && customTech.trim()) {
       e.preventDefault();
-      if (!techFields.some((f) => f.stackName === customTech.trim())) {
-        appendTech({ stackName: customTech.trim() });
+      const trimmedTech = customTech.trim();
+
+      const isDuplicateInFields = techFields.some((f) => f.stackName === trimmedTech);
+      const isDuplicateInDefault = DEFAULT_TECH_STACK.includes(trimmedTech);
+
+      if (!isDuplicateInFields && !isDuplicateInDefault) {
+        appendTech({ stackName: trimmedTech });
       } else {
         toast.error('중복된 기술 스택입니다');
       }
