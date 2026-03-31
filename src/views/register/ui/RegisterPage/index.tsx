@@ -75,7 +75,7 @@ const RegisterPage = () => {
       title: '',
       affiliation: '',
       description: '',
-      techStack: [{ stackName: '' }],
+      techStack: [],
       repository: [{ repoUrl: '' }],
       prodUrl: '',
     },
@@ -283,7 +283,7 @@ const RegisterPage = () => {
             </div>
             <div
               className={cn(
-                'flex min-h-27.5 flex-col gap-2 rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4',
+                'flex flex-col rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4',
               )}
             >
               <div className={cn('flex flex-wrap content-start gap-4')}>
@@ -304,24 +304,26 @@ const RegisterPage = () => {
                     );
                   })}
                 </div>
-                <div className="flex flex-wrap content-start gap-2">
-                  {techFields.map((field, index) => {
-                    if (DEFAULT_TECH_STACK.includes(field.stackName)) return null;
-                    return (
-                      <div
-                        key={field.id}
-                        className={cn(
-                          'flex max-w-fit items-center gap-[0.65rem] rounded-[62.5rem] bg-[#FC335A] px-3 py-[0.38rem]',
-                        )}
-                      >
-                        <span className={textStyle}>{field.stackName}</span>
-                        <div onClick={() => removeTech(index)} className="cursor-pointer">
-                          <XIcon />
+                {techFields.length !== 0 && (
+                  <div className="flex flex-wrap content-start gap-2">
+                    {techFields.map((field, index) => {
+                      if (DEFAULT_TECH_STACK.includes(field.stackName)) return null;
+                      return (
+                        <div
+                          key={field.id}
+                          className={cn(
+                            'flex max-w-fit items-center gap-[0.65rem] rounded-[62.5rem] bg-[#FC335A] px-3 py-[0.38rem]',
+                          )}
+                        >
+                          <span className={textStyle}>{field.stackName}</span>
+                          <div onClick={() => removeTech(index)} className="cursor-pointer">
+                            <XIcon />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
             {errors.techStack?.message && (

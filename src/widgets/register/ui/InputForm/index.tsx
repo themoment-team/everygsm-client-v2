@@ -46,7 +46,7 @@ const InputForm = ({
               register?.onChange(e);
             }}
             className={cn(
-              'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors outline-none focus:border-white',
+              'w-full rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 outline-none focus:border-white',
               rightElement && 'pr-12',
               inputTextStyle,
             )}
@@ -74,7 +74,7 @@ const InputForm = ({
               });
             }}
             className={cn(
-              'min-h-34.5 w-full resize-none overflow-hidden rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors outline-none focus:border-white',
+              'min-h-34.5 w-full resize-none overflow-hidden rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 outline-none focus:border-white',
               inputTextStyle,
             )}
           />
