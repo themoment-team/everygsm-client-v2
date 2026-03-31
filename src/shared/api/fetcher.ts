@@ -32,6 +32,10 @@ export const apiFetcher = async <T>({
     console.warn(`[${context}] cookies() call skipped during static generation or build.`);
   }
 
+  if (!accessToken && (method !== 'GET' || endpoint.includes('/users/me'))) {
+    return undefined;
+  }
+
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!baseUrl) {
