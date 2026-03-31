@@ -144,16 +144,14 @@ const RegisterPage = () => {
     try {
       const logoKey = await handlePhotoUpload(file);
 
-      console.log(logoKey);
-
       const updatedData = {
         ...data,
         logo: logoKey,
       };
 
       postProject(updatedData);
-    } catch {
-      console.log('error');
+    } catch (error) {
+      console.log(error);
     }
   };
 
