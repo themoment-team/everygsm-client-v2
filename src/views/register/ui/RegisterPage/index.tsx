@@ -177,9 +177,12 @@ const RegisterPage = () => {
     if (e.key === 'Enter' && customTech.trim()) {
       e.preventDefault();
       const trimmedTech = customTech.trim();
+      const lowerTech = trimmedTech.toLowerCase();
 
-      const isDuplicateInFields = techFields.some((f) => f.stackName === trimmedTech);
-      const isDuplicateInDefault = DEFAULT_TECH_STACK.includes(trimmedTech);
+      const isDuplicateInFields = techFields.some((f) => f.stackName.toLowerCase() === lowerTech);
+      const isDuplicateInDefault = DEFAULT_TECH_STACK.some(
+        (stack) => stack.toLowerCase() === lowerTech,
+      );
 
       if (!isDuplicateInFields && !isDuplicateInDefault) {
         appendTech({ stackName: trimmedTech });
