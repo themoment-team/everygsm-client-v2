@@ -48,7 +48,7 @@ const RegisterPage = () => {
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-  const { mutate: postProject, isPending } = usePostProjectRegistration({
+  const { mutate: postProject, isPending: isRegisterPending } = usePostProjectRegistration({
     onSuccess: () => {
       router.push('/');
       toast.success('프로젝트 등록에 성공했습니다.');
@@ -59,7 +59,9 @@ const RegisterPage = () => {
     },
   });
 
-  const { mutateAsync: postImage } = usePostProjectLogo();
+  const { mutateAsync: postImage, isPending: isLogoPending } = usePostProjectLogo();
+
+  const isPending = isRegisterPending || isLogoPending;
 
   const {
     register,
