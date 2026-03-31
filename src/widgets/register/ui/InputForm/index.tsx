@@ -28,7 +28,7 @@ const InputForm = ({
   return (
     <div className={cn('flex flex-col gap-3', className)}>
       {(inputTitle || annotation) && (
-        <div className={cn('align-center flex justify-start gap-3')}>
+        <div className={cn('flex items-center justify-start gap-3')}>
           {inputTitle && <div className={textStyle}>{inputTitle}</div>}
           {annotation && <div className={annotationStyle}>{annotation}</div>}
         </div>
