@@ -1,3 +1,3 @@
-export * from './model';
-export * from './style';
+export * from './model/schema';
+export * from './style/textStyle';
 export { default as InputForm } from './ui/InputForm';

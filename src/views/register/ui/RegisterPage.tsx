@@ -18,9 +18,10 @@ import {
   RegisterFormSchema,
   RegisterFormType,
   textStyle,
-} from '@/widgets';
+} from '@/widgets/register';
 
-import { usePostProjectLogo, usePostProjectRegistration } from '../model';
+import { usePostProjectLogo } from '../model/usePostProjectLogo';
+import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
 
 const DEFAULT_TECH_STACK = [
   'HTML5 / CSS3',
