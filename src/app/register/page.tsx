@@ -1,5 +1,7 @@
 import { RegisterPage } from '@/views/register/ui';
 
-export default function Register() {
+const Register = () => {
   return <RegisterPage />;
-}
+};
+
+export default Register;
