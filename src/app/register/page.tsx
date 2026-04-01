@@ -1,4 +1,4 @@
-import { RegisterPage } from '@/views/register/ui';
+import { RegisterPage } from '@/views/register';
 
 const Register = () => {
   return <RegisterPage />;
