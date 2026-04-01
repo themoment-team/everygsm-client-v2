@@ -20,8 +20,7 @@ import {
   textStyle,
 } from '@/widgets';
 
-import { usePostProjectLogo } from '../../model';
-import { usePostProjectRegistration } from '../../model/usePostProjectRegistration';
+import { usePostProjectLogo, usePostProjectRegistration } from '../model';
 
 const DEFAULT_TECH_STACK = [
   'HTML5 / CSS3',
