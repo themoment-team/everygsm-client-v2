@@ -6,11 +6,11 @@ export interface TechStackType {
   stackName: string;
 }
 
-export interface RegisterRepositoryType {
+export interface ProjectRepositoryReqType {
   repoUrl: string;
 }
 
-export interface RepositoryType {
+export interface ProjectRepositoryType {
   repoName: string;
   repoUrl: string;
 }
@@ -26,18 +26,18 @@ export interface ProjectType {
   reason: string;
   createdAt: string;
   techStack: TechStackType[];
-  repository: RepositoryType[];
+  repository: ProjectRepositoryType[];
   liked: boolean;
 }
 
-export interface ProjectRegisterRegistrationType {
+export interface ProjectRegisterReqType {
   logo: string;
   title: string;
   affiliation: string;
   description: string;
   prodUrl: string;
   techStack: TechStackType[];
-  repository: RegisterRepositoryType[];
+  repository: ProjectRepositoryReqType[];
 }
 
 export type ProjectResponseType = ApiResponse<ProjectType>;
