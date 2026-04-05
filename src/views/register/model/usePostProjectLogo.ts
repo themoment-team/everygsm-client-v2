@@ -3,16 +3,16 @@ import { AxiosError } from 'axios';
 
 import { imageQueryKeys, imageUrl, post } from '@/shared/api';
 
-import { PostProjectLogoResponse } from './types';
+import { PostImageUploadResponse } from './types';
 
 export const usePostProjectLogo = (
   options?: Omit<
-    UseMutationOptions<PostProjectLogoResponse, AxiosError, FormData>,
+    UseMutationOptions<PostImageUploadResponse, AxiosError, FormData>,
     'mutationKey' | 'mutationFn'
   >,
 ) =>
   useMutation({
     mutationKey: imageQueryKeys.postImageUpload(),
-    mutationFn: (data: FormData) => post<PostProjectLogoResponse>(imageUrl.postImageUpload(), data),
+    mutationFn: (data: FormData) => post<PostImageUploadResponse>(imageUrl.postImageUpload(), data),
     ...options,
   });
