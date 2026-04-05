@@ -1,8 +1,8 @@
 import { ApiResponse } from '@/shared/types';
 
-export interface PostProjectLogoResponseData {
+export interface PostImageUploadResponseData {
   key: string;
   imageUrl: string;
 }
 
-export type PostProjectLogoResponse = ApiResponse<PostProjectLogoResponseData>;
+export type PostImageUploadResponse = ApiResponse<PostImageUploadResponseData>;
