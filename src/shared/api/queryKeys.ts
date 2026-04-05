@@ -13,7 +13,6 @@ export const projectQueryKeys = {
   getMyRejectedProjects: () => ['projects', 'my', 'rejected'] as const,
   getMyPendingProjects: () => ['projects', 'my', 'pending'] as const,
   postProjectRegistration: () => ['projects', 'create'] as const,
-  postProjectLogo: () => ['projects', 'post', 'logo'] as const,
   toggleProjectLike: (projectId: number) => ['projects', 'like', 'toggle', projectId] as const,
 } as const;
 
@@ -21,4 +20,8 @@ export const authQueryKeys = {
   all: () => ['auth'] as const,
   postSignIn: () => ['auth', 'signin'] as const,
   getUserInfo: () => ['auth', 'userinfo'] as const,
+} as const;
+
+export const imageQueryKeys = {
+  postImageUpload: () => ['projects', 'post', 'logo'] as const,
 } as const;
