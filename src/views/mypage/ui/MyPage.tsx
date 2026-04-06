@@ -1,21 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+// import { useState } from 'react';
 
 import { useGetUserInfo, UserInfoResponseType } from '@/entities/auth';
 import {
   MyProjectsListResponseType,
   ProjectsListResponseType,
-  useGetMyPendingProjects,
+  // useGetMyPendingProjects,
   useGetMyProjects,
-  useGetMyRejectedProjects,
+  // useGetMyRejectedProjects,
 } from '@/entities/project';
-import { RequestStatusFilter, RequestStatusFilterType } from '@/features/request-status-filter';
+// import { RequestStatusFilter, RequestStatusFilterType } from '@/features/request-status-filter';
 import { useHandleErrorQueryToast } from '@/shared/hooks';
 import { cn } from '@/shared/utils';
 import { HeroSection } from '@/widgets/hero-section';
 import { ProjectList } from '@/widgets/project-list';
-import { ProjectRequestList } from '@/widgets/project-request-list';
+// import { ProjectRequestList } from '@/widgets/project-request-list';
 
 interface MyPageProps {
   initialUserInfoData?: UserInfoResponseType;
@@ -26,12 +26,12 @@ interface MyPageProps {
 
 const MyPage = ({
   initialMyProjectsData,
-  initialMyPendingProjectsData,
-  initialMyRejectedProjectsData,
+  // initialMyPendingProjectsData,
+  // initialMyRejectedProjectsData,
   initialUserInfoData,
 }: MyPageProps) => {
-  const [selectedRequestStatus, setSelectedRequestStatus] =
-    useState<RequestStatusFilterType>('PENDING');
+  // const [selectedRequestStatus, setSelectedRequestStatus] =
+  //   useState<RequestStatusFilterType>('PENDING');
 
   const { data: userInfoData } = useGetUserInfo({
     initialData: initialUserInfoData,
@@ -39,21 +39,21 @@ const MyPage = ({
   const { data: myProjectsData } = useGetMyProjects({
     initialData: initialMyProjectsData,
   });
-  const { data: myPendingProjectsData } = useGetMyPendingProjects({
-    initialData: initialMyPendingProjectsData,
-  });
-  const { data: myRejectedProjectsData } = useGetMyRejectedProjects({
-    initialData: initialMyRejectedProjectsData,
-  });
+  // const { data: myPendingProjectsData } = useGetMyPendingProjects({
+  //   initialData: initialMyPendingProjectsData,
+  // });
+  // const { data: myRejectedProjectsData } = useGetMyRejectedProjects({
+  //   initialData: initialMyRejectedProjectsData,
+  // });
 
   const displayName = userInfoData?.data.name ?? '사용자';
   const likedProjects = myProjectsData?.data.liked ?? [];
-  const registeredProjects = myProjectsData?.data.registered ?? [];
-  const pendingProjects = myPendingProjectsData?.data.projects ?? [];
-  const rejectedProjects = myRejectedProjectsData?.data.projects ?? [];
+  // const registeredProjects = myProjectsData?.data.registered ?? [];
+  // const pendingProjects = myPendingProjectsData?.data.projects ?? [];
+  // const rejectedProjects = myRejectedProjectsData?.data.projects ?? [];
 
-  const isPendingSelected = selectedRequestStatus === 'PENDING';
-  const requestProjects = isPendingSelected ? pendingProjects : rejectedProjects;
+  // const isPendingSelected = selectedRequestStatus === 'PENDING';
+  // const requestProjects = isPendingSelected ? pendingProjects : rejectedProjects;
 
   useHandleErrorQueryToast({
     errorType: 'forbidden',
@@ -74,7 +74,7 @@ const MyPage = ({
           <ProjectList projects={likedProjects} />
         </div>
 
-        <div className={cn('flex flex-col gap-y-10')}>
+        {/* <div className={cn('flex flex-col gap-y-10')}>
           <HeroSection
             title={
               <>
@@ -83,9 +83,9 @@ const MyPage = ({
             }
           />
           <ProjectList projects={registeredProjects} />
-        </div>
+        </div> */}
 
-        <div className={cn('flex flex-col items-center gap-y-10')}>
+        {/* <div className={cn('flex flex-col items-center gap-y-10')}>
           <div className={cn('flex w-full max-w-295 items-center justify-between')}>
             <HeroSection
               title={
@@ -101,7 +101,7 @@ const MyPage = ({
             />
           </div>
           <ProjectRequestList projects={requestProjects} />
-        </div>
+        </div> */}
       </div>
     </main>
   );
