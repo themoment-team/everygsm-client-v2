@@ -1,7 +1,7 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { ProjectRegisterReqType, ProjectResponseType } from '@/entities/project/model/types';
+import { ProjectRegisterReqType, ProjectResponseType } from '@/entities/project';
 import { post, projectQueryKeys, projectUrl } from '@/shared/api';
 
 export const usePostProjectRegistration = (
