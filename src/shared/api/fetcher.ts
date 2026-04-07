@@ -23,26 +23,11 @@ export const apiFetcher = async <T>({
   headers,
   returnErrorBody = false,
 }: ApiFetcherOptions): Promise<T | undefined> => {
-  let accessToken: string | undefined;
-
   try {
     const cookieStore = await cookies();
-    accessToken = cookieStore.get(COOKIE_KEYS.ACCESS_TOKEN)?.value;
-  } catch {
-    console.warn(`[${context}] cookies() call skipped during static generation or build.`);
-  }
+    const accessToken = cookieStore.get(COOKIE_KEYS.ACCESS_TOKEN)?.value;
 
-  if (!accessToken && (method !== 'GET' || endpoint.includes('/users/me'))) {
-    return undefined;
-  }
-
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    if (!baseUrl) {
-      throw new Error('NEXT_PUBLIC_API_BASE_URL is not defined');
-    }
-
-    const url = new URL(endpoint, baseUrl);
+    const url = new URL(endpoint, process.env.NEXT_PUBLIC_API_BASE_URL);
 
     const response = await fetch(url, {
       method,
