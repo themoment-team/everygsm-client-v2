@@ -9,14 +9,14 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { PlusIcon, UploadIcon, XIcon } from '@/shared/assets';
+import { annotationStyle, errorTextStyle, inputTextStyle, textStyle } from '@/shared/styles';
+import { InputForm } from '@/shared/ui';
 import { cn } from '@/shared/utils';
 
 import { formatFileName } from '../lib/formatFileName';
 import { RegisterFormSchema, RegisterFormType } from '../model/schema';
 import { usePostProjectLogo } from '../model/usePostProjectLogo';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
-import { annotationStyle, errorTextStyle, inputTextStyle, textStyle } from '../style/textStyle';
-import InputForm from './InputForm';
 
 const DEFAULT_TECH_STACK = [
   'HTML5 / CSS3',

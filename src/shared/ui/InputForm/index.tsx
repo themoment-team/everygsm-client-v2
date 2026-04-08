@@ -1,8 +1,7 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
 
+import { annotationStyle, errorTextStyle, inputTextStyle, textStyle } from '@/shared/styles';
 import { cn } from '@/shared/utils';
-
-import { annotationStyle, errorTextStyle, inputTextStyle, textStyle } from '../style/textStyle';
 
 interface InputFormProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
   inputTitle?: string;
