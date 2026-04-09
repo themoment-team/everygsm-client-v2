@@ -18,6 +18,7 @@ const ProjectRequestCard = ({
   const { logo, title, affiliation, createdAt, status, projectId } = data;
   const requestStatusMeta = getProjectRequestStatusMeta(status);
   const formattedDate = new Date(createdAt).toISOString().substring(0, 10);
+  const hasLogo = Boolean(logo?.trim());
 
   return (
     <Link
@@ -27,13 +28,17 @@ const ProjectRequestCard = ({
       )}
     >
       <div className={cn('flex items-center gap-x-4')}>
-        <Image
-          src={logo}
-          alt="프로젝트 이미지"
-          width={56}
-          height={56}
-          className={cn('rounded-full object-cover')}
-        />
+        {hasLogo ? (
+          <Image
+            src={logo}
+            alt="프로젝트 이미지"
+            width={56}
+            height={56}
+            className={cn('rounded-full object-cover')}
+          />
+        ) : (
+          <div aria-hidden className={cn('h-14 w-14 rounded-full bg-[#4F4F4F]')} />
+        )}
         <div className={cn('flex flex-col gap-y-2')}>
           <h3 className={cn('text-xl leading-6 font-semibold text-white')}>{title}</h3>
           <p className={cn('text-sm leading-4.25 text-[#9A9A9A]')}>{affiliation}</p>
