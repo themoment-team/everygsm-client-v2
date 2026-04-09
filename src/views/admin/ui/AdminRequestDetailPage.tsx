@@ -5,8 +5,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { ProjectType } from '@/entities/project';
-import { useAdminApproveProject, useAdminRejectProject } from '@/entities/project';
+import { toast } from 'sonner';
+
+import {
+  type ProjectType,
+  useAdminApproveProject,
+  useAdminRejectProject,
+} from '@/entities/project';
 import { ArrowIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import { ProjectRequestDetailContent } from '@/widgets/project-request-detail';
@@ -31,17 +36,28 @@ const AdminRequestDetailPage = ({ initialProjectData }: AdminRequestDetailPagePr
   }
 
   const handleApprove = async () => {
-    await approveMutation.mutateAsync(initialProjectData.projectId);
-    router.push('/admin');
+    try {
+      await approveMutation.mutateAsync(initialProjectData.projectId);
+      router.push('/admin');
+    } catch (error) {
+      console.error('Failed to approve project:', error);
+      toast.error('승인 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    }
   };
 
   const handleReject = async () => {
     if (!rejectReason.trim()) return;
-    await rejectMutation.mutateAsync({
-      projectId: initialProjectData.projectId,
-      reason: rejectReason,
-    });
-    router.push('/admin');
+
+    try {
+      await rejectMutation.mutateAsync({
+        projectId: initialProjectData.projectId,
+        reason: rejectReason,
+      });
+      router.push('/admin');
+    } catch (error) {
+      console.error('Failed to reject project:', error);
+      toast.error('거절 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    }
   };
 
   const isRejectDisabled = rejectMutation.isPending || !rejectReason.trim();
