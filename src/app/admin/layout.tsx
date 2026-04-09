@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { redirect } from 'next/navigation';
 
+import { isAdminRole } from '@/entities/auth';
 import { getMyInfo } from '@/entities/auth/index.server';
 import { AdminClientGuard } from '@/views/admin';
 
@@ -12,9 +13,9 @@ interface AdminLayoutProps {
 const AdminLayout = async ({ children }: AdminLayoutProps) => {
   const [initialUserInfoData] = await Promise.all([getMyInfo()]);
   const accountRole = initialUserInfoData?.data.role;
-  const isAdminRole = accountRole === 'ADMIN';
+  const isAdminAccount = isAdminRole(accountRole);
 
-  if (!isAdminRole) {
+  if (!isAdminAccount) {
     redirect('/?error=forbidden-admin');
   }
 
