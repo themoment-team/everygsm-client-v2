@@ -99,6 +99,15 @@ const RegisterProjectForm = () => {
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
     const selectedFile = files[0];
+
+    const allowedExtensions = ['png', 'jpg', 'jpeg'];
+    const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+
+    if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+      toast.error('png, jpg, jpeg 형식의 이미지만 업로드 가능해요.');
+      return;
+    }
+
     if (selectedFile.size >= MAX_FILE_SIZE) {
       toast.error('파일 크기가 5MB가 넘었어요.');
       return;
@@ -223,7 +232,13 @@ const RegisterProjectForm = () => {
               </div>
             </>
           )}
-          <input ref={inputRef} type="file" hidden onChange={(e) => handleFiles(e.target.files)} />
+          <input
+            ref={inputRef}
+            type="file"
+            accept=".png,.jpg,.jpeg"
+            hidden
+            onChange={(e) => handleFiles(e.target.files)}
+          />
         </div>
         {errors.logo?.message && <p className={errorTextStyle}>{errors.logo.message}</p>}
       </div>
