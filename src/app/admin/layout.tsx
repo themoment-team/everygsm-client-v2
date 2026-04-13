@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 
 import { isAdminRole } from '@/entities/auth';
-import { getMyInfo } from '@/entities/auth/index.server';
+import { getMyInfo } from '@/entities/user/index.server';
 import { AdminClientGuard } from '@/views/admin';
 
 interface AdminLayoutProps {
