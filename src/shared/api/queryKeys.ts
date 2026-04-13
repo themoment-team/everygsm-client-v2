@@ -23,5 +23,5 @@ export const authQueryKeys = {
 } as const;
 
 export const imageQueryKeys = {
-  postImageUpload: () => ['projects', 'post', 'logo'] as const,
+  postImageUpload: () => ['post', 'image'] as const,
 } as const;
