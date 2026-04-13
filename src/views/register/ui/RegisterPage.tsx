@@ -1,5 +1,3 @@
-'use client';
-
 import { RegisterProjectForm } from '@/features/register-project';
 import { cn } from '@/shared/utils';
 
