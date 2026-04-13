@@ -5,7 +5,7 @@ import { imageQueryKeys, imageUrl, post } from '@/shared/api';
 
 import { PostImageUploadResponse } from './types';
 
-export const usePostProjectLogo = (
+export const usePostProjectImageUpload = (
   options?: Omit<
     UseMutationOptions<PostImageUploadResponse, AxiosError, FormData>,
     'mutationKey' | 'mutationFn'
