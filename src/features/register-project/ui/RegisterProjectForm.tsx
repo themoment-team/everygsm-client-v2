@@ -15,7 +15,7 @@ import { cn } from '@/shared/utils';
 
 import { formatFileName } from '../lib/formatFileName';
 import { RegisterFormSchema, RegisterFormType } from '../model/schema';
-import { usePostProjectLogo } from '../model/usePostProjectLogo';
+import { usePostProjectImageUpload } from '../model/usePostProjectImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
 
 const DEFAULT_TECH_STACK = [
@@ -54,7 +54,7 @@ const RegisterProjectForm = () => {
     },
   });
 
-  const { mutateAsync: postImage, isPending: isLogoPending } = usePostProjectLogo();
+  const { mutateAsync: postImage, isPending: isLogoPending } = usePostProjectImageUpload();
 
   const isPending = isRegisterPending || isLogoPending;
 
