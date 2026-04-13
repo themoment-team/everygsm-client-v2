@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { getMyInfo } from '@/entities/auth/index.server';
+import { getMyInfo } from '@/entities/user/index.server';
 import { TanStackProvider } from '@/shared/lib';
 import { pretendard } from '@/shared/styles';
 import { ModalContainer } from '@/shared/ui';

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
-import { getMyInfo } from '@/entities/auth/index.server';
 import { getProjects } from '@/entities/project/index.server';
+import { getMyInfo } from '@/entities/user/index.server';
 import { SuspenseFallback } from '@/shared/ui';
 import { HomePage } from '@/views/home';
 
