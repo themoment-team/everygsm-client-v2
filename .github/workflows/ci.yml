@@ -13,7 +13,8 @@ jobs:
     name: Lint and Build
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }},
+      NEXT_PUBLIC_IMAGE_HOST: ${{secrets.NEXT_PUBLIC_IMAGE_HOST}}
       HUSKY: 0
     steps:
       - name: Checkout
