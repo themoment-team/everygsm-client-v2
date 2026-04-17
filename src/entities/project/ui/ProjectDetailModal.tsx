@@ -68,7 +68,7 @@ const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) 
               'flex cursor-pointer items-center justify-between rounded-xl px-3 py-1.5 text-base leading-6 font-medium text-white duration-100 hover:bg-[#444444]',
             )}
           >
-            {repo.repoName || repo.repoUrl}
+            {repo.repoName}
             <ArrowIcon />
           </a>
         ))}

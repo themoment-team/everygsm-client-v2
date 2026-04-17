@@ -23,8 +23,8 @@ export const myProjectsMockData: MyProjectsListResponseType = {
         ],
         repository: [
           {
-            repoUrl: 'https://github.com/themoment-team/EveryGSM-client-v2',
             repoName: 'EveryGSM-client-v2',
+            repoUrl: 'https://github.com/themoment-team/EveryGSM-client-v2',
           },
         ],
         liked: true,
@@ -42,8 +42,8 @@ export const myProjectsMockData: MyProjectsListResponseType = {
         techStack: [{ stackName: 'Next.js' }, { stackName: 'React Query' }, { stackName: 'Zod' }],
         repository: [
           {
-            repoUrl: 'https://github.com/themoment-team/hellogsm-client',
             repoName: 'hellogsm-client',
+            repoUrl: 'https://github.com/themoment-team/hellogsm-client',
           },
         ],
         liked: true,
@@ -62,7 +62,10 @@ export const myProjectsMockData: MyProjectsListResponseType = {
         createdAt: '2026-03-05T09:00:00.000Z',
         techStack: [{ stackName: 'React' }, { stackName: 'TypeScript' }, { stackName: 'Node.js' }],
         repository: [
-          { repoUrl: 'https://github.com/example/dormitorymate', repoName: 'dormitorymate' },
+          {
+            repoName: 'dormitorymate',
+            repoUrl: 'https://github.com/example/dormitorymate',
+          },
         ],
         liked: false,
       },
@@ -77,7 +80,12 @@ export const myProjectsMockData: MyProjectsListResponseType = {
         reason: '',
         createdAt: '2026-03-04T09:00:00.000Z',
         techStack: [{ stackName: 'Next.js' }, { stackName: 'Prisma' }, { stackName: 'PostgreSQL' }],
-        repository: [{ repoUrl: 'https://github.com/example/mealboard', repoName: 'mealboard' }],
+        repository: [
+          {
+            repoName: 'mealboard',
+            repoUrl: 'https://github.com/example/mealboard',
+          },
+        ],
         liked: false,
       },
     ],
@@ -101,7 +109,12 @@ export const myPendingProjectsMockData: ProjectsListResponseType = {
         reason: '',
         createdAt: '2026-03-15T13:52:04.312Z',
         techStack: [{ stackName: 'Next.js' }, { stackName: 'TypeScript' }],
-        repository: [{ repoUrl: 'https://github.com/example/studyflow', repoName: 'studyflow' }],
+        repository: [
+          {
+            repoName: 'studyflow',
+            repoUrl: 'https://github.com/example/studyflow',
+          },
+        ],
         liked: false,
       },
       {
@@ -116,7 +129,10 @@ export const myPendingProjectsMockData: ProjectsListResponseType = {
         createdAt: '2026-03-14T13:52:04.312Z',
         techStack: [{ stackName: 'React' }, { stackName: 'Vite' }],
         repository: [
-          { repoUrl: 'https://github.com/example/teamplanner', repoName: 'teamplanner' },
+          {
+            repoName: 'teamplanner',
+            repoUrl: 'https://github.com/example/teamplanner',
+          },
         ],
         liked: true,
       },
@@ -141,7 +157,12 @@ export const myRejectedProjectsMockData: ProjectsListResponseType = {
         reason: '서비스 소개가 부족합니다.',
         createdAt: '2026-03-13T13:52:04.327Z',
         techStack: [{ stackName: 'Next.js' }, { stackName: 'Leaflet' }],
-        repository: [{ repoUrl: 'https://github.com/example/campusmap', repoName: 'campusmap' }],
+        repository: [
+          {
+            repoName: 'campusmap',
+            repoUrl: 'https://github.com/example/campusmap',
+          },
+        ],
         liked: false,
       },
       {
@@ -155,7 +176,12 @@ export const myRejectedProjectsMockData: ProjectsListResponseType = {
         reason: '프로젝트 설명과 링크 확인이 필요합니다.',
         createdAt: '2026-03-12T13:52:04.327Z',
         techStack: [{ stackName: 'Next.js' }, { stackName: 'TanStack Query' }],
-        repository: [{ repoUrl: 'https://github.com/example/clubhub', repoName: 'clubhub' }],
+        repository: [
+          {
+            repoName: 'clubhub',
+            repoUrl: 'https://github.com/example/clubhub',
+          },
+        ],
         liked: true,
       },
     ],

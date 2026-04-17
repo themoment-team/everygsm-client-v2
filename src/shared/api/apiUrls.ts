@@ -19,3 +19,7 @@ export const projectUrl = {
   postProjectRegistration: () => '/api/v2/projects/registration',
   postProjectLike: (projectId: number) => `/api/v2/projects/like/${projectId}`,
 } as const;
+
+export const imageUrl = {
+  postImageUpload: () => '/api/v2/images',
+} as const;
