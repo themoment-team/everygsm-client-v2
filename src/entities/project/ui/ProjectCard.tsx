@@ -29,17 +29,13 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
         onMouseEnter={() => setIsCenterHover(true)}
         onMouseLeave={() => setIsCenterHover(false)}
         className={cn(
-          'absolute inset-0 flex flex-col items-center justify-center gap-6 rounded-xl bg-[rgba(38,38,38,1)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[1.125rem] transition-opacity duration-100',
+          'absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 rounded-xl bg-[rgba(38,38,38,1)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[1.125rem] transition-opacity duration-100',
           isCenterHover ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
         )}
       >
-        <Image
-          src={logo}
-          alt={title}
-          width={56}
-          height={56}
-          className={cn('rounded-full object-cover')}
-        />
+        <div className={cn('relative h-14 w-14 overflow-hidden rounded-full')}>
+          <Image src={logo} alt={title} fill sizes="56px" className={cn('object-cover')} />
+        </div>
         <a
           href={prodUrl}
           target="_blank"
@@ -55,13 +51,9 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
 
       <div>
         <div className={cn('mb-4 flex justify-between')}>
-          <Image
-            src={logo}
-            alt={title}
-            width={56}
-            height={56}
-            className={cn('rounded-full object-cover')}
-          />
+          <div className={cn('relative h-14 w-14 overflow-hidden rounded-full')}>
+            <Image src={logo} alt={title} fill sizes="56px" className={cn('object-cover')} />
+          </div>
           {likeButton}
         </div>
         <div

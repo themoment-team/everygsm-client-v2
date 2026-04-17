@@ -44,7 +44,7 @@ const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) 
       </div>
       <div className={cn('flex flex-col gap-y-4')}>
         <p className={cn('text-base leading-6 font-medium text-[#DDDDDD]')}>{description}</p>
-        <div className={cn('flex flex-wrap gap-x-2')}>
+        <div className={cn('flex flex-wrap gap-x-2 gap-y-2')}>
           {techStack.map((stack) => (
             <span
               key={stack.stackName}
@@ -57,7 +57,7 @@ const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) 
           ))}
         </div>
       </div>
-      <div>
+      <div className={cn('flex flex-col gap-y-1')}>
         {repository.map((repo) => (
           <a
             key={repo.repoUrl}
