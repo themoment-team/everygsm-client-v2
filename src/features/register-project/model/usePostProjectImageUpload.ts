@@ -1,7 +1,7 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { imageQueryKeys, imageUrl, post } from '@/shared/api';
+import { imageUrl, post, projectQueryKeys } from '@/shared/api';
 
 import { PostImageUploadResponse } from './types';
 
@@ -12,7 +12,7 @@ export const usePostProjectImageUpload = (
   >,
 ) =>
   useMutation({
-    mutationKey: imageQueryKeys.postImageUpload(),
+    mutationKey: projectQueryKeys.postProjectLogo(),
     mutationFn: (data: FormData) => post<PostImageUploadResponse>(imageUrl.postImageUpload(), data),
     ...options,
   });
