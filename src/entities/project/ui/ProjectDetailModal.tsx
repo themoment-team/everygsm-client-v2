@@ -14,7 +14,6 @@ interface ProjectDetailModalProps {
 
 const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) => {
   const { logo, title, affiliation, description, techStack, prodUrl, repository } = data;
-
   const { closeModal } = useModalStore();
 
   return (
@@ -24,13 +23,9 @@ const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) 
       )}
     >
       <div className={cn('flex items-start justify-between')}>
-        <Image
-          src={logo}
-          alt={title}
-          width={100}
-          height={100}
-          className={cn('rounded-full object-cover')}
-        />
+        <div className={cn('relative h-25 w-25 overflow-hidden rounded-full')}>
+          <Image src={logo} alt={title} fill sizes="100px" className={cn('object-cover')} />
+        </div>
         <button onClick={closeModal} className={cn('cursor-pointer')}>
           <CloseIcon />
         </button>
