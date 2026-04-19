@@ -20,22 +20,36 @@ const ModalContainer = () => {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, closeModal]);
+
   if (!isOpen || !content) return null;
 
   return (
     <div
-      className={cn('fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.20)] px-12')}
-      onClick={closeModal}
-    >
-      <div
-        className={cn('flex w-full items-center justify-center')}
-        onClick={(e) => {
-          e.stopPropagation();
+      className={cn(
+        'fixed inset-0 flex w-full items-center justify-center bg-[rgba(0,0,0,0.20)] px-12',
+      )}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
           closeModal();
-        }}
-      >
-        {content}
-      </div>
+        }
+      }}
+    >
+      {content}
     </div>
   );
 };
