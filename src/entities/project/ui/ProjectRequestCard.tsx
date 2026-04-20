@@ -23,13 +23,9 @@ const ProjectRequestCard = ({ data }: ProjectRequestCardProps) => {
       )}
     >
       <div className={cn('flex items-center gap-x-4')}>
-        <Image
-          src={logo}
-          alt="프로젝트 이미지"
-          width={56}
-          height={56}
-          className={cn('rounded-full object-cover')}
-        />
+        <div className={cn('relative h-14 w-14 overflow-hidden rounded-full')}>
+          <Image src={logo} alt={title} fill sizes="56px" className={cn('object-cover')} />
+        </div>
         <div className={cn('flex flex-col gap-y-2')}>
           <h3 className={cn('text-xl leading-6 font-semibold text-white')}>{title}</h3>
           <p className={cn('text-sm leading-4.25 text-[#9A9A9A]')}>{affiliation}</p>
