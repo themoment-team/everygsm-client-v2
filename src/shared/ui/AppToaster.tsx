@@ -23,7 +23,7 @@ const AppToaster = () => {
           warning: cn('!text-[#ffd049] [&_[data-sonner-icon]]:text-[#faad14]'),
           info: cn('!text-[#4dabf7] [&_[data-sonner-icon]]:text-[#339af0]'),
           closeButton: cn(
-            '!left-auto !right-[-4px] !top-2',
+            '!left-auto !right-[-6px] !top-2',
             '!bg-transparent !border-none !shadow-none',
             '!text-[#666666] hover:!bg-transparent',
           ),
