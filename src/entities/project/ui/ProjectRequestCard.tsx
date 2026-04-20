@@ -31,7 +31,7 @@ const ProjectRequestCard = ({
         {hasLogo ? (
           <Image
             src={logo}
-            alt="프로젝트 이미지"
+            alt={title}
             width={56}
             height={56}
             className={cn('rounded-full object-cover')}

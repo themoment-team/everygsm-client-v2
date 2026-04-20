@@ -30,7 +30,7 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
         onMouseEnter={() => setIsCenterHover(true)}
         onMouseLeave={() => setIsCenterHover(false)}
         className={cn(
-          'absolute inset-0 flex flex-col items-center justify-center gap-6 rounded-xl bg-[rgba(38,38,38,1)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[1.125rem] transition-opacity duration-100',
+          'absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 rounded-xl bg-[rgba(38,38,38,1)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[1.125rem] transition-opacity duration-100',
           isCenterHover ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
         )}
       >

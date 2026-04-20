@@ -11,12 +11,14 @@ interface ProjectRequestDetailContentProps {
 }
 
 const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentProps) => {
-  const requestStatusMeta = getProjectRequestStatusMeta(project.status);
-  const hasLogo = Boolean(project.logo?.trim());
+  const { status, reason, logo, title, affiliation, description, techStack, repository, prodUrl } =
+    project;
+  const hasLogo = Boolean(logo?.trim());
+  const requestStatusMeta = getProjectRequestStatusMeta(status);
 
   return (
     <>
-      {project.status === 'REJECTED' && (
+      {status === 'REJECTED' && (
         <div
           className={cn(
             'flex w-full max-w-212 flex-col gap-y-3 rounded-xl bg-[rgba(34,34,34,0.50)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[1.125rem]',
@@ -34,7 +36,7 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
               'text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#FFFFFF]',
             )}
           >
-            {project.reason || '거절 사유가 제공되지 않았습니다.'}
+            {reason || '거절 사유가 제공되지 않았습니다.'}
           </p>
         </div>
       )}
@@ -63,8 +65,8 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
           </p>
           {hasLogo ? (
             <Image
-              src={project.logo}
-              alt={`${project.title} 로고`}
+              src={logo}
+              alt={`${title} 로고`}
               width={56}
               height={56}
               className={cn('rounded-full object-cover')}
@@ -86,7 +88,7 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
               'text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#FFFFFF]',
             )}
           >
-            {project.title}
+            {title}
           </p>
         </div>
         <div className={cn('flex flex-col gap-y-3')}>
@@ -102,7 +104,7 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
               'text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#FFFFFF]',
             )}
           >
-            {project.affiliation}
+            {affiliation}
           </p>
         </div>
         <div className={cn('flex flex-col gap-y-3')}>
@@ -118,7 +120,7 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
               'text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#FFFFFF]',
             )}
           >
-            {project.description}
+            {description}
           </p>
         </div>
         <div className={cn('flex flex-col gap-y-3')}>
@@ -130,7 +132,7 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
             기술 스택
           </p>
           <div className={cn('flex gap-x-3')}>
-            {project.techStack.map((stack, index) => (
+            {techStack.map((stack, index) => (
               <p
                 key={index}
                 className={cn(
@@ -151,7 +153,7 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
             깃허브 레포지토리
           </p>
           <div className={cn('flex gap-x-3')}>
-            {project.repository.map((repo, index) => (
+            {repository.map((repo, index) => (
               <Link
                 href={repo.repoUrl}
                 target="_blank"
@@ -182,14 +184,14 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
             프로젝트 배포 URL
           </p>
           <Link
-            href={project.prodUrl}
+            href={prodUrl}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
               'text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#FFFFFF]',
             )}
           >
-            {project.prodUrl}
+            {prodUrl}
           </Link>
         </div>
       </div>
