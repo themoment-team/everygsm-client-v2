@@ -3,9 +3,10 @@ import { AdminRequestDetailPage } from '@/views/admin';
 
 const AdminProjectRequestDetail = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const initialProjectData = await getAdminRequest(Number(id));
+  const initialRequestedProjectResponse = await getAdminRequest(Number(id));
+  const initialRequestedProjectData = initialRequestedProjectResponse?.data ?? null;
 
-  return <AdminRequestDetailPage initialProjectData={initialProjectData} />;
+  return <AdminRequestDetailPage initialRequestedProjectData={initialRequestedProjectData} />;
 };
 
 export default AdminProjectRequestDetail;
