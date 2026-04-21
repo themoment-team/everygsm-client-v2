@@ -6,11 +6,11 @@ import { HeroSection } from '@/widgets/hero-section';
 import { ProjectRequestList } from '@/widgets/project-request-list';
 
 interface AdminPageProps {
-  initialPendingProjectsData?: ProjectsListResponseType;
+  initialRequestedProjectsData?: ProjectsListResponseType;
 }
 
-const AdminPage = ({ initialPendingProjectsData }: AdminPageProps) => {
-  const { data } = useGetPendingProjects({ initialData: initialPendingProjectsData });
+const AdminPage = ({ initialRequestedProjectsData }: AdminPageProps) => {
+  const { data } = useGetPendingProjects({ initialData: initialRequestedProjectsData });
   const pendingProjects = data?.data.projects ?? [];
 
   return (

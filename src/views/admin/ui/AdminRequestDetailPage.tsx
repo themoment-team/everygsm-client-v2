@@ -17,17 +17,17 @@ import { cn } from '@/shared/utils';
 import { ProjectRequestDetailContent } from '@/widgets/project-request-detail';
 
 interface AdminRequestDetailPageProps {
-  initialProjectData?: ProjectType | null;
+  initialRequestedProjectData?: ProjectType | null;
 }
 
-const AdminRequestDetailPage = ({ initialProjectData }: AdminRequestDetailPageProps) => {
+const AdminRequestDetailPage = ({ initialRequestedProjectData }: AdminRequestDetailPageProps) => {
   const router = useRouter();
   const [rejectReason, setRejectReason] = useState('');
 
   const approveMutation = useAdminApproveProject();
   const rejectMutation = useAdminRejectProject();
 
-  if (!initialProjectData) {
+  if (!initialRequestedProjectData) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#191919]">
         <p className="text-white">프로젝트를 찾을 수 없습니다.</p>
@@ -37,7 +37,7 @@ const AdminRequestDetailPage = ({ initialProjectData }: AdminRequestDetailPagePr
 
   const handleApprove = async () => {
     try {
-      await approveMutation.mutateAsync(initialProjectData.projectId);
+      await approveMutation.mutateAsync(initialRequestedProjectData.projectId);
       router.push('/admin');
     } catch (error) {
       console.error('Failed to approve project:', error);
@@ -50,7 +50,7 @@ const AdminRequestDetailPage = ({ initialProjectData }: AdminRequestDetailPagePr
 
     try {
       await rejectMutation.mutateAsync({
-        projectId: initialProjectData.projectId,
+        projectId: initialRequestedProjectData.projectId,
         reason: rejectReason,
       });
       router.push('/admin');
@@ -79,7 +79,7 @@ const AdminRequestDetailPage = ({ initialProjectData }: AdminRequestDetailPagePr
           </Link>
 
           <div className={cn('mx-auto w-full max-w-212')}>
-            <ProjectRequestDetailContent project={initialProjectData} />
+            <ProjectRequestDetailContent project={initialRequestedProjectData} />
           </div>
 
           <div className={cn('absolute top-0 right-9 flex w-115 shrink-0 flex-col gap-y-4')}>

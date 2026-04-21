@@ -2,9 +2,9 @@ import { getAdminRequests } from '@/entities/project/index.server';
 import { AdminPage } from '@/views/admin';
 
 const Admin = async () => {
-  const initialPendingProjectsData = await getAdminRequests();
+  const initialRequestedProjectsData = await getAdminRequests();
 
-  return <AdminPage initialPendingProjectsData={initialPendingProjectsData} />;
+  return <AdminPage initialRequestedProjectsData={initialRequestedProjectsData} />;
 };
 
 export default Admin;
