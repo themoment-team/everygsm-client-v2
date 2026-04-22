@@ -7,13 +7,31 @@ import { ArrowIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 
 interface ProjectRequestDetailContentProps {
-  project: ProjectType;
+  project: ProjectType | undefined;
 }
 
 const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentProps) => {
+  if (!project) {
+    return (
+      <div
+        className={cn(
+          'flex w-full max-w-212 flex-col items-center gap-y-4 rounded-xl bg-[rgba(34,34,34,0.50)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[1.125rem]',
+        )}
+      >
+        <h1 className={cn('text-2xl font-semibold text-[#FF7C7C]')}>
+          프로젝트 정보를 불러올 수 없습니다.
+        </h1>
+        <p className={cn('text-sm font-medium text-[#DDDDDD]')}>
+          요청하신 프로젝트는 존재하지 않거나, 접근 권한이 없습니다.
+        </p>
+      </div>
+    );
+  }
+
   const { status, reason, logo, title, affiliation, description, techStack, repository, prodUrl } =
     project;
   const requestStatusMeta = getProjectRequestStatusMeta(status);
+  const displayAffiliation = affiliation ?? '소속 정보 없음';
 
   return (
     <>
@@ -95,7 +113,7 @@ const ProjectRequestDetailContent = ({ project }: ProjectRequestDetailContentPro
               'text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#FFFFFF]',
             )}
           >
-            {affiliation}
+            {displayAffiliation}
           </p>
         </div>
         <div className={cn('flex flex-col gap-y-3')}>

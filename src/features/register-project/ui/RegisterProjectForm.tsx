@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { ProjectRegisterReqType } from '@/entities/project';
 import { PlusIcon, UploadIcon, XIcon } from '@/shared/assets';
 import { annotationStyle, errorTextStyle, inputTextStyle, textStyle } from '@/shared/styles';
 import { InputForm } from '@/shared/ui';
@@ -147,13 +148,19 @@ const RegisterProjectForm = () => {
 
     try {
       const logoKey = await handlePhotoUpload(file);
+      const repositories = data.repository
+        .map(({ repoUrl }) => repoUrl.trim())
+        .filter((repoUrl) => repoUrl !== '');
+      const prodUrl = data.prodUrl.trim() || undefined;
 
-      const updatedData = {
+      const requestBody: ProjectRegisterReqType = {
         ...data,
         logo: logoKey,
+        repository: repositories.length > 0 ? repositories : undefined,
+        prodUrl,
       };
 
-      postProject(updatedData);
+      postProject(requestBody);
     } catch (error) {
       console.log(error);
     }

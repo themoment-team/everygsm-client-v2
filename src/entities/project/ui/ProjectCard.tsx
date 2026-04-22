@@ -16,6 +16,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
   const { logo, title, affiliation, description, techStack, prodUrl } = data;
+  const displayAffiliation = affiliation ?? '소속 정보 없음';
 
   const [isCenterHover, setIsCenterHover] = useState(false);
 
@@ -63,7 +64,9 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
         >
           <div className={cn('flex flex-col gap-y-2')}>
             <h3 className={cn('text-xl leading-6 font-semibold text-white')}>{title}</h3>
-            <p className={cn('text-sm leading-4.25 font-medium text-[#9A9A9A]')}>{affiliation}</p>
+            <p className={cn('text-sm leading-4.25 font-medium text-[#9A9A9A]')}>
+              {displayAffiliation}
+            </p>
           </div>
           <div className={cn('line-clamp-2 h-9 text-xs leading-4.5 font-medium text-[#9A9A9A]')}>
             {description}
