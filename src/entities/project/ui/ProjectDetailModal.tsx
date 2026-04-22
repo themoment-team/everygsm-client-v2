@@ -16,6 +16,7 @@ const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) 
   const { logo, title, affiliation, description, techStack, prodUrl, repository } = data;
   const hasLogo = Boolean(logo?.trim());
   const { closeModal } = useModalStore();
+  const displayAffiliation = affiliation ?? '소속 정보 없음';
 
   return (
     <div
@@ -44,7 +45,7 @@ const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) 
           <h3 className={cn('text-4xl leading-10.75 font-bold text-white')}>{title}</h3>
           {modalLikeButton}
         </div>
-        <p className={cn('text-xl leading-6 font-medium text-[#DDDDDD]')}>{affiliation}</p>
+        <p className={cn('text-xl leading-6 font-medium text-[#DDDDDD]')}>{displayAffiliation}</p>
       </div>
       <div className={cn('flex flex-col gap-y-4')}>
         <p className={cn('text-base leading-6 font-medium text-[#DDDDDD]')}>{description}</p>
