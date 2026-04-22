@@ -24,6 +24,7 @@ EveryGSM-client-v2 is a Next.js App Router frontend for GSM project information.
 - `src/shared`: common clients, hooks, stores, styles, assets, and utilities
 
 Keep dependencies simple: `app` and `views` compose screens, `features` handle actions, `entities` own domain behavior, and `shared` contains reusable infrastructure.
+Import only downward layers, and do not import laterally within the same layer.
 
 ## Commands
 
@@ -40,6 +41,7 @@ Keep dependencies simple: `app` and `views` compose screens, `features` handle a
 
 - Use TypeScript and React function components.
 - Prefer `PascalCase` for components, `camelCase` for functions and utilities, and `use...` for hooks.
+- Prefer method-based TanStack Query hook names such as `useGet*`, `usePost*`, `usePatch*`, `usePut*`, and `useDelete*`.
 - Follow Next.js file conventions such as `page.tsx`, `layout.tsx`, and `not-found.tsx`.
 - Keep imports sorted with `simple-import-sort`.
 - Follow Prettier: 2 spaces, semicolons, single quotes, trailing commas, 100-character line width.
