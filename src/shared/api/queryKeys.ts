@@ -1,5 +1,6 @@
 export const adminQueryKeys = {
   all: () => ['admin'] as const,
+  getAdminRequest: (requestId?: number) => ['admin', 'request', 'detail', requestId] as const,
   getAdminRequests: () => ['admin', 'requests', 'list'] as const,
   patchAdminRejectProject: (projectId: number) => ['admin', 'reject', projectId] as const,
   patchAdminApproveProject: (projectId: number) => ['admin', 'approve', projectId] as const,
@@ -13,7 +14,6 @@ export const projectQueryKeys = {
   getMyRejectedProjects: () => ['projects', 'my', 'rejected'] as const,
   getMyPendingProjects: () => ['projects', 'my', 'pending'] as const,
   postProjectRegistration: () => ['projects', 'create'] as const,
-  postProjectLogo: () => ['post', 'image'] as const,
   toggleProjectLike: (projectId: number) => ['projects', 'like', 'toggle', projectId] as const,
 } as const;
 
