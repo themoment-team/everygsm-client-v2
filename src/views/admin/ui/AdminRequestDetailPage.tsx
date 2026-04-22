@@ -8,26 +8,36 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import {
-  type ProjectType,
+  type ProjectResponseType,
   useAdminApproveProject,
   useAdminRejectProject,
+  useGetAdminRequest,
 } from '@/entities/project';
 import { ArrowIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import { ProjectRequestDetailContent } from '@/widgets/project-request-detail';
 
 interface AdminRequestDetailPageProps {
-  initialRequestedProjectData?: ProjectType | null;
+  requestId: number;
+  initialRequestedProjectData?: ProjectResponseType | undefined;
 }
 
-const AdminRequestDetailPage = ({ initialRequestedProjectData }: AdminRequestDetailPageProps) => {
+const AdminRequestDetailPage = ({
+  requestId,
+  initialRequestedProjectData,
+}: AdminRequestDetailPageProps) => {
   const router = useRouter();
   const [rejectReason, setRejectReason] = useState('');
+
+  const { data: adminRequestData } = useGetAdminRequest(requestId, {
+    initialData: initialRequestedProjectData,
+  });
+  const project = adminRequestData?.data ?? initialRequestedProjectData?.data;
 
   const approveMutation = useAdminApproveProject();
   const rejectMutation = useAdminRejectProject();
 
-  if (!initialRequestedProjectData) {
+  if (!project) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#191919]">
         <p className="text-white">프로젝트를 찾을 수 없습니다.</p>
@@ -37,7 +47,7 @@ const AdminRequestDetailPage = ({ initialRequestedProjectData }: AdminRequestDet
 
   const handleApprove = async () => {
     try {
-      await approveMutation.mutateAsync(initialRequestedProjectData.projectId);
+      await approveMutation.mutateAsync(project.projectId);
       router.push('/admin');
     } catch (error) {
       console.error('Failed to approve project:', error);
@@ -50,7 +60,7 @@ const AdminRequestDetailPage = ({ initialRequestedProjectData }: AdminRequestDet
 
     try {
       await rejectMutation.mutateAsync({
-        projectId: initialRequestedProjectData.projectId,
+        projectId: project.projectId,
         reason: rejectReason,
       });
       router.push('/admin');
@@ -79,7 +89,7 @@ const AdminRequestDetailPage = ({ initialRequestedProjectData }: AdminRequestDet
           </Link>
 
           <div className={cn('mx-auto w-full max-w-212')}>
-            <ProjectRequestDetailContent project={initialRequestedProjectData} />
+            <ProjectRequestDetailContent project={project} />
           </div>
 
           <div className={cn('absolute top-0 right-9 flex w-115 shrink-0 flex-col gap-y-4')}>
