@@ -148,11 +148,16 @@ const RegisterProjectForm = () => {
 
     try {
       const logoKey = await handlePhotoUpload(file);
+      const repositories = data.repository
+        .map(({ repoUrl }) => repoUrl.trim())
+        .filter((repoUrl) => repoUrl !== '');
+      const prodUrl = data.prodUrl.trim() || undefined;
 
       const requestBody: ProjectRegisterReqType = {
         ...data,
         logo: logoKey,
-        repository: data.repository.map(({ repoUrl }) => repoUrl),
+        repository: repositories.length > 0 ? repositories : undefined,
+        prodUrl,
       };
 
       postProject(requestBody);
