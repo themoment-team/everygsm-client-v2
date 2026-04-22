@@ -2,6 +2,7 @@ export * from './model/requestStatus';
 export * from './model/types';
 export * from './model/useAdminApproveProject';
 export * from './model/useAdminRejectProject';
+export * from './model/useGetAdminRequest';
 export * from './model/useGetMyPendingProjects';
 export * from './model/useGetMyProject';
 export * from './model/useGetMyProjects';
