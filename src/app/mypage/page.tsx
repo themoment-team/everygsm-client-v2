@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
 
-import { getUserInfo } from '@/entities/auth/index.server';
 import {
   getMyPendingProjects,
   getMyProjects,
   getMyRejectedProjects,
 } from '@/entities/project/index.server';
+import { getMyInfo } from '@/entities/user/index.server';
 import { SuspenseFallback } from '@/shared/ui';
 import { MyPage } from '@/views/mypage';
 
@@ -16,7 +16,7 @@ const Mypage = async () => {
     initialMyPendingProjectsData,
     initialMyRejectedProjectsData,
   ] = await Promise.all([
-    getUserInfo(),
+    getMyInfo(),
     getMyProjects(),
     getMyPendingProjects(),
     getMyRejectedProjects(),

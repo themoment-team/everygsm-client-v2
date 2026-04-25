@@ -16,6 +16,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
   const { logo, title, affiliation, description, techStack, prodUrl } = data;
+  const hasLogo = Boolean(logo?.trim());
   const displayAffiliation = affiliation ?? '소속 정보 없음';
 
   const [isCenterHover, setIsCenterHover] = useState(false);
@@ -34,9 +35,17 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
           isCenterHover ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
         )}
       >
-        <div className={cn('relative h-14 w-14 overflow-hidden rounded-full')}>
-          <Image src={logo} alt={title} fill sizes="56px" className={cn('object-cover')} />
-        </div>
+        {hasLogo ? (
+          <Image
+            src={logo}
+            alt={title}
+            width={56}
+            height={56}
+            className={cn('rounded-full object-cover')}
+          />
+        ) : (
+          <div aria-hidden className={cn('h-14 w-14 rounded-full bg-[#4F4F4F]')} />
+        )}
         <a
           href={prodUrl}
           target="_blank"
@@ -52,9 +61,17 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
 
       <div>
         <div className={cn('mb-4 flex justify-between')}>
-          <div className={cn('relative h-14 w-14 overflow-hidden rounded-full')}>
-            <Image src={logo} alt={title} fill sizes="56px" className={cn('object-cover')} />
-          </div>
+          {hasLogo ? (
+            <Image
+              src={logo}
+              alt={title}
+              width={56}
+              height={56}
+              className={cn('rounded-full object-cover')}
+            />
+          ) : (
+            <div aria-hidden className={cn('h-14 w-14 rounded-full bg-[#4F4F4F]')} />
+          )}
           {likeButton}
         </div>
         <div

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import {
-  //  useGetUserInfo,
+  //  useGetMyInfo,
   UserInfoResponseType,
 } from '@/entities/auth';
 import { ProjectsListResponseType, useGetProjects } from '@/entities/project';
@@ -29,7 +29,7 @@ const HomePage = ({
 }: HomePageProps) => {
   // const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
 
-  // const { data: userInfoData } = useGetUserInfo({
+  // const { data: userInfoData } = useGetMyInfo({
   //   initialData: initialUserInfoData,
   //   enabled: hasAccessToken,
   // });

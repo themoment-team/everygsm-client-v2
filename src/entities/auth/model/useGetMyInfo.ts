@@ -1,16 +1,16 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-import { authQueryKeys, authUrl, get } from '@/shared/api';
+import { authQueryKeys, get, userUrl } from '@/shared/api';
 import { minutesToMs } from '@/shared/utils';
 
 import { UserInfoResponseType } from './types';
 
-export const useGetUserInfo = (
+export const useGetMyInfo = (
   options?: Omit<UseQueryOptions<UserInfoResponseType>, 'queryKey' | 'queryFn'>,
 ) =>
   useQuery({
-    queryKey: authQueryKeys.getUserInfo(),
-    queryFn: () => get<UserInfoResponseType>(authUrl.getUserInfo()),
+    queryKey: authQueryKeys.getMyInfo(),
+    queryFn: () => get<UserInfoResponseType>(userUrl.getMyInfo()),
     staleTime: minutesToMs(5),
     gcTime: minutesToMs(10),
     ...options,

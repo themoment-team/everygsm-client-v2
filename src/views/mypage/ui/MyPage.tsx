@@ -2,7 +2,7 @@
 
 // import { useState } from 'react';
 
-import { useGetUserInfo, UserInfoResponseType } from '@/entities/auth';
+import { useGetMyInfo, UserInfoResponseType } from '@/entities/auth';
 import {
   MyProjectsListResponseType,
   ProjectsListResponseType,
@@ -33,7 +33,7 @@ const MyPage = ({
   // const [selectedRequestStatus, setSelectedRequestStatus] =
   //   useState<RequestStatusFilterType>('PENDING');
 
-  const { data: userInfoData } = useGetUserInfo({
+  const { data: userInfoData } = useGetMyInfo({
     initialData: initialUserInfoData,
   });
   const { data: myProjectsData } = useGetMyProjects({

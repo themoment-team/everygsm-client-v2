@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useGetUserInfo, UserInfoResponseType } from '@/entities/auth';
+import { useGetMyInfo, UserInfoResponseType } from '@/entities/auth';
 import { ArrowIcon, Logo, PersonIcon } from '@/shared/assets';
 import { COOKIE_KEYS, OAUTH_SESSION_KEYS } from '@/shared/constants';
 import { useOnClickOutside } from '@/shared/hooks';
@@ -55,7 +55,7 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
   const queryClient = useQueryClient();
   const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
 
-  const { data: userInfoData } = useGetUserInfo({
+  const { data: userInfoData } = useGetMyInfo({
     initialData: initialUserInfoData,
     enabled: hasAccessToken,
   });
