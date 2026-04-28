@@ -6,7 +6,7 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get(COOKIE_KEYS.ACCESS_TOKEN)?.value;
   const isAuthenticated = Boolean(accessToken);
-  const isPublicRoute = pathname === '/' || pathname === '/callback';
+  const isPublicRoute = pathname === '/' || pathname === '/callback' || pathname === '/register';
 
   if (!isPublicRoute && !isAuthenticated) {
     return NextResponse.redirect(new URL('/', request.url));
