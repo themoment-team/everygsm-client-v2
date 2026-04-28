@@ -40,6 +40,7 @@ export const createAuthorizeUrl = ({
     state,
     code_challenge: codeChallenge,
     code_challenge_method: 'S256',
+    scope: 'self_read',
   });
 
   return `${authorizeBaseUrl}?${params.toString()}`;
