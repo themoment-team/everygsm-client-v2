@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -51,7 +51,6 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const router = useRouter();
   const queryClient = useQueryClient();
   const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
 
@@ -104,7 +103,7 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
     setIsOpen(false);
     deleteCookie(COOKIE_KEYS.ACCESS_TOKEN);
     queryClient.clear();
-    router.replace('/');
+    window.location.href = '/';
   };
 
   const handleToggleMenu = () => {
