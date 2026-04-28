@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { useGetUserInfo, UserInfoResponseType } from '@/entities/auth';
+import { isAdminRole, useGetMyInfo, UserInfoResponseType } from '@/entities/auth';
 
 interface AdminClientGuardProps {
   children: ReactNode;
@@ -14,24 +14,24 @@ interface AdminClientGuardProps {
 const AdminClientGuard = ({ children, initialUserInfoData }: AdminClientGuardProps) => {
   const hasRedirectedRef = useRef(false);
   const router = useRouter();
-  const { data: userInfoData, isPending: isUserInfoPending } = useGetUserInfo({
+  const { data: userInfoData, isPending: isUserInfoPending } = useGetMyInfo({
     initialData: initialUserInfoData,
     retry: false,
   });
 
   const accountRole = userInfoData?.data.role;
-  const isAdminRole = accountRole === 'ADMIN';
+  const isAdminAccount = isAdminRole(accountRole);
 
   useEffect(() => {
-    if (isUserInfoPending || isAdminRole || hasRedirectedRef.current) {
+    if (isUserInfoPending || isAdminAccount || hasRedirectedRef.current) {
       return;
     }
 
     hasRedirectedRef.current = true;
     router.replace('/?error=forbidden-admin');
-  }, [isUserInfoPending, isAdminRole, router]);
+  }, [isUserInfoPending, isAdminAccount, router]);
 
-  if (!isAdminRole) {
+  if (!isAdminAccount) {
     return null;
   }
 

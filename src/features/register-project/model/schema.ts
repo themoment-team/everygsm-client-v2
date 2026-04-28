@@ -1,30 +1,43 @@
 import { z } from 'zod';
 
-export const RegisterFormSchema = z.object({
-  logo: z.string().min(1, '프로젝트 로고파일을 업로드해주세요'),
-  title: z.string().min(1, '프로젝트 제목을 입력해주세요'),
-  affiliation: z.string().min(1, '소속 동아리 또는 팀명을 입력해주세요'),
-  description: z
-    .string()
-    .min(1, '프로젝트 설명을 입력해주세요')
-    .max(200, '프로젝트 설명은 최대 200자까지 입력할 수 있습니다.'),
-  techStack: z
-    .array(
-      z.object({
-        stackName: z.string().min(1, '기술 스택을 입력해주세요'),
-      }),
-    )
-    .min(1, '기술 스택을 최소 하나 이상 선택하거나 입력해주세요')
-    .max(50, '기술 스택은 최대 50개까지 추가할 수 있습니다.'),
-  repository: z
-    .array(
-      z.object({
-        repoUrl: z.string().min(1, '깃허브 레포지토리의 URL을 입력해주세요'),
-      }),
-    )
-    .min(1, 'GitHub 레포지토리를 최소 하나 이상 입력해주세요')
-    .max(10, 'GitHub 레포지토리는 최대 10개까지 추가할 수 있습니다.'),
-  prodUrl: z.string().min(1, '프로젝트 배포 URL을 입력해주세요'),
+export const imageUploadSchema = z.object({
+  image: z.file('이미지 파일을 선택해주세요'),
 });
 
-export type RegisterFormType = z.infer<typeof RegisterFormSchema>;
+export const techStackSchema = z.object({
+  stackName: z.string().trim().min(1, '기술 스택을 입력해주세요'),
+});
+
+export const projectRegistrationSchema = z.object({
+  logo: z.string().trim().min(1, '프로젝트 로고파일을 업로드해주세요'),
+  title: z.string().trim().min(1, '프로젝트 제목을 입력해주세요'),
+  affiliation: z.string().trim().min(1, '소속 동아리 또는 팀명을 입력해주세요'),
+  description: z
+    .string()
+    .trim()
+    .min(1, '프로젝트 설명을 입력해주세요')
+    .max(200, '프로젝트 설명은 200자 이내로 입력해주세요'),
+  prodUrl: z
+    .string()
+    .trim()
+    .min(1, '프로젝트 배포 URL을 입력해주세요')
+    .pipe(z.url('올바른 프로젝트 배포 URL을 입력해주세요')),
+  techStack: z
+    .array(techStackSchema)
+    .min(1, '기술 스택을 선택해주세요')
+    .max(50, '기술 스택은 최대 50개까지 입력할 수 있습니다'),
+  repository: z
+    .array(
+      z
+        .string()
+        .trim()
+        .min(1, '깃허브 레포지토리의 URL을 입력해주세요')
+        .pipe(z.url('올바른 깃허브 레포지토리 URL을 입력해주세요')),
+    )
+    .min(1, '깃허브 레포지토리의 URL을 입력해주세요')
+    .max(10, '깃허브 레포지토리는 최대 10개까지 입력할 수 있습니다'),
+});
+
+export type ImageUploadReqType = z.infer<typeof imageUploadSchema>;
+export type TechStackReqType = z.infer<typeof techStackSchema>;
+export type ProjectRegistrationReqType = z.infer<typeof projectRegistrationSchema>;

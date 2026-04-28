@@ -3,11 +3,11 @@
 import { useRef, useState } from 'react';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useGetUserInfo, UserInfoResponseType } from '@/entities/auth';
+import { useGetMyInfo, UserInfoResponseType } from '@/entities/auth';
 import { ArrowIcon, Logo, PersonIcon } from '@/shared/assets';
 import { COOKIE_KEYS, OAUTH_SESSION_KEYS } from '@/shared/constants';
 import { useOnClickOutside } from '@/shared/hooks';
@@ -51,11 +51,10 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const router = useRouter();
   const queryClient = useQueryClient();
   const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
 
-  const { data: userInfoData } = useGetUserInfo({
+  const { data: userInfoData } = useGetMyInfo({
     initialData: initialUserInfoData,
     enabled: hasAccessToken,
   });
@@ -104,7 +103,7 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
     setIsOpen(false);
     deleteCookie(COOKIE_KEYS.ACCESS_TOKEN);
     queryClient.clear();
-    router.replace('/');
+    window.location.href = '/';
   };
 
   const handleToggleMenu = () => {

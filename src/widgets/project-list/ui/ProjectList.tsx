@@ -1,27 +1,24 @@
 'use client';
 
-// import Link from 'next/link';
+import Link from 'next/link';
 
 import { ProjectCard, ProjectDetailModal, ProjectType } from '@/entities/project';
 import { LikeButton } from '@/features/like-project';
-// import { PlusIcon } from '@/shared/assets';
+import { PlusIcon } from '@/shared/assets';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
 interface ProjectListProps {
   projects: ProjectType[];
-  // showRegisterCard?: boolean;
+  showRegisterCard?: boolean;
 }
 
-const ProjectList = ({
-  projects,
-  // showRegisterCard = false
-}: ProjectListProps) => {
+const ProjectList = ({ projects, showRegisterCard = false }: ProjectListProps) => {
   const { openModal } = useModalStore();
 
   return (
     <div className={cn('mx-auto flex w-full max-w-295 flex-wrap gap-x-5 gap-y-4')}>
-      {/* {showRegisterCard && (
+      {showRegisterCard && (
         <Link
           href="/register"
           className={cn(
@@ -37,7 +34,7 @@ const ProjectList = ({
           </p>
           <PlusIcon isLarge className="text-[#9A9A9A] duration-100 group-hover:text-white" />
         </Link>
-      )} */}
+      )}
 
       {projects.map((project) => (
         <ProjectCard

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 
 import { ProjectResponseType, useGetMyProject } from '@/entities/project';
@@ -7,7 +9,7 @@ import { ProjectRequestDetailContent } from '@/widgets/project-request-detail';
 
 interface ProjectRequestDetailPageProps {
   projectId: number;
-  initialProjectData: ProjectResponseType;
+  initialProjectData: ProjectResponseType | undefined;
 }
 
 const ProjectRequestDetailPage = ({
@@ -17,10 +19,10 @@ const ProjectRequestDetailPage = ({
   const { data: myProjectData } = useGetMyProject(projectId, {
     initialData: initialProjectData,
   });
-  const project = myProjectData?.data ?? initialProjectData.data;
+  const project = myProjectData?.data ?? initialProjectData?.data;
 
   return (
-    <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919] p-4')}>
+    <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919] px-4')}>
       <div className={cn('flex justify-center pt-10 pb-10')}>
         <div
           className={cn(
