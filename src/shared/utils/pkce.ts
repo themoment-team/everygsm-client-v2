@@ -31,7 +31,7 @@ export const createAuthorizeUrl = ({
   state,
   codeChallenge,
 }: CreateAuthorizeUrlParams): string => {
-  const authorizeBaseUrl = 'https://oauth.data.hellogsm.kr/v1/oauth/authorize';
+  const authorizeBaseUrl = 'https://oauth.authorization.datagsm.kr/v1/oauth/authorize';
 
   const params = new URLSearchParams({
     client_id: clientId,
