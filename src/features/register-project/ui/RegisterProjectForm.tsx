@@ -39,12 +39,13 @@ const RegisterProjectForm = () => {
   const [techStackInput, setTechStackInput] = useState('');
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
+  const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
   const {
     register,
     handleSubmit,
     control,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isSubmitting: isFormSubmitting, isValid },
   } = useForm<ProjectRegistrationReqType>({
     resolver: zodResolver(projectRegistrationSchema),
     mode: 'onChange',
@@ -59,13 +60,12 @@ const RegisterProjectForm = () => {
     },
   });
   const { mutateAsync: uploadImage, isPending: isImageUploading } = usePostImageUpload();
-  const { mutateAsync: postProjectRegistration, isPending: isProjectRegistrationPending } =
-    usePostProjectRegistration();
+  const { mutateAsync: postProjectRegistration } = usePostProjectRegistration();
   const selectedTechStackValues = useWatch({ control, name: 'techStack' }) ?? [];
   const repositoryUrls = useWatch({ control, name: 'repository' }) ?? [];
   const logo = useWatch({ control, name: 'logo' });
   const selectedTechStacks = selectedTechStackValues.map((stack) => stack.stackName);
-  const isSubmitting = isImageUploading || isProjectRegistrationPending;
+  const isSubmitDisabled = isImageUploading || isFormSubmitting || hasSubmittedSuccessfully;
   const hasUploadedLogo = Boolean(logo && logoFileName);
   const descriptionField = register('description');
   const repositoryItemErrorMessage = Array.isArray(errors.repository)
@@ -197,8 +197,11 @@ const RegisterProjectForm = () => {
   const handleProjectRegistrationSubmit: SubmitHandler<ProjectRegistrationReqType> = async (
     requestBody,
   ) => {
+    if (hasSubmittedSuccessfully) return;
+
     try {
       await postProjectRegistration(requestBody);
+      setHasSubmittedSuccessfully(true);
       router.push('/mypage');
       toast.success('프로젝트 등록 요청이 완료되었습니다.');
     } catch {
@@ -284,13 +287,13 @@ const RegisterProjectForm = () => {
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitDisabled}
         className={cn(
           'mt-16 w-full rounded-xl bg-[#2C2C2C] px-4 py-6 text-2xl leading-[1.8rem] font-bold tracking-[-0.04rem] text-[#565656] shadow-[0_0_16px_0_rgba(10,6,29,0.25)] disabled:cursor-not-allowed',
-          isValid && 'bg-[#FC335A] text-white',
+          isValid && !hasSubmittedSuccessfully && 'bg-[#FC335A] text-white',
         )}
       >
-        {isSubmitting ? '프로젝트 등록 중' : '프로젝트 등록'}
+        {isFormSubmitting ? '프로젝트 등록 중' : '프로젝트 등록'}
       </button>
     </form>
   );
