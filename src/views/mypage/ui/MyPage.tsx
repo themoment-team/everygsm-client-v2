@@ -41,9 +41,11 @@ const MyPage = ({
   });
   const { data: myPendingProjectsData } = useGetMyPendingProjects({
     initialData: initialMyPendingProjectsData,
+    enabled: selectedRequestStatus === 'PENDING',
   });
   const { data: myRejectedProjectsData } = useGetMyRejectedProjects({
     initialData: initialMyRejectedProjectsData,
+    enabled: selectedRequestStatus === 'REJECTED',
   });
 
   const displayName = userInfoData?.data.name ?? '사용자';
