@@ -24,7 +24,7 @@ export const projectRegistrationSchema = z.object({
     .pipe(z.url('올바른 프로젝트 배포 URL을 입력해주세요')),
   techStack: z
     .array(techStackSchema)
-    .min(1, '기술 스택을 입력해주세요')
+    .min(1, '기술 스택을 선택해주세요')
     .max(50, '기술 스택은 최대 50개까지 입력할 수 있습니다'),
   repository: z
     .array(
