@@ -22,7 +22,7 @@ const ProjectRequestDetailPage = ({
   const project = myProjectData?.data ?? initialProjectData?.data;
 
   return (
-    <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919] p-4')}>
+    <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919] px-4')}>
       <div className={cn('flex justify-center pt-10 pb-10')}>
         <div
           className={cn(

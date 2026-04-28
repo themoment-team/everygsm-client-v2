@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { RegisterProjectForm } from '@/features/register-project';
 import { ArrowIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
+import { HeroSection } from '@/widgets/hero-section';
 
 const RegisterPage = () => {
   return (
-    <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919] p-4')}>
+    <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919] px-4')}>
       <div className={cn('flex justify-center pt-10 pb-10')}>
         <div
           className={cn(
@@ -14,7 +15,7 @@ const RegisterPage = () => {
           )}
         >
           <Link
-            href="/mypage"
+            href="/"
             className={cn(
               'absolute top-3 left-0 flex items-center gap-x-3 text-base leading-[1.2rem] font-medium tracking-[-0.02rem] text-[#FFFFFF]',
             )}
@@ -24,7 +25,10 @@ const RegisterPage = () => {
             </span>
             이전으로
           </Link>
-          <RegisterProjectForm />
+          <div className={cn('flex w-full max-w-200 flex-col items-center justify-center gap-y-9')}>
+            <HeroSection title="프로젝트 등록" />
+            <RegisterProjectForm />
+          </div>
         </div>
       </div>
     </main>
