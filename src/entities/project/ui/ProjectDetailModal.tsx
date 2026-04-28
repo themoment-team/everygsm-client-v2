@@ -26,13 +26,9 @@ const ProjectDetailModal = ({ data, modalLikeButton }: ProjectDetailModalProps) 
     >
       <div className={cn('flex items-start justify-between')}>
         {hasLogo ? (
-          <Image
-            src={logo}
-            alt={title}
-            width={100}
-            height={100}
-            className={cn('rounded-full object-cover')}
-          />
+          <div className={cn('relative h-25 w-25 overflow-hidden rounded-full')}>
+            <Image src={logo} alt={title} fill sizes="100px" className={cn('object-cover')} />
+          </div>
         ) : (
           <div aria-hidden className={cn('h-25 w-25 rounded-full bg-[#4F4F4F]')} />
         )}

@@ -1,18 +1,29 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import { useMutation, UseMutationOptions, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { ProjectRegisterReqType, ProjectResponseType } from '@/entities/project';
 import { post, projectQueryKeys, projectUrl } from '@/shared/api';
+
+import { ProjectRegistrationReqType, ProjectRegistrationResponseType } from './types';
 
 export const usePostProjectRegistration = (
   options?: Omit<
-    UseMutationOptions<ProjectResponseType, AxiosError, ProjectRegisterReqType>,
+    UseMutationOptions<ProjectRegistrationResponseType, AxiosError, ProjectRegistrationReqType>,
     'mutationKey' | 'mutationFn'
   >,
-) =>
-  useMutation({
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationKey: projectQueryKeys.postProjectRegistration(),
-    mutationFn: (data: ProjectRegisterReqType) =>
-      post<ProjectResponseType>(projectUrl.postProjectRegistration(), data),
+    mutationFn: (requestBody: ProjectRegistrationReqType) =>
+      post<ProjectRegistrationResponseType>(projectUrl.postProjectRegistration(), requestBody),
     ...options,
+    onSuccess: async (...args) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProjects() }),
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyPendingProjects() }),
+      ]);
+      await options?.onSuccess?.(...args);
+    },
   });
+};
