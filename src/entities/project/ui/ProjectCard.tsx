@@ -44,10 +44,13 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
       const gap = Number.parseFloat(window.getComputedStyle(listElement).columnGap);
       const gapWidth = Number.isNaN(gap) ? 0 : gap;
       const techStackWidths = techStackElements.map((element) => element.offsetWidth);
-      const widthSums = techStackWidths.reduce<number[]>(
-        (sums, width) => [...sums, sums[sums.length - 1] + width],
-        [0],
-      );
+      const widthSums = [0];
+      let currentWidthSum = 0;
+
+      for (const width of techStackWidths) {
+        currentWidthSum += width;
+        widthSums.push(currentWidthSum);
+      }
 
       for (let count = techStackElements.length; count >= 0; count -= 1) {
         const hiddenCount = techStackElements.length - count;
