@@ -63,6 +63,10 @@ export const metadata: Metadata = {
     description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
     images: ['/images/opengraph-image.png'],
   },
+
+  alternates: {
+    canonical: '/',
+  },
 };
 
 const RootLayout = async ({

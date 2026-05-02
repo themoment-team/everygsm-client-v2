@@ -10,6 +10,9 @@ import { HomePage } from '@/views/home';
 export const metadata: Metadata = {
   title: '홈',
   description: 'GSM 학생들이 만든 프로젝트를 한눈에 확인하세요.',
+  alternates: {
+    canonical: '/',
+  },
 };
 
 const Home = async () => {
