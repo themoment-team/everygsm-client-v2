@@ -69,6 +69,18 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'EveryGSM',
+  url: BASE_URL,
+  description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
+  publisher: {
+    '@type': 'Organization',
+    name: 'the-moment',
+  },
+};
+
 const RootLayout = async ({
   children,
 }: Readonly<{
@@ -79,6 +91,10 @@ const RootLayout = async ({
   return (
     <html lang="ko">
       <body className={pretendard.className}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <TanStackProvider>
           <Header initialUserInfoData={initialUserInfoData} />
           {children}
