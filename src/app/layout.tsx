@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
     images: [
       {
-        url: '/opengraph-image.png',
+        url: '/images/opengraph-image.png',
         width: 1920,
         height: 1080,
         alt: 'EveryGSM',
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'EveryGSM',
     description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
-    images: ['/opengraph-image.png'],
+    images: ['/images/opengraph-image.png'],
   },
 };
 
