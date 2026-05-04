@@ -85,6 +85,7 @@ const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCr
 
         <div className={cn('flex justify-between')}>
           <button
+            type="button"
             onClick={onClose}
             className={cn(
               'flex cursor-pointer items-center justify-center rounded-[1.125rem] border border-[#FC335A] px-9 py-3 text-base font-semibold text-[#FC335A]',
@@ -93,6 +94,7 @@ const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCr
             취소
           </button>
           <button
+            type="button"
             onClick={handleConfirm}
             className={cn(
               'cursor-pointer rounded-xl bg-[#FC335A] px-9 py-3 font-semibold text-white transition-colors hover:bg-[#FC335A]/90',
