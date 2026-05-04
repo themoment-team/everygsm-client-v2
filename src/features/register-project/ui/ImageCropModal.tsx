@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import Cropper, { Area } from 'react-easy-crop';
+import Cropper, { Area, Point } from 'react-easy-crop';
 
 import { cn } from '@/shared/utils';
 
@@ -16,7 +16,7 @@ interface ImageCropModalProps {
 }
 
 const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCropModalProps) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [pixelCrop, setPixelCrop] = useState<Area | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
