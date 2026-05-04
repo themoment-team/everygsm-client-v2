@@ -1,105 +1,189 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import {
+  type ChangeEvent,
+  type InputEvent,
+  type KeyboardEvent,
+  type MouseEvent,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useRouter } from 'next/navigation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { ProjectRegisterReqType } from '@/entities/project';
-import { PlusIcon, UploadIcon, XIcon } from '@/shared/assets';
-import { annotationStyle, errorTextStyle, inputTextStyle, textStyle } from '@/shared/styles';
-import { InputForm } from '@/shared/ui';
 import { cn } from '@/shared/utils';
 
-import { formatFileName } from '../lib/formatFileName';
-import { RegisterFormSchema, RegisterFormType } from '../model/schema';
-import { usePostProjectImageUpload } from '../model/usePostProjectImageUpload';
+import { resizeTextarea } from '../lib/resizeTextarea';
+import { DEFAULT_TECH_STACKS } from '../model/constants';
+import { type ProjectRegistrationReqType, projectRegistrationSchema } from '../model/schema';
+import { usePostImageUpload } from '../model/usePostImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
 import ImageCropModal from './ImageCropModal';
+import LogoUploadField from './LogoUploadField';
+import RepositoryUrlField from './RepositoryUrlField';
+import TechStackField from './TechStackField';
+import TextareaField from './TextareaField';
+import TextField from './TextField';
 
-const DEFAULT_TECH_STACK = [
-  'HTML5 / CSS3',
-  'JavaScript',
-  'React',
-  'Next.js',
-  'Tailwind CSS',
-  'TypeScript',
-  'Node.js',
-  'Spring Boot',
-  'Python',
-  'MySQL',
-  'MongoDB',
-  'AWS',
-  'Docker',
-  'Nginx',
-];
+const MAX_TECH_STACK_COUNT = 50;
+const MAX_REPOSITORY_COUNT = 10;
 
 const RegisterProjectForm = () => {
   const router = useRouter();
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const [customTech, setCustomTech] = useState('');
+  const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const [customTechStacks, setCustomTechStacks] = useState<string[]>([]);
+  const [techStackInput, setTechStackInput] = useState('');
+  const [logoFileName, setLogoFileName] = useState('');
+  const [logoInputKey, setLogoInputKey] = useState(0);
+  const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
   const [cropModalData, setCropModalData] = useState<{ src: string; name: string } | null>(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-  const { mutate: postProject, isPending: isRegisterPending } = usePostProjectRegistration({
-    onSuccess: () => {
-      router.push('/');
-      toast.success('프로젝트 등록에 성공했습니다.');
-    },
-    onError: (error) => {
-      console.error('프로젝트 등록 실패:', error);
-      toast.error('프로젝트 등록에 실패했습니다.');
-    },
-  });
-
-  const { mutateAsync: postImage, isPending: isLogoPending } = usePostProjectImageUpload();
-
-  const isPending = isRegisterPending || isLogoPending;
-
   const {
     register,
-    setValue,
     handleSubmit,
     control,
-    formState: { errors, isValid },
-  } = useForm<RegisterFormType>({
-    resolver: zodResolver(RegisterFormSchema),
+    setValue,
+    formState: { errors, isSubmitting: isFormSubmitting, isValid },
+  } = useForm<ProjectRegistrationReqType>({
+    resolver: zodResolver(projectRegistrationSchema),
     mode: 'onChange',
     defaultValues: {
       logo: '',
       title: '',
       affiliation: '',
       description: '',
-      techStack: [],
-      repository: [{ repoUrl: '' }],
       prodUrl: '',
+      techStack: [],
+      repository: [],
     },
   });
 
-  const {
-    fields: techFields,
-    append: appendTech,
-    remove: removeTech,
-  } = useFieldArray({
-    control,
-    name: 'techStack',
-  });
+  const { mutateAsync: uploadImage, isPending: isImageUploading } = usePostImageUpload();
+  const { mutateAsync: postProjectRegistration } = usePostProjectRegistration();
 
-  const {
-    fields: repoFields,
-    append: appendRepo,
-    remove: removeRepo,
-  } = useFieldArray({
-    control,
-    name: 'repository',
-  });
+  const selectedTechStackValues = useWatch({ control, name: 'techStack' }) ?? [];
+  const repositoryUrls = useWatch({ control, name: 'repository' }) ?? [];
+  const logo = useWatch({ control, name: 'logo' });
 
-  const handleFiles = (files: FileList | null) => {
+  const selectedTechStacks = selectedTechStackValues.map((stack) => stack.stackName);
+
+  const isSubmitDisabled = isImageUploading || isFormSubmitting || hasSubmittedSuccessfully;
+  const hasUploadedLogo = Boolean(logo && logoFileName);
+
+  const descriptionField = register('description');
+
+  const repositoryItemErrorMessage = Array.isArray(errors.repository)
+    ? errors.repository.find((error) => error?.message)?.message
+    : undefined;
+
+  const repositoryErrorMessage =
+    errors.repository && 'message' in errors.repository
+      ? errors.repository.message
+      : repositoryItemErrorMessage;
+
+  useLayoutEffect(() => {
+    if (!descriptionTextareaRef.current) return;
+
+    resizeTextarea(descriptionTextareaRef.current);
+  }, []);
+
+  const handleDescriptionInput = (event: InputEvent<HTMLTextAreaElement>) => {
+    resizeTextarea(event.currentTarget);
+  };
+
+  const syncTechStacks = (stackNames: string[]) => {
+    setValue(
+      'techStack',
+      stackNames.map((stackName) => ({ stackName })),
+      { shouldDirty: true, shouldValidate: true },
+    );
+  };
+
+  const toggleTechStack = (stack: string) => {
+    if (selectedTechStacks.includes(stack)) {
+      syncTechStacks(selectedTechStacks.filter((selectedTechStack) => selectedTechStack !== stack));
+      return;
+    }
+
+    if (selectedTechStacks.length >= MAX_TECH_STACK_COUNT) return;
+
+    syncTechStacks([...selectedTechStacks, stack]);
+  };
+
+  const addCustomTechStack = () => {
+    const trimmedTechStack = techStackInput.trim();
+    if (!trimmedTechStack) return;
+    if (selectedTechStacks.includes(trimmedTechStack)) {
+      setTechStackInput('');
+      return;
+    }
+    if (selectedTechStacks.length >= MAX_TECH_STACK_COUNT) return;
+
+    const isDefaultTechStack = DEFAULT_TECH_STACKS.some((stack) => stack === trimmedTechStack);
+
+    syncTechStacks([...selectedTechStacks, trimmedTechStack]);
+
+    if (isDefaultTechStack) {
+      setTechStackInput('');
+      return;
+    }
+
+    setCustomTechStacks((prevCustomTechStacks) => {
+      if (prevCustomTechStacks.includes(trimmedTechStack)) return prevCustomTechStacks;
+
+      return [...prevCustomTechStacks, trimmedTechStack];
+    });
+    setTechStackInput('');
+  };
+
+  const removeCustomTechStack = (stack: string) => {
+    setCustomTechStacks((prevCustomTechStacks) =>
+      prevCustomTechStacks.filter((customTechStack) => customTechStack !== stack),
+    );
+    syncTechStacks(selectedTechStacks.filter((selectedTechStack) => selectedTechStack !== stack));
+  };
+
+  const handleTechStackInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== 'Enter') return;
+
+    event.preventDefault();
+    addCustomTechStack();
+  };
+
+  const hasTechStackInput = techStackInput.trim().length > 0;
+  const canAddRepository = repositoryUrls.length < MAX_REPOSITORY_COUNT;
+
+  const addRepositoryInput = () => {
+    if (!canAddRepository) return;
+
+    setValue('repository', [...repositoryUrls, ''], { shouldDirty: true });
+  };
+
+  const updateRepositoryUrl = (targetIndex: number, value: string) => {
+    setValue(
+      'repository',
+      repositoryUrls.map((repositoryUrl, index) => (index === targetIndex ? value : repositoryUrl)),
+      { shouldDirty: true, shouldValidate: true },
+    );
+  };
+
+  const removeRepositoryInput = (targetIndex: number) => {
+    setValue(
+      'repository',
+      repositoryUrls.filter((_, index) => index !== targetIndex),
+      { shouldDirty: true, shouldValidate: true },
+    );
+  };
+
+  const handleLogoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
     if (!files || files.length === 0) return;
     const selectedFile = files[0];
 
@@ -126,293 +210,128 @@ const RegisterProjectForm = () => {
     reader.readAsDataURL(selectedFile);
   };
 
-  const handleCropComplete = (croppedFile: File) => {
-    setFile(croppedFile);
-    setValue('logo', croppedFile.name, { shouldValidate: true });
+  const handleCropComplete = async (croppedFile: File) => {
+    setLogoFileName(croppedFile.name);
     setCropModalData(null);
-  };
-
-  const handlePhotoUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append('image', file);
 
     try {
-      const response = await postImage(formData);
-      return response.data.key;
-    } catch (error) {
-      console.error('이미지 업로드 실패:', error);
-      toast.error('이미지 업로드에 실패했습니다.');
-      throw error;
+      const response = await uploadImage({ image: croppedFile });
+      setValue('logo', response.data.key, { shouldDirty: true, shouldValidate: true });
+    } catch {
+      setLogoFileName('');
+      setValue('logo', '', { shouldDirty: true, shouldValidate: true });
+      toast.error('이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    handleFiles(e.dataTransfer.files);
+  const handleLogoRemove = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setLogoFileName('');
+    setValue('logo', '', { shouldDirty: true, shouldValidate: true });
+    setLogoInputKey((prevLogoInputKey) => prevLogoInputKey + 1);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  const onSubmit = async (data: RegisterFormType) => {
-    if (!file) {
-      toast.error('프로젝트 로고를 등록해주세요.');
-      return;
-    }
+  const handleProjectRegistrationSubmit: SubmitHandler<ProjectRegistrationReqType> = async (
+    requestBody,
+  ) => {
+    if (hasSubmittedSuccessfully) return;
 
     try {
-      const logoKey = await handlePhotoUpload(file);
-      const repositories = data.repository
-        .map(({ repoUrl }) => repoUrl.trim())
-        .filter((repoUrl) => repoUrl !== '');
-      const prodUrl = data.prodUrl.trim() || undefined;
-
-      const requestBody: ProjectRegisterReqType = {
-        ...data,
-        logo: logoKey,
-        repository: repositories.length > 0 ? repositories : undefined,
-        prodUrl,
-      };
-
-      postProject(requestBody);
-    } catch (error) {
-      console.log(error);
+      await postProjectRegistration(requestBody);
+      setHasSubmittedSuccessfully(true);
+      router.push('/mypage');
+      toast.success('프로젝트 등록 요청이 완료되었습니다.');
+    } catch {
+      toast.error('프로젝트 등록에 실패했습니다. 입력 정보를 확인해주세요.');
     }
   };
 
-  const toggleTech = (stackName: string) => {
-    const index = techFields.findIndex((f) => f.stackName === stackName);
-    if (index !== -1) {
-      removeTech(index);
-    } else {
-      appendTech({ stackName });
-    }
-  };
-
-  const handleAddCustomTech = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && customTech.trim()) {
-      e.preventDefault();
-      const trimmedTech = customTech.trim();
-      const lowerTech = trimmedTech.toLowerCase();
-
-      const isDuplicateInFields = techFields.some((f) => f.stackName.toLowerCase() === lowerTech);
-      const isDuplicateInDefault = DEFAULT_TECH_STACK.some(
-        (stack) => stack.toLowerCase() === lowerTech,
-      );
-
-      if (!isDuplicateInFields && !isDuplicateInDefault) {
-        appendTech({ stackName: trimmedTech });
-      } else {
-        toast.error('중복된 기술 스택입니다');
-      }
-      setCustomTech('');
-    }
+  const handleInvalidProjectRegistrationSubmit = () => {
+    toast.warning('프로젝트 등록에 필요한 정보를 확인해주세요.');
   };
 
   return (
-    <form className={cn('flex flex-col gap-9')} onSubmit={handleSubmit(onSubmit)}>
-      {/* 프로젝트 로고 */}
-      <div className={cn('flex flex-col gap-3')}>
-        <p className={textStyle}>프로젝트 로고</p>
-        <div
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onClick={() => {
-            if (!file) inputRef.current?.click();
-          }}
-          className={cn(
-            'flex h-34.5 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-[#2F2F2F] bg-[rgba(34,34,34,0.5)] px-4 py-6',
-          )}
-        >
-          {file ? (
-            <div
-              className={cn(
-                'flex w-fit items-center gap-4 rounded-xl border border-solid border-[#2F2F2F] p-4',
-              )}
-            >
-              <strong className={textStyle}>{formatFileName(file.name)}</strong>
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setFile(null);
-                  setValue('logo', '', { shouldValidate: true });
-                  if (inputRef.current) {
-                    inputRef.current.value = '';
-                  }
-                }}
-                className="cursor-pointer"
-              >
-                <XIcon />
-              </div>
-            </div>
-          ) : (
-            <>
-              <p className={inputTextStyle}>
-                파일을 여기에 끌어서 놓거나 , 직접 파일을 선택해주세요
-              </p>
-              <div className={cn('flex w-40 items-center gap-6 rounded-xl bg-[#191919] px-4 py-3')}>
-                <UploadIcon />
-                <p className={inputTextStyle}>직접 파일 선택</p>
-              </div>
-            </>
-          )}
-          <input
-            ref={inputRef}
-            type="file"
-            accept=".png,.jpg,.jpeg"
-            hidden
-            onChange={(e) => handleFiles(e.target.files)}
-          />
-        </div>
-        {errors.logo?.message && <p className={errorTextStyle}>{errors.logo.message}</p>}
-      </div>
-
-      <InputForm
-        inputTitle="프로젝트 제목"
-        inputPlaceholder="프로젝트 제목을 입력해주세요"
-        error={errors.title?.message}
-        register={register('title')}
+    <form
+      noValidate
+      onSubmit={handleSubmit(
+        handleProjectRegistrationSubmit,
+        handleInvalidProjectRegistrationSubmit,
+      )}
+      className={cn('flex w-full flex-col gap-y-9')}
+    >
+      <LogoUploadField
+        logoInputKey={logoInputKey}
+        logoFileName={logoFileName}
+        isImageUploading={isImageUploading}
+        hasUploadedLogo={hasUploadedLogo}
+        errorMessage={errors.logo?.message}
+        onLogoChange={handleLogoChange}
+        onLogoRemove={handleLogoRemove}
       />
-      <InputForm
-        inputTitle="소속 동아리 또는 팀명"
-        inputPlaceholder="프로젝트를 진행한 동아리 또는 팀명을 입력해주세요"
-        error={errors.affiliation?.message}
-        register={register('affiliation')}
+      <TextField
+        id="project-title"
+        label="프로젝트 제목"
+        placeholder="프로젝트 제목을 입력해주세요"
+        registration={register('title')}
+        errorMessage={errors.title?.message}
       />
-      <InputForm
-        inputTitle="프로젝트 설명"
-        inputPlaceholder="200자 이내의 프로젝트 설명글을 입력해주세요"
-        error={errors.description?.message}
-        register={register('description')}
-        type="textArea"
+      <TextField
+        id="project-affiliation"
+        label="소속 동아리 또는 팀명"
+        placeholder="프로젝트를 진행한 동아리 또는 팀명을 입력해주세요"
+        registration={register('affiliation')}
+        errorMessage={errors.affiliation?.message}
       />
-
-      {/* 기술 스택 선택 */}
-      <div className={cn('flex flex-col gap-3')}>
-        <div className={cn('flex items-center justify-start gap-3')}>
-          <div className={textStyle}>기술 스택</div>
-          <div className={annotationStyle}>최대 50개 추가 입력</div>
-        </div>
-        <div
-          className={cn(
-            'flex flex-col rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4',
-          )}
-        >
-          <div className={cn('flex flex-wrap content-start gap-4')}>
-            <div className={cn('flex flex-wrap content-start gap-4')}>
-              {DEFAULT_TECH_STACK.map((item) => {
-                const isSelected = techFields.some((f) => f.stackName === item);
-                return (
-                  <div
-                    key={item}
-                    onClick={() => toggleTech(item)}
-                    className={cn(
-                      'flex cursor-pointer items-center justify-center rounded-[62.5rem] px-3 py-[0.38rem] font-normal transition-colors',
-                      isSelected ? 'bg-[#FC335A]' : 'bg-[#4F4F4F]',
-                    )}
-                  >
-                    <span className={cn('cursor-pointer', textStyle)}>{item}</span>
-                  </div>
-                );
-              })}
-            </div>
-            {techFields.length !== 0 && (
-              <div className="flex flex-wrap content-start gap-2">
-                {techFields.map((field, index) => {
-                  if (DEFAULT_TECH_STACK.includes(field.stackName)) return null;
-                  return (
-                    <div
-                      key={field.id}
-                      className={cn(
-                        'flex max-w-fit items-center gap-[0.65rem] rounded-[62.5rem] bg-[#FC335A] px-3 py-[0.38rem]',
-                      )}
-                    >
-                      <span className={textStyle}>{field.stackName}</span>
-                      <div onClick={() => removeTech(index)} className="cursor-pointer">
-                        <XIcon />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-        {errors.techStack?.message && (
-          <div className={errorTextStyle}>{errors.techStack?.message}</div>
-        )}
-      </div>
-
-      {/* 기술 스택 추가 입력 */}
-      <InputForm
-        inputTitle="기술 스택 추가 입력"
-        inputPlaceholder="직접 입력 후 Enter를 눌러주세요"
-        annotation="최대 50개 추가 입력"
-        value={customTech}
-        onChange={(e) => setCustomTech(e.target.value)}
-        onKeyDown={handleAddCustomTech}
+      <TextareaField
+        id="project-description"
+        label="프로젝트 설명"
+        placeholder="200자 이내의  프로젝트 설명글을 입력해주세요"
+        registration={descriptionField}
+        errorMessage={errors.description?.message}
+        onInput={handleDescriptionInput}
+        onTextareaElementChange={(element) => {
+          descriptionTextareaRef.current = element;
+        }}
       />
-
-      {/* 깃허브 레포지토리 */}
-      <div className={cn('flex flex-col gap-3')}>
-        {repoFields.map((field, index) => (
-          <InputForm
-            key={field.id}
-            inputTitle={index === 0 ? '깃허브 레포지토리' : undefined}
-            annotation={index === 0 ? '최대 10개 입력' : undefined}
-            inputPlaceholder="GitHub 레포지토리 URL을 입력해주세요"
-            register={register(`repository.${index}.repoUrl`)}
-            error={errors.repository?.[index]?.repoUrl?.message}
-            rightElement={
-              repoFields.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeRepo(index)}
-                  className={cn('cursor-pointer text-white')}
-                >
-                  <XIcon />
-                </button>
-              )
-            }
-          />
-        ))}
-        {repoFields.length < 10 && (
-          <button
-            type="button"
-            onClick={() => appendRepo({ repoUrl: '' })}
-            className={cn(
-              'flex w-full items-center justify-center gap-3 rounded-xl border border-solid border-[#2F2F2F] bg-[#222222] p-4 transition-colors hover:bg-[#2F2F2F]',
-              inputTextStyle,
-            )}
-          >
-            레포지토리 추가
-            <PlusIcon />
-          </button>
-        )}
-        {errors.repository && !Array.isArray(errors.repository) && (
-          <div className={errorTextStyle}>깃허브 레포지토리의 URL을 입력해주세요</div>
-        )}
-      </div>
-
-      <InputForm
-        inputTitle="프로젝트 배포 URL"
-        inputPlaceholder="프로젝트 배포 URL을 입력해주세요"
-        error={errors.prodUrl?.message}
-        register={register('prodUrl')}
+      <TechStackField
+        selectedTechStacks={selectedTechStacks}
+        customTechStacks={customTechStacks}
+        techStackInput={techStackInput}
+        hasTechStackInput={hasTechStackInput}
+        errorMessage={errors.techStack?.message}
+        onToggleTechStack={toggleTechStack}
+        onRemoveCustomTechStack={removeCustomTechStack}
+        onTechStackInputChange={(event) => setTechStackInput(event.target.value)}
+        onTechStackInputKeyDown={handleTechStackInputKeyDown}
+        onAddCustomTechStack={addCustomTechStack}
+      />
+      <RepositoryUrlField
+        repositoryUrls={repositoryUrls}
+        canAddRepository={canAddRepository}
+        errorMessage={repositoryErrorMessage}
+        onAddRepositoryInput={addRepositoryInput}
+        onUpdateRepositoryUrl={updateRepositoryUrl}
+        onRemoveRepositoryInput={removeRepositoryInput}
+      />
+      <TextField
+        id="project-deploy-url"
+        label="프로젝트 배포 URL"
+        placeholder="프로젝트 배포 URL을 입력해주세요"
+        inputMode="url"
+        registration={register('prodUrl')}
+        errorMessage={errors.prodUrl?.message}
       />
 
       <button
         type="submit"
-        disabled={!isValid || isPending}
+        disabled={isSubmitDisabled}
         className={cn(
-          'mt-6 w-full rounded-xl py-4 text-lg font-bold transition-all',
-          isValid && !isPending
-            ? 'cursor-pointer bg-[#FC335A] text-white hover:opacity-90 active:scale-[0.98]'
-            : 'cursor-not-allowed bg-[#272727] text-[#565656]',
+          'mt-16 w-full rounded-xl bg-[#2C2C2C] px-4 py-6 text-2xl leading-[1.8rem] font-bold tracking-[-0.04rem] text-[#565656] shadow-[0_0_16px_0_rgba(10,6,29,0.25)] disabled:cursor-not-allowed',
+          isValid && !hasSubmittedSuccessfully && 'bg-[#FC335A] text-white',
         )}
       >
-        {isPending ? '등록 중...' : '프로젝트 등록'}
+        {isFormSubmitting ? '프로젝트 등록 중' : '프로젝트 등록'}
       </button>
 
       {cropModalData && (

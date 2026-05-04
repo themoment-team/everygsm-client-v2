@@ -26,16 +26,6 @@ export interface ProjectType {
   liked: boolean;
 }
 
-export interface ProjectRegisterReqType {
-  logo: string;
-  title: string;
-  affiliation: string;
-  description: string;
-  prodUrl?: string;
-  techStack: TechStackType[];
-  repository?: string[];
-}
-
 export type ProjectResponseType = ApiResponse<ProjectType>;
 
 export interface ProjectsListType {
