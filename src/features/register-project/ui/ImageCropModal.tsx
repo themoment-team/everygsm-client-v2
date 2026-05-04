@@ -17,21 +17,26 @@ interface ImageCropModalProps {
 
 const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCropModalProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState<number>(1);
   const [pixelCrop, setPixelCrop] = useState<Area | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleCropComplete = (_: Area, croppedAreaPixels: Area) => {
     setPixelCrop(croppedAreaPixels);
   };
 
   const handleConfirm = async () => {
-    if (!pixelCrop) return;
+    if (!pixelCrop || isSubmitting) return;
+
+    setIsSubmitting(true);
     try {
       const croppedFile = await getCroppedImg(imageSrc, pixelCrop, fileName);
       onCropComplete(croppedFile);
       onClose();
     } catch (e) {
       console.error(e);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -39,6 +44,7 @@ const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCr
     <div
       className={cn(
         'fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm',
+        isSubmitting && 'cursor-wait',
       )}
     >
       <div className={cn('relative flex w-120 flex-col gap-6 rounded-2xl bg-[#191919] p-8')}>
@@ -80,6 +86,7 @@ const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCr
             style={{
               background: `linear-gradient(to right, #FC335A 0%, #FC335A ${((zoom - 0.5) / (3 - 0.5)) * 100}%, #2F2F2F ${((zoom - 0.5) / (3 - 0.5)) * 100}%, #2F2F2F 100%)`,
             }}
+            disabled={isSubmitting}
           />
         </div>
 
@@ -87,8 +94,10 @@ const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCr
           <button
             type="button"
             onClick={onClose}
+            disabled={isSubmitting}
             className={cn(
               'flex cursor-pointer items-center justify-center rounded-[1.125rem] border border-[#FC335A] px-9 py-3 text-base font-semibold text-[#FC335A]',
+              isSubmitting && 'opacity-50',
             )}
           >
             취소
@@ -96,11 +105,13 @@ const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCr
           <button
             type="button"
             onClick={handleConfirm}
+            disabled={isSubmitting}
             className={cn(
-              'cursor-pointer rounded-xl bg-[#FC335A] px-9 py-3 font-semibold text-white transition-colors hover:bg-[#FC335A]/90',
+              'flex cursor-pointer items-center justify-center rounded-xl bg-[#FC335A] px-9 py-3 font-semibold text-white transition-colors hover:bg-[#FC335A]/90',
+              isSubmitting && 'opacity-50',
             )}
           >
-            확인
+            {isSubmitting ? '크롭 중' : '확인'}
           </button>
         </div>
       </div>
