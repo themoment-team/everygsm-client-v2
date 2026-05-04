@@ -18,6 +18,7 @@ import { formatFileName } from '../lib/formatFileName';
 import { RegisterFormSchema, RegisterFormType } from '../model/schema';
 import { usePostProjectImageUpload } from '../model/usePostProjectImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
+import ImageCropModal from './ImageCropModal';
 
 const DEFAULT_TECH_STACK = [
   'HTML5 / CSS3',
@@ -41,6 +42,7 @@ const RegisterProjectForm = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [customTech, setCustomTech] = useState('');
+  const [cropModalData, setCropModalData] = useState<{ src: string; name: string } | null>(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -113,8 +115,21 @@ const RegisterProjectForm = () => {
       toast.error('파일 크기가 5MB가 넘었어요.');
       return;
     }
-    setFile(selectedFile);
-    setValue('logo', selectedFile.name, { shouldValidate: true });
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropModalData({
+        src: reader.result as string,
+        name: selectedFile.name,
+      });
+    };
+    reader.readAsDataURL(selectedFile);
+  };
+
+  const handleCropComplete = (croppedFile: File) => {
+    setFile(croppedFile);
+    setValue('logo', croppedFile.name, { shouldValidate: true });
+    setCropModalData(null);
   };
 
   const handlePhotoUpload = async (file: File) => {
@@ -222,6 +237,9 @@ const RegisterProjectForm = () => {
                   e.stopPropagation();
                   setFile(null);
                   setValue('logo', '', { shouldValidate: true });
+                  if (inputRef.current) {
+                    inputRef.current.value = '';
+                  }
                 }}
                 className="cursor-pointer"
               >
@@ -396,6 +414,15 @@ const RegisterProjectForm = () => {
       >
         {isPending ? '등록 중...' : '프로젝트 등록'}
       </button>
+
+      {cropModalData && (
+        <ImageCropModal
+          imageSrc={cropModalData.src}
+          fileName={cropModalData.name}
+          onCropComplete={handleCropComplete}
+          onClose={() => setCropModalData(null)}
+        />
+      )}
     </form>
   );
 };
