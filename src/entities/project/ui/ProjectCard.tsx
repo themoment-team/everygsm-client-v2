@@ -14,15 +14,16 @@ interface ProjectCardProps {
   onDetailClick?: () => void;
 }
 
-const techStackPillClassName =
-  'rounded-full bg-[#4F4F4F] px-2 py-1.5 text-xs leading-[.9rem] font-medium whitespace-nowrap text-white';
+const techStackPillClassName = cn(
+  'rounded-full bg-[#4F4F4F] px-2 py-1.5 text-xs leading-[.9rem] font-medium whitespace-nowrap text-white',
+);
 
 const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
   const { logo, title, affiliation, description, techStack, prodUrl } = data;
   const hasLogo = Boolean(logo?.trim());
   const displayAffiliation = affiliation ?? '소속 정보 없음';
-  const [isCenterHover, setIsCenterHover] = useState(false);
-  const [visibleTechStackCount, setVisibleTechStackCount] = useState(techStack.length);
+  const [isCenterHover, setIsCenterHover] = useState<boolean>(false);
+  const [visibleTechStackCount, setVisibleTechStackCount] = useState<number>(techStack.length);
   const techStackListRef = useRef<HTMLDivElement>(null);
   const techStackMeasureRef = useRef<HTMLDivElement>(null);
   const moreTechStackMeasureRef = useRef<HTMLSpanElement>(null);
