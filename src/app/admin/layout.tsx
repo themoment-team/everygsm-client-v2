@@ -9,6 +9,7 @@ import { getMyInfo } from '@/entities/user/index.server';
 import { AdminClientGuard } from '@/views/admin';
 
 export const metadata: Metadata = {
+  title: '관리자',
   robots: { index: false, follow: false },
 };
 
