@@ -19,7 +19,6 @@ export const metadata: Metadata = {
     default: 'EveryGSM',
   },
   description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
-  applicationName: 'EveryGSM',
   keywords: [
     'EveryGSM',
     'every-gsm',
@@ -32,13 +31,6 @@ export const metadata: Metadata = {
     '학생 프로젝트',
     'GwangjuSoftwareMeisterHighSchool',
   ],
-  creator: 'the-moment',
-  publisher: 'the-moment',
-
-  icons: {
-    icon: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
 
   openGraph: {
     type: 'website',
@@ -71,10 +63,6 @@ const jsonLd = {
   name: 'EveryGSM',
   url: BASE_URL,
   description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
-  publisher: {
-    '@type': 'Organization',
-    name: 'the-moment',
-  },
 };
 
 const RootLayout = async ({
