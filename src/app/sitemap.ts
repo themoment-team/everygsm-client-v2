@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://every.datagsm.kr';
+const BASE_URL = 'https://www.every.datagsm.kr';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

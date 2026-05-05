@@ -9,7 +9,7 @@ import { Header } from '@/widgets/header';
 
 import '@/shared/styles/globals.css';
 
-const BASE_URL = 'https://every.datagsm.kr';
+const BASE_URL = 'https://www.every.datagsm.kr';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
