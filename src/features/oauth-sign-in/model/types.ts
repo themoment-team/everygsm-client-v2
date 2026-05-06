@@ -11,15 +11,3 @@ export interface OAuthSignInType {
 }
 
 export type OAuthSignInResponseType = ApiResponse<OAuthSignInType>;
-
-export type AccountRoleType = 'ADMIN' | 'USER';
-
-export interface UserInfoType {
-  id: number;
-  email: string;
-  name: string;
-  studentNumber: string | null;
-  role: AccountRoleType;
-}
-
-export type UserInfoResponseType = ApiResponse<UserInfoType>;

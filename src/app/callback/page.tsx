@@ -4,14 +4,14 @@ import { Suspense, useEffect, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { usePostSignIn } from '@/entities/auth';
+import { usePostOAuthSignIn } from '@/features/oauth-sign-in';
 import { COOKIE_KEYS, OAUTH_SESSION_KEYS } from '@/shared/constants';
 import { cn, setCookie } from '@/shared/utils';
 
 const CallbackContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { mutateAsync: signIn } = usePostSignIn();
+  const { mutateAsync: signIn } = usePostOAuthSignIn();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 

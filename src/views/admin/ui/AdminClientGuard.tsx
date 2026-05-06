@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { isAdminRole, useGetMyInfo, UserInfoResponseType } from '@/entities/auth';
+import { isAdminRole, useGetMyInfo, UserInfoResponseType } from '@/entities/user';
 
 interface AdminClientGuardProps {
   children: ReactNode;

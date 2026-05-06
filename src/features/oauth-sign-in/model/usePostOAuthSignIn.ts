@@ -5,7 +5,7 @@ import { authQueryKeys, authUrl, post } from '@/shared/api';
 
 import { OAuthSignInReqType, OAuthSignInResponseType } from './types';
 
-export const usePostSignIn = (
+export const usePostOAuthSignIn = (
   options?: Omit<
     UseMutationOptions<OAuthSignInResponseType, AxiosError, OAuthSignInReqType>,
     'mutationKey' | 'mutationFn'

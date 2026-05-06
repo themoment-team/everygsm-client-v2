@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { redirect } from 'next/navigation';
 
-import { isAdminRole } from '@/entities/auth';
+import { isAdminRole } from '@/entities/user';
 import { getMyInfo } from '@/entities/user/index.server';
 import { AdminClientGuard } from '@/views/admin';
 
