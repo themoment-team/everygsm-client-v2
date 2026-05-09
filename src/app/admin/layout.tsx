@@ -2,9 +2,16 @@ import { ReactNode } from 'react';
 
 import { redirect } from 'next/navigation';
 
+import type { Metadata } from 'next';
+
 import { isAdminRole } from '@/entities/auth';
 import { getMyInfo } from '@/entities/user/index.server';
 import { AdminClientGuard } from '@/views/admin';
+
+export const metadata: Metadata = {
+  title: '관리자',
+  robots: { index: false, follow: false },
+};
 
 interface AdminLayoutProps {
   children: ReactNode;
