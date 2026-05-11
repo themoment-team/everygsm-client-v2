@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -14,12 +14,70 @@ interface ProjectCardProps {
   onDetailClick?: () => void;
 }
 
+const techStackPillClassName = cn(
+  'rounded-full bg-[#4F4F4F] px-2 py-1.5 text-xs leading-[.9rem] font-medium whitespace-nowrap text-white',
+);
+
 const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
   const { logo, title, affiliation, description, techStack, prodUrl } = data;
   const hasLogo = Boolean(logo?.trim());
   const displayAffiliation = affiliation ?? '소속 정보 없음';
+  const [isCenterHover, setIsCenterHover] = useState<boolean>(false);
+  const [visibleTechStackCount, setVisibleTechStackCount] = useState<number>(techStack.length);
+  const techStackListRef = useRef<HTMLDivElement>(null);
+  const techStackMeasureRef = useRef<HTMLDivElement>(null);
+  const moreTechStackMeasureRef = useRef<HTMLSpanElement>(null);
+  const visibleTechStack = techStack.slice(0, visibleTechStackCount);
+  const hiddenTechStackCount = techStack.length - visibleTechStack.length;
 
-  const [isCenterHover, setIsCenterHover] = useState(false);
+  useLayoutEffect(() => {
+    const listElement = techStackListRef.current;
+    const measureElement = techStackMeasureRef.current;
+    const moreMeasureElement = moreTechStackMeasureRef.current;
+
+    if (!listElement || !measureElement || !moreMeasureElement) return;
+
+    const measureVisibleTechStackCount = () => {
+      const availableWidth = listElement.clientWidth;
+      const techStackElements = Array.from(
+        measureElement.querySelectorAll<HTMLElement>('[data-tech-stack-item]'),
+      );
+      const gap = Number.parseFloat(window.getComputedStyle(listElement).columnGap);
+      const gapWidth = Number.isNaN(gap) ? 0 : gap;
+      const techStackWidths = techStackElements.map((element) => element.offsetWidth);
+      const widthSums = [0];
+      let currentWidthSum = 0;
+
+      for (const width of techStackWidths) {
+        currentWidthSum += width;
+        widthSums.push(currentWidthSum);
+      }
+
+      for (let count = techStackElements.length; count >= 0; count -= 1) {
+        const hiddenCount = techStackElements.length - count;
+        moreMeasureElement.textContent = `+${hiddenCount}`;
+
+        const moreWidth = hiddenCount > 0 ? moreMeasureElement.offsetWidth : 0;
+        const renderedItemCount = count + (hiddenCount > 0 ? 1 : 0);
+        const totalGapWidth = Math.max(renderedItemCount - 1, 0) * gapWidth;
+        const totalWidth = widthSums[count] + moreWidth + totalGapWidth;
+
+        if (totalWidth <= availableWidth) {
+          setVisibleTechStackCount(count);
+          return;
+        }
+      }
+
+      setVisibleTechStackCount(0);
+    };
+
+    measureVisibleTechStackCount();
+
+    const resizeObserver = new ResizeObserver(measureVisibleTechStackCount);
+    resizeObserver.observe(listElement);
+
+    return () => resizeObserver.disconnect();
+  }, [techStack]);
 
   return (
     <div
@@ -80,17 +138,36 @@ const ProjectCard = ({ data, likeButton, onDetailClick }: ProjectCardProps) => {
           <div className={cn('line-clamp-2 h-9 text-xs leading-4.5 font-medium text-[#9A9A9A]')}>
             {description}
           </div>
-          <div className={cn('flex h-6.5 flex-wrap gap-x-1.5 overflow-hidden')}>
-            {techStack.map((stack) => (
-              <span
-                key={stack.stackName}
-                className={cn(
-                  'rounded-full bg-[#4F4F4F] px-2 py-1.5 text-xs leading-[.9rem] font-medium text-white',
-                )}
-              >
+          <div
+            ref={techStackListRef}
+            className={cn('relative flex flex-wrap gap-x-1.5 overflow-hidden')}
+          >
+            {visibleTechStack.map((stack, index) => (
+              <span key={`${stack.stackName}-${index}`} className={cn(techStackPillClassName)}>
                 {stack.stackName}
               </span>
             ))}
+            {hiddenTechStackCount > 0 && (
+              <span className={cn(techStackPillClassName)}>+{hiddenTechStackCount}</span>
+            )}
+            <div
+              ref={techStackMeasureRef}
+              aria-hidden
+              className={cn(
+                'pointer-events-none absolute top-0 left-0 flex gap-x-1.5 overflow-hidden opacity-0',
+              )}
+            >
+              {techStack.map((stack, index) => (
+                <span
+                  key={`${stack.stackName}-${index}`}
+                  data-tech-stack-item
+                  className={cn(techStackPillClassName)}
+                >
+                  {stack.stackName}
+                </span>
+              ))}
+              <span ref={moreTechStackMeasureRef} className={cn(techStackPillClassName)} />
+            </div>
           </div>
         </div>
       </div>
