@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import Cropper, { Area, Point } from 'react-easy-crop';
+import { toast } from 'sonner';
 
 import { cn } from '@/shared/utils';
 
@@ -40,8 +41,8 @@ const ImageCropModal = ({
       const croppedFile = await getCroppedImg(imageSrc, pixelCrop, fileName, fileType);
       onCropComplete(croppedFile);
       onClose();
-    } catch (e) {
-      console.error(e);
+    } catch {
+      toast.error('이미지를 처리하는 중 오류가 발생했습니다');
     } finally {
       setIsSubmitting(false);
     }
