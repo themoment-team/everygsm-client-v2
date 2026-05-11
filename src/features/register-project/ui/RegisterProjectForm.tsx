@@ -40,6 +40,8 @@ const RegisterProjectForm = () => {
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
+  const currentYear = new Date().getFullYear();
+
   const {
     register,
     handleSubmit,
@@ -55,6 +57,7 @@ const RegisterProjectForm = () => {
       affiliation: '',
       description: '',
       prodUrl: '',
+      startYear: currentYear,
       techStack: [],
       repository: [],
     },
@@ -244,6 +247,16 @@ const RegisterProjectForm = () => {
         placeholder="프로젝트를 진행한 동아리 또는 팀명을 입력해주세요"
         registration={register('affiliation')}
         errorMessage={errors.affiliation?.message}
+      />
+      <TextField
+        id="project-start-year"
+        label="프로젝트 시작 연도"
+        placeholder="프로젝트 시작 연도를 입력해주세요"
+        type="number"
+        registration={register('startYear', {
+          valueAsNumber: true,
+        })}
+        errorMessage={errors.startYear?.message}
       />
       <TextareaField
         id="project-description"
