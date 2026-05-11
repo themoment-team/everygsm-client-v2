@@ -23,3 +23,5 @@ export const DEFAULT_TECH_STACKS = [
   'Firebase',
   'Supabase',
 ] as const;
+
+export const MAX_FILE_SIZE = 5 * 1024 * 1024;

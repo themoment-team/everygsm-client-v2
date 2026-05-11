@@ -20,7 +20,7 @@ import { toast } from 'sonner';
 import { cn } from '@/shared/utils';
 
 import { resizeTextarea } from '../lib/resizeTextarea';
-import { DEFAULT_TECH_STACKS } from '../model/constants';
+import { DEFAULT_TECH_STACKS, MAX_FILE_SIZE } from '../model/constants';
 import { type ProjectRegistrationReqType, projectRegistrationSchema } from '../model/schema';
 import { usePostImageUpload } from '../model/usePostImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
@@ -55,8 +55,6 @@ const RegisterProjectForm = () => {
       }
     };
   }, [cropModalData?.src]);
-
-  const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
   const {
     register,
