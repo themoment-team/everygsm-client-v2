@@ -31,17 +31,16 @@ export default async function getCroppedImg(
   canvas.width = pixelCrop.width;
   canvas.height = pixelCrop.height;
 
-  // pixelCrop 정보를 사용하여 필요한 영역만 캔버스에 그리도록 최적화
   ctx.drawImage(
     image,
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height,
+    image.width,
+    image.height,
+    -pixelCrop.x,
+    -pixelCrop.y,
+    image.width,
+    image.height,
   );
 
   return new Promise((resolve, reject) => {
