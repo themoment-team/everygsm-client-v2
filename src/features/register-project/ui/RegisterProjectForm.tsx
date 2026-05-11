@@ -5,6 +5,7 @@ import {
   type InputEvent,
   type KeyboardEvent,
   type MouseEvent,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -46,6 +47,14 @@ const RegisterProjectForm = () => {
     name: string;
     type: string;
   } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (cropModalData?.src && cropModalData.src.startsWith('blob:')) {
+        URL.revokeObjectURL(cropModalData.src);
+      }
+    };
+  }, [cropModalData?.src]);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -204,15 +213,17 @@ const RegisterProjectForm = () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setCropModalData({
-        src: reader.result as string,
-        name: selectedFile.name,
-        type: selectedFile.type,
-      });
-    };
-    reader.readAsDataURL(selectedFile);
+    // 기존에 생성된 URL이 있다면 해제
+    if (cropModalData?.src && cropModalData.src.startsWith('blob:')) {
+      URL.revokeObjectURL(cropModalData.src);
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setCropModalData({
+      src: objectUrl,
+      name: selectedFile.name,
+      type: selectedFile.type,
+    });
   };
 
   const handleCropComplete = async (croppedFile: File) => {
