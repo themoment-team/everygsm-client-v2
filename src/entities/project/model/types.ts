@@ -15,11 +15,12 @@ export interface ProjectType {
   projectId: number;
   logo: string;
   title: string;
-  affiliation: string | null;
+  affiliation: string;
   description: string;
   prodUrl: string;
+  startYear: number;
   status: StatusType;
-  reason: string | null;
+  reason: string;
   createdAt: string;
   techStack: TechStackType[];
   repository: ProjectRepositoryType[];

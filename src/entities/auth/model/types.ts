@@ -18,7 +18,7 @@ export interface UserInfoType {
   id: number;
   email: string;
   name: string;
-  studentNumber: string | null;
+  studentNumber: string;
   role: AccountRoleType;
 }
 
