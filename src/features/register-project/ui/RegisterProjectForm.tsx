@@ -18,7 +18,6 @@ import { toast } from 'sonner';
 
 import { cn } from '@/shared/utils';
 
-import { resizeTextarea } from '../lib/resizeTextarea';
 import { DEFAULT_TECH_STACKS } from '../model/constants';
 import { type ProjectRegistrationReqType, projectRegistrationSchema } from '../model/schema';
 import { usePostImageUpload } from '../model/usePostImageUpload';
@@ -32,14 +31,23 @@ import TextField from './TextField';
 const MAX_TECH_STACK_COUNT = 50;
 const MAX_REPOSITORY_COUNT = 10;
 
+const getStartYearDigits = (value: unknown) => String(value).replace(/\D/g, '').slice(0, 4);
+
+const resizeTextarea = (textarea: HTMLTextAreaElement) => {
+  textarea.style.height = 'auto';
+  textarea.style.height = `${textarea.scrollHeight}px`;
+};
+
 const RegisterProjectForm = () => {
   const router = useRouter();
   const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [customTechStacks, setCustomTechStacks] = useState<string[]>([]);
   const [techStackInput, setTechStackInput] = useState('');
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
+
   const currentYear = new Date().getFullYear();
 
   const {
@@ -62,18 +70,37 @@ const RegisterProjectForm = () => {
       repository: [],
     },
   });
+
   const { mutateAsync: uploadImage, isPending: isImageUploading } = usePostImageUpload();
   const { mutateAsync: postProjectRegistration } = usePostProjectRegistration();
+
   const selectedTechStackValues = useWatch({ control, name: 'techStack' }) ?? [];
   const repositoryUrls = useWatch({ control, name: 'repository' }) ?? [];
   const logo = useWatch({ control, name: 'logo' });
+
   const selectedTechStacks = selectedTechStackValues.map((stack) => stack.stackName);
   const isSubmitDisabled = isImageUploading || isFormSubmitting || hasSubmittedSuccessfully;
   const hasUploadedLogo = Boolean(logo && logoFileName);
-  const descriptionField = register('description');
+
+  const startYearField = register('startYear', {
+    setValueAs: (value) => {
+      const digits = getStartYearDigits(value);
+      return digits ? Number(digits) : NaN;
+    },
+  });
+
+  const startYearRegistration = {
+    ...startYearField,
+    onChange: async (event: Parameters<typeof startYearField.onChange>[0]) => {
+      event.target.value = getStartYearDigits(event.target.value);
+      await startYearField.onChange(event);
+    },
+  };
+
   const repositoryItemErrorMessage = Array.isArray(errors.repository)
     ? errors.repository.find((error) => error?.message)?.message
     : undefined;
+
   const repositoryErrorMessage =
     errors.repository && 'message' in errors.repository
       ? errors.repository.message
@@ -252,17 +279,14 @@ const RegisterProjectForm = () => {
         id="project-start-year"
         label="프로젝트 시작 연도"
         placeholder="프로젝트 시작 연도를 입력해주세요"
-        type="number"
-        registration={register('startYear', {
-          valueAsNumber: true,
-        })}
+        registration={startYearRegistration}
         errorMessage={errors.startYear?.message}
       />
       <TextareaField
         id="project-description"
         label="프로젝트 설명"
         placeholder="200자 이내의  프로젝트 설명글을 입력해주세요"
-        registration={descriptionField}
+        registration={register('description')}
         errorMessage={errors.description?.message}
         onInput={handleDescriptionInput}
         onTextareaElementChange={(element) => {

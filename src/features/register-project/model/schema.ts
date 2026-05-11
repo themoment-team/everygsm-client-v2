@@ -13,7 +13,7 @@ export const projectRegistrationSchema = z.object({
   title: z.string().trim().min(1, '프로젝트 제목을 입력해주세요'),
   affiliation: z.string().trim().min(1, '소속 동아리 또는 팀명을 입력해주세요'),
   startYear: z
-    .number()
+    .number('프로젝트 시작 연도를 입력해주세요')
     .int()
     .min(2017, '프로젝트 시작 연도는 2017년 이후로 입력해주세요')
     .max(new Date().getFullYear(), '프로젝트 시작 연도는 현재 연도까지만 입력할 수 있습니다'),
