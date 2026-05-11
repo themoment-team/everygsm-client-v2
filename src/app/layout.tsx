@@ -9,8 +9,59 @@ import { Header } from '@/widgets/header';
 
 import '@/shared/styles/globals.css';
 
+const BASE_URL = 'https://www.every.datagsm.kr';
+
 export const metadata: Metadata = {
-  title: 'EveryGSM',
+  metadataBase: new URL(BASE_URL),
+
+  title: {
+    template: '%s | EveryGSM',
+    default: 'EveryGSM',
+  },
+  description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
+  keywords: [
+    'EveryGSM',
+    'every-gsm',
+    'Every-GSM',
+    'every',
+    '광주소프트웨어마이스터고등학교',
+    '광주소프트웨어마이스터고',
+    '광소마',
+    'GSM',
+    '학생 프로젝트',
+    'GwangjuSoftwareMeisterHighSchool',
+  ],
+
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    url: BASE_URL,
+    siteName: 'EveryGSM',
+    title: 'EveryGSM',
+    description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
+    images: [
+      {
+        url: '/images/opengraph-image.png',
+        width: 1920,
+        height: 1080,
+        alt: 'EveryGSM',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'EveryGSM',
+    description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
+    images: ['/images/opengraph-image.png'],
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'EveryGSM',
+  url: BASE_URL,
   description: '광주소프트웨어마이스터고등학교의 모든 프로젝트를 한곳에',
 };
 
@@ -24,6 +75,10 @@ const RootLayout = async ({
   return (
     <html lang="ko">
       <body className={pretendard.className}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <TanStackProvider>
           <Header initialUserInfoData={initialUserInfoData} />
           {children}
