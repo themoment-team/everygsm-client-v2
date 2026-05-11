@@ -11,11 +11,18 @@ import getCroppedImg from '../lib/getCroppedImg';
 interface ImageCropModalProps {
   imageSrc: string;
   fileName: string;
+  fileType: string;
   onCropComplete: (file: File) => void;
   onClose: () => void;
 }
 
-const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCropModalProps) => {
+const ImageCropModal = ({
+  imageSrc,
+  fileName,
+  fileType,
+  onCropComplete,
+  onClose,
+}: ImageCropModalProps) => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [pixelCrop, setPixelCrop] = useState<Area | null>(null);
@@ -30,7 +37,7 @@ const ImageCropModal = ({ imageSrc, fileName, onCropComplete, onClose }: ImageCr
 
     setIsSubmitting(true);
     try {
-      const croppedFile = await getCroppedImg(imageSrc, pixelCrop, fileName);
+      const croppedFile = await getCroppedImg(imageSrc, pixelCrop, fileName, fileType);
       onCropComplete(croppedFile);
       onClose();
     } catch (e) {

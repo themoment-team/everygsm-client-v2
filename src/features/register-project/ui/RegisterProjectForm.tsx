@@ -41,7 +41,11 @@ const RegisterProjectForm = () => {
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
-  const [cropModalData, setCropModalData] = useState<{ src: string; name: string } | null>(null);
+  const [cropModalData, setCropModalData] = useState<{
+    src: string;
+    name: string;
+    type: string;
+  } | null>(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -205,6 +209,7 @@ const RegisterProjectForm = () => {
       setCropModalData({
         src: reader.result as string,
         name: selectedFile.name,
+        type: selectedFile.type,
       });
     };
     reader.readAsDataURL(selectedFile);
@@ -338,6 +343,7 @@ const RegisterProjectForm = () => {
         <ImageCropModal
           imageSrc={cropModalData.src}
           fileName={cropModalData.name}
+          fileType={cropModalData.type}
           onCropComplete={handleCropComplete}
           onClose={() => setCropModalData(null)}
         />

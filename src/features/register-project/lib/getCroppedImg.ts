@@ -18,6 +18,7 @@ export default async function getCroppedImg(
   imageSrc: string,
   pixelCrop: Area,
   fileName: string,
+  fileType: string,
 ): Promise<File> {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
@@ -49,8 +50,8 @@ export default async function getCroppedImg(
         reject(new Error('Canvas is empty'));
         return;
       }
-      const file = new File([blob], fileName, { type: 'image/png' });
+      const file = new File([blob], fileName, { type: fileType });
       resolve(file);
-    }, 'image/png');
+    }, fileType);
   });
 }
