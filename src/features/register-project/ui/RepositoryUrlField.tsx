@@ -36,7 +36,10 @@ const RepositoryUrlField = ({
 
       <div className={cn('flex flex-col gap-3')}>
         {repositoryUrls.map((repositoryUrl, index) => (
-          <div key={index} className={cn('flex w-full items-center p-4', fieldShellClassName)}>
+          <div
+            key={index}
+            className={cn('flex w-full items-center overflow-hidden', fieldShellClassName)}
+          >
             <input
               name="repositoryUrls"
               type="text"
@@ -44,12 +47,12 @@ const RepositoryUrlField = ({
               value={repositoryUrl}
               placeholder="깃허브 레포지토리 URL을 입력해주세요"
               onChange={(event) => onUpdateRepositoryUrl(index, event.target.value)}
-              className={cn('w-full', inputTextClassName, placeholderClassName)}
+              className={cn('w-full p-4', inputTextClassName, placeholderClassName)}
             />
             <button
               type="button"
               onClick={() => onRemoveRepositoryInput(index)}
-              className={cn('flex cursor-pointer items-center justify-center')}
+              className={cn('flex cursor-pointer items-center justify-center p-4')}
               aria-label="깃허브 레포지토리 삭제"
             >
               <XIcon />
