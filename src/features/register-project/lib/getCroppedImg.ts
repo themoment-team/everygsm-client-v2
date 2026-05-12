@@ -13,13 +13,12 @@ export interface Area {
   x: number;
   y: number;
 }
-
-export default async function getCroppedImg(
+export const getCroppedImg = async (
   imageSrc: string,
   pixelCrop: Area,
   fileName: string,
   fileType: string,
-): Promise<File> {
+): Promise<File> => {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -53,4 +52,4 @@ export default async function getCroppedImg(
       resolve(file);
     }, fileType);
   });
-}
+};

@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 
 import { cn } from '@/shared/utils';
 
-import getCroppedImg from '../lib/getCroppedImg';
+import { getCroppedImg } from '../lib/getCroppedImg';
 
 interface ImageCropModalProps {
   imageSrc: string;
