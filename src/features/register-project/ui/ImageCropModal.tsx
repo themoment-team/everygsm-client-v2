@@ -74,7 +74,7 @@ const ImageCropModal = ({
         isSubmitting && 'cursor-wait',
       )}
     >
-      <h2 className={cn('text-xl font-semibold tracking-[-0.0375rem] text-white')}>
+      <h2 className={cn('text-xl leading-6 font-semibold tracking-[-0.0375rem] text-white')}>
         로고 이미지 규격 설정
       </h2>
 
@@ -97,10 +97,14 @@ const ImageCropModal = ({
         />
       </div>
 
-      <div className={cn('flex items-center gap-4')}>
-        <span className={cn('min-w-14 text-base font-medium tracking-[-0.03rem] text-[#DDD]')}>
+      <div className={cn('flex w-full items-center gap-x-4')}>
+        <p
+          className={cn(
+            'text-base leading-4.75 font-medium tracking-[-0.03rem] whitespace-nowrap text-[#DDD]',
+          )}
+        >
           확대/축소
-        </span>
+        </p>
         <input
           type="range"
           value={zoom}
@@ -110,22 +114,22 @@ const ImageCropModal = ({
           aria-labelledby="Zoom"
           onChange={(e) => setZoom(Number(e.target.value))}
           className={cn(
-            'h-1.5 w-80 cursor-pointer appearance-none rounded-lg [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white',
+            'h-2 w-full cursor-pointer appearance-none rounded-sm [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#FC335A]',
           )}
           style={{
-            background: `linear-gradient(to right, #FC335A 0%, #FC335A ${zoomProgress}%, #2F2F2F ${zoomProgress}%, #2F2F2F 100%)`,
+            background: `linear-gradient(to right, #9C3F51 0%, #9C3F51 ${zoomProgress}%, #4F4F4F ${zoomProgress}%, #4F4F4F 100%)`,
           }}
           disabled={isSubmitting}
         />
       </div>
 
-      <div className={cn('flex justify-between')}>
+      <div className={cn('flex w-full justify-between')}>
         <button
           type="button"
           onClick={onClose}
           disabled={isSubmitting}
           className={cn(
-            'flex cursor-pointer items-center justify-center rounded-[1.125rem] border border-[#FC335A] px-9 py-3 text-base font-semibold text-[#FC335A]',
+            'cursor-pointer rounded-xl px-9 py-3 text-lg leading-5 font-semibold text-[#FC335A] shadow-[inset_0_0_0_1px_#FC335A]',
             isSubmitting && 'opacity-50',
           )}
         >
@@ -136,7 +140,7 @@ const ImageCropModal = ({
           onClick={handleConfirm}
           disabled={isSubmitting}
           className={cn(
-            'flex cursor-pointer items-center justify-center rounded-xl bg-[#FC335A] px-9 py-3 font-semibold text-white transition-colors hover:bg-[#FC335A]/90',
+            'cursor-pointer rounded-xl bg-[#FC335A] px-9 py-3 leading-5 font-semibold text-white transition-colors hover:bg-[#FC335A]/90',
             isSubmitting && 'opacity-50',
           )}
         >
