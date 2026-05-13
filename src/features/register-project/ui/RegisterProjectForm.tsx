@@ -5,7 +5,6 @@ import {
   type InputEvent,
   type KeyboardEvent,
   type MouseEvent,
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -17,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
 import { resizeTextarea } from '../lib/resizeTextarea';
@@ -42,19 +42,7 @@ const RegisterProjectForm = () => {
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
-  const [cropModalData, setCropModalData] = useState<{
-    src: string;
-    name: string;
-    type: string;
-  } | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (cropModalData?.src && cropModalData.src.startsWith('blob:')) {
-        URL.revokeObjectURL(cropModalData.src);
-      }
-    };
-  }, [cropModalData?.src]);
+  const { openModal, closeModal } = useModalStore();
 
   const {
     register,
@@ -211,22 +199,23 @@ const RegisterProjectForm = () => {
       return;
     }
 
-    // 기존에 생성된 URL이 있다면 해제
-    if (cropModalData?.src && cropModalData.src.startsWith('blob:')) {
-      URL.revokeObjectURL(cropModalData.src);
-    }
-
     const objectUrl = URL.createObjectURL(selectedFile);
-    setCropModalData({
-      src: objectUrl,
-      name: selectedFile.name,
-      type: selectedFile.type,
-    });
+    openModal(
+      <ImageCropModal
+        imageSrc={objectUrl}
+        fileName={selectedFile.name}
+        fileType={selectedFile.type}
+        onCropComplete={handleCropComplete}
+        onClose={closeModal}
+      />,
+      {
+        onClose: () => URL.revokeObjectURL(objectUrl),
+      },
+    );
   };
 
   const handleCropComplete = async (croppedFile: File) => {
     setLogoFileName(croppedFile.name);
-    setCropModalData(null);
 
     try {
       const response = await uploadImage({ image: croppedFile });
@@ -347,16 +336,6 @@ const RegisterProjectForm = () => {
       >
         {isFormSubmitting ? '프로젝트 등록 중' : '프로젝트 등록'}
       </button>
-
-      {cropModalData && (
-        <ImageCropModal
-          imageSrc={cropModalData.src}
-          fileName={cropModalData.name}
-          fileType={cropModalData.type}
-          onCropComplete={handleCropComplete}
-          onClose={() => setCropModalData(null)}
-        />
-      )}
     </form>
   );
 };
