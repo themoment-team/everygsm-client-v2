@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { toast } from 'sonner';
+
 import { OAUTH_SESSION_KEYS } from '@/shared/constants';
 import {
   cn,
@@ -43,9 +45,9 @@ const OAuthSignInButton = ({ className }: OAuthSignInButtonProps) => {
       });
 
       window.location.href = authorizeUrl;
-    } catch (error) {
+    } catch {
       setIsLoginLoading(false);
-      console.error('OAuth 로그인 시작 실패:', error);
+      toast.error('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
