@@ -41,7 +41,7 @@ const ModalContainer = () => {
   return (
     <div
       className={cn(
-        'fixed inset-0 z-50 flex w-full items-center justify-center bg-[rgba(0,0,0,0.20)] px-12',
+        'fixed inset-0 z-50 flex w-full items-center justify-center bg-[rgba(0,0,0,0.40)] px-12',
       )}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
