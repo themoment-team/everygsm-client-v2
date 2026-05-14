@@ -53,7 +53,7 @@ const TechStackField = ({
                 type="button"
                 onClick={() => onToggleTechStack(stack)}
                 className={cn(
-                  'rounded-full px-4 py-2 text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#DDD] transition-colors',
+                  'cursor-pointer rounded-full px-4 py-2 text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-[#DDD] transition-colors',
                   isSelected ? 'bg-[#FC335A] text-white' : 'bg-[#4F4F4F]',
                 )}
               >
@@ -87,7 +87,7 @@ const TechStackField = ({
           <p className={cn(hintClassName)}>최대 50개 추가 입력</p>
         </div>
 
-        <div className={cn('flex w-full items-center p-4', fieldShellClassName)}>
+        <div className={cn('flex w-full items-center overflow-hidden', fieldShellClassName)}>
           <input
             id="project-tech-stack"
             name="techStack"
@@ -96,13 +96,13 @@ const TechStackField = ({
             placeholder="위의 기술 스택 이외에 추가할 기술스택이 있다면 입력해주세요"
             onChange={onTechStackInputChange}
             onKeyDown={onTechStackInputKeyDown}
-            className={cn('w-full', inputTextClassName, placeholderClassName)}
+            className={cn('w-full p-4', inputTextClassName, placeholderClassName)}
           />
           {hasTechStackInput && (
             <button
               type="button"
               onClick={onAddCustomTechStack}
-              className={cn('flex cursor-pointer items-center justify-center')}
+              className={cn('flex cursor-pointer items-center justify-center p-4')}
               aria-label="기술 스택 추가"
             >
               <ArrowIcon />
