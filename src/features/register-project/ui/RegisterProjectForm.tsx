@@ -16,13 +16,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
-import { resizeTextarea } from '../lib/resizeTextarea';
-import { DEFAULT_TECH_STACKS } from '../model/constants';
+import { DEFAULT_TECH_STACKS, MAX_FILE_SIZE } from '../model/constants';
 import { type ProjectRegistrationReqType, projectRegistrationSchema } from '../model/schema';
 import { usePostImageUpload } from '../model/usePostImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
+import ImageCropModal from './ImageCropModal';
 import LogoUploadField from './LogoUploadField';
 import RepositoryUrlField from './RepositoryUrlField';
 import TechStackField from './TechStackField';
@@ -32,14 +33,26 @@ import TextField from './TextField';
 const MAX_TECH_STACK_COUNT = 50;
 const MAX_REPOSITORY_COUNT = 10;
 
+const getStartYearDigits = (value: unknown) => String(value).replace(/\D/g, '').slice(0, 4);
+
+const resizeTextarea = (textarea: HTMLTextAreaElement) => {
+  textarea.style.height = 'auto';
+  textarea.style.height = `${textarea.scrollHeight}px`;
+};
+
 const RegisterProjectForm = () => {
   const router = useRouter();
   const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [customTechStacks, setCustomTechStacks] = useState<string[]>([]);
   const [techStackInput, setTechStackInput] = useState('');
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
+
+  const currentYear = new Date().getFullYear();
+  const { openModal, closeModal } = useModalStore();
+
   const {
     register,
     handleSubmit,
@@ -55,22 +68,43 @@ const RegisterProjectForm = () => {
       affiliation: '',
       description: '',
       prodUrl: '',
+      startYear: currentYear,
       techStack: [],
       repository: [],
     },
   });
+
   const { mutateAsync: uploadImage, isPending: isImageUploading } = usePostImageUpload();
   const { mutateAsync: postProjectRegistration } = usePostProjectRegistration();
+
   const selectedTechStackValues = useWatch({ control, name: 'techStack' }) ?? [];
   const repositoryUrls = useWatch({ control, name: 'repository' }) ?? [];
   const logo = useWatch({ control, name: 'logo' });
+
   const selectedTechStacks = selectedTechStackValues.map((stack) => stack.stackName);
+
   const isSubmitDisabled = isImageUploading || isFormSubmitting || hasSubmittedSuccessfully;
   const hasUploadedLogo = Boolean(logo && logoFileName);
-  const descriptionField = register('description');
+
+  const startYearField = register('startYear', {
+    setValueAs: (value) => {
+      const digits = getStartYearDigits(value);
+      return digits ? Number(digits) : NaN;
+    },
+  });
+
+  const startYearRegistration = {
+    ...startYearField,
+    onChange: async (event: Parameters<typeof startYearField.onChange>[0]) => {
+      event.target.value = getStartYearDigits(event.target.value);
+      await startYearField.onChange(event);
+    },
+  };
+
   const repositoryItemErrorMessage = Array.isArray(errors.repository)
     ? errors.repository.find((error) => error?.message)?.message
     : undefined;
+
   const repositoryErrorMessage =
     errors.repository && 'message' in errors.repository
       ? errors.repository.message
@@ -144,6 +178,7 @@ const RegisterProjectForm = () => {
     event.preventDefault();
     addCustomTechStack();
   };
+
   const hasTechStackInput = techStackInput.trim().length > 0;
   const canAddRepository = repositoryUrls.length < MAX_REPOSITORY_COUNT;
 
@@ -169,19 +204,48 @@ const RegisterProjectForm = () => {
     );
   };
 
-  const handleLogoChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const image = event.target.files?.[0];
-    if (!image) return;
+  const handleLogoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    const selectedFile = files[0];
 
-    setLogoFileName(image.name);
+    const allowedExtensions = ['png', 'jpg', 'jpeg'];
+    const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+
+    if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+      toast.error('png, jpg, jpeg 형식의 이미지만 업로드 가능해요.');
+      return;
+    }
+
+    if (selectedFile.size >= MAX_FILE_SIZE) {
+      toast.error('파일 크기가 5MB가 넘었어요.');
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    openModal(
+      <ImageCropModal
+        imageSrc={objectUrl}
+        fileName={selectedFile.name}
+        fileType={selectedFile.type}
+        onCropComplete={handleCropComplete}
+        onClose={closeModal}
+      />,
+      {
+        onClose: () => URL.revokeObjectURL(objectUrl),
+      },
+    );
+  };
+
+  const handleCropComplete = async (croppedFile: File) => {
+    setLogoFileName(croppedFile.name);
 
     try {
-      const response = await uploadImage({ image });
+      const response = await uploadImage({ image: croppedFile });
       setValue('logo', response.data.key, { shouldDirty: true, shouldValidate: true });
     } catch {
       setLogoFileName('');
       setValue('logo', '', { shouldDirty: true, shouldValidate: true });
-      event.target.value = '';
       toast.error('이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
@@ -245,11 +309,18 @@ const RegisterProjectForm = () => {
         registration={register('affiliation')}
         errorMessage={errors.affiliation?.message}
       />
+      <TextField
+        id="project-start-year"
+        label="프로젝트 시작 연도"
+        placeholder="프로젝트 시작 연도를 입력해주세요"
+        registration={startYearRegistration}
+        errorMessage={errors.startYear?.message}
+      />
       <TextareaField
         id="project-description"
         label="프로젝트 설명"
         placeholder="200자 이내의  프로젝트 설명글을 입력해주세요"
-        registration={descriptionField}
+        registration={register('description')}
         errorMessage={errors.description?.message}
         onInput={handleDescriptionInput}
         onTextareaElementChange={(element) => {

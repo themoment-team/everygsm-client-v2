@@ -18,6 +18,7 @@ export interface ProjectType {
   affiliation: string | null;
   description: string;
   prodUrl: string;
+  startYear: number;
   status: StatusType;
   reason: string | null;
   createdAt: string;
