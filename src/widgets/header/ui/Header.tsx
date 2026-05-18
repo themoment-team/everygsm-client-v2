@@ -7,18 +7,12 @@ import { usePathname } from 'next/navigation';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useGetMyInfo, UserInfoResponseType } from '@/entities/auth';
+import { useGetMyInfo, UserInfoResponseType } from '@/entities/user';
+import { OAuthSignInButton } from '@/features/oauth-sign-in';
 import { ArrowIcon, Logo, PersonIcon } from '@/shared/assets';
-import { COOKIE_KEYS, OAUTH_SESSION_KEYS } from '@/shared/constants';
+import { COOKIE_KEYS } from '@/shared/constants';
 import { useOnClickOutside } from '@/shared/hooks';
-import {
-  cn,
-  createAuthorizeUrl,
-  deleteCookie,
-  generateCodeChallenge,
-  generateCodeVerifier,
-  getCookie,
-} from '@/shared/utils';
+import { cn, deleteCookie, getCookie } from '@/shared/utils';
 
 import { NAV_LINKS } from '../model/navigation';
 
@@ -47,7 +41,6 @@ const formatStudentSummary = (studentNumber?: string | null): string => {
 };
 
 const Header = ({ initialUserInfoData }: HeaderProps) => {
-  const [isLoginLoading, setIsLoginLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -66,38 +59,6 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
   const links = NAV_LINKS[role];
   const displayName = userInfo?.name ?? '사용자';
   const studentSummary = formatStudentSummary(userInfo?.studentNumber);
-
-  const handleLogin = async () => {
-    try {
-      setIsLoginLoading(true);
-
-      const clientId = process.env.NEXT_PUBLIC_DATAGSM_OAUTH_CLIENT_ID;
-      const redirectUri = `${window.location.origin}/callback`;
-
-      if (!clientId) {
-        throw new Error('OAuth 환경 변수가 설정되지 않았습니다.');
-      }
-
-      const state = crypto.randomUUID();
-      const codeVerifier = generateCodeVerifier();
-      const codeChallenge = await generateCodeChallenge(codeVerifier);
-
-      sessionStorage.setItem(OAUTH_SESSION_KEYS.STATE, state);
-      sessionStorage.setItem(OAUTH_SESSION_KEYS.CODE_VERIFIER, codeVerifier);
-
-      const authorizeUrl = createAuthorizeUrl({
-        clientId,
-        redirectUri,
-        state,
-        codeChallenge,
-      });
-
-      window.location.href = authorizeUrl;
-    } catch (error) {
-      setIsLoginLoading(false);
-      console.error('OAuth 로그인 시작 실패:', error);
-    }
-  };
 
   const handleLogout = () => {
     setIsOpen(false);
@@ -122,15 +83,11 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
         <Logo />
       </Link>
       {!hasAccessToken && !userInfo ? (
-        <button
+        <OAuthSignInButton
           className={cn(
             'flex h-9 w-18.25 cursor-pointer items-center justify-center rounded-[1.125rem] border border-[#FC335A] text-base font-semibold text-[#FC335A]',
           )}
-          onClick={() => void handleLogin()}
-          disabled={isLoginLoading}
-        >
-          로그인
-        </button>
+        />
       ) : (
         <div className={cn('flex items-center gap-14')}>
           <nav className={cn('flex items-center gap-14')}>

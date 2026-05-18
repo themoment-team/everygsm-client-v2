@@ -10,4 +10,4 @@ export interface UserType {
   role: UserRoleType;
 }
 
-export type UserResponseType = ApiResponse<UserType>;
+export type UserInfoResponseType = ApiResponse<UserType>;
