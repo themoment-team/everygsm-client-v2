@@ -63,3 +63,14 @@ Use short Conventional Commit-style prefixes such as `feat:`, `style:`, `refacto
 ## Security & Configuration
 
 Do not hardcode secrets, OAuth values, or API hosts. Check `.gitignore` before suggesting tracked config changes. Validate `NEXT_PUBLIC_API_BASE_URL`, `NEXT_PUBLIC_IMAGE_HOST`, and the DataGSM OAuth client ID before testing auth, rewrites, or remote images.
+
+## Harness: EveryGSM Frontend
+
+**Goal:** Coordinate focused EveryGSM-client-v2 frontend work through reusable agents and skills for architecture, UI implementation, API/data flow, and QA.
+
+**Trigger:** For EveryGSM frontend implementation, review, refactor, bugfix, UI, API/data, form, routing, QA, rerun, update, revision, partial rerun, or previous-result improvement requests, use the `everygsm-orchestrator` skill. Simple questions may be answered directly.
+
+**Change History:**
+| Date | Change | Target | Reason |
+| --- | --- | --- | --- |
+| 2026-05-19 | Initial harness configuration | `.claude/agents`, `.claude/skills`, `CLAUDE.md` | Establish reusable English-language frontend harness |
