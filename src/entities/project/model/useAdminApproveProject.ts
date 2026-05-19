@@ -1,13 +1,11 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
-import { adminQueryKeys, adminUrl, patch } from '@/shared/api';
+import { adminUrl, patch } from '@/shared/api';
 
-export const useAdminApproveProject = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (projectId: number) => patch(adminUrl.patchAdminApproveProject(projectId)),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: adminQueryKeys.getAdminRequests() });
-    },
+import { ProjectResponseType } from './types';
+
+export const useAdminApproveProject = () =>
+  useMutation({
+    mutationFn: (projectId: number) =>
+      patch<ProjectResponseType>(adminUrl.patchAdminApproveProject(projectId)),
   });
-};

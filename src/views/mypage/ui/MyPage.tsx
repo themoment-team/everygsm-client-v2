@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import { useGetMyInfo, UserInfoResponseType } from '@/entities/auth';
 import {
   MyProjectsListResponseType,
   ProjectsListResponseType,
@@ -10,6 +9,7 @@ import {
   useGetMyProjects,
   useGetMyRejectedProjects,
 } from '@/entities/project';
+import { useGetMyInfo, UserInfoResponseType } from '@/entities/user';
 import { RequestStatusFilter, RequestStatusFilterType } from '@/features/request-status-filter';
 import { useHandleErrorQueryToast } from '@/shared/hooks';
 import { cn } from '@/shared/utils';
