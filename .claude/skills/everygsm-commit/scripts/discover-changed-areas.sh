@@ -6,15 +6,15 @@ MODE="${1:-auto}"
 
 case "$MODE" in
   staged)
-    FILES=$(git diff --staged --name-only --diff-filter=ACMR)
+    FILES=$(git diff --staged --name-only --diff-filter=ACMRD)
     ;;
   unstaged)
-    FILES=$(git diff --name-only --diff-filter=ACMR)
+    FILES=$(git diff --name-only --diff-filter=ACMRD)
     ;;
   auto)
-    FILES=$(git diff --staged --name-only --diff-filter=ACMR)
+    FILES=$(git diff --staged --name-only --diff-filter=ACMRD)
     if [ -z "$FILES" ]; then
-      FILES=$(git diff --name-only --diff-filter=ACMR)
+      FILES=$(git diff --name-only --diff-filter=ACMRD)
     fi
     ;;
   *)

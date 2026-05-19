@@ -10,6 +10,7 @@ fi
 
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 BASE=$(gh pr view "$PR_NUMBER" --json baseRefName -q .baseRefName)
+git fetch origin "$BASE" --quiet
 
 mkdir -p .pr-tmp
 

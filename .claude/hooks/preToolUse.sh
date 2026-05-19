@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if ! command -v jq >/dev/null 2>&1; then
+  echo "[EveryGSM Hook] Error: jq is required but not installed." >&2
+  exit 1
+fi
+
 INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
 
@@ -16,7 +21,7 @@ mkdir -p "$(dirname "$LOG_FILE")"
 echo "[$TIMESTAMP] $COMMAND" >> "$LOG_FILE"
 
 BLOCKED_PATTERNS=(
-  "rm -rf[[:space:]]*/[[:space:]]*$"
+  "rm -rf[[:space:]]*/"
   "sudo rm"
   "> /dev/"
   "dd if="
