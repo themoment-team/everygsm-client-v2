@@ -1,5 +1,5 @@
 ---
-name: everygsm-write-pr
+name: write-pr
 description: 'Create an actual GitHub pull request for EveryGSM from the current branch. Gathers commits and diff, generates a Korean PR title/body following the repository template, selects labels, asks for title confirmation, then runs gh pr create. Use only when the user explicitly asks to create/open/write a PR.'
 allowed-tools: Bash(git *:*), Bash(gh pr *:*), Bash(gh repo *:*), Bash(bash *create-pr.sh:*), Bash(cat *:*), Bash(mkdir:*), Bash(rm:*), Read, Write
 ---

@@ -1,5 +1,5 @@
 ---
-name: everygsm-ui-implementation
+name: ui-implementation
 description: 'Implement EveryGSM-client-v2 UI with React function components, Tailwind CSS 4, existing assets, modals, forms, responsive layouts, and current visual conventions. Use for pages, widgets, feature UI, form fields, loading and error states, and visual fixes.'
 ---
 

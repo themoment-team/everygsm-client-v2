@@ -1,5 +1,5 @@
 ---
-name: everygsm-review-pr
+name: review-pr
 description: 'Collect EveryGSM GitHub PR review comments, assess each comment against project rules, apply valid fixes when safe, optionally commit and push fixes, and post Korean replies with gh api. Use only when the user explicitly asks to address PR review comments or reply to review comments.'
 allowed-tools: Bash(bash *get-pr-data.sh:*), Bash(bash *reply-review-comment.sh:*), Bash(gh api:*), Bash(gh pr view:*), Bash(gh repo view:*), Bash(git add:*), Bash(git commit:*), Bash(git log:*), Bash(git push:*), Bash(git rev-parse:*), Bash(rm:*), Edit, Read
 ---

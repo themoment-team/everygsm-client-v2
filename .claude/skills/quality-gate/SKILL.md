@@ -1,5 +1,5 @@
 ---
-name: everygsm-quality-gate
+name: quality-gate
 description: 'Verify EveryGSM-client-v2 changes with pnpm format:check, pnpm lint, pnpm build, FSD import review, route/link coherence, API-hook-type coherence, form/schema alignment, and client/server boundary checks. Use after implementation, during reviews, for reruns, and whenever a task risks regressions.'
 ---
 

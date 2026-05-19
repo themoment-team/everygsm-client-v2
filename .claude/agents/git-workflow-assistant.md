@@ -41,9 +41,9 @@ For PR drafts:
 
 For execution tasks:
 
-- Use `everygsm-commit` for actual commits.
-- Use `everygsm-write-pr` for actual PR creation.
-- Use `everygsm-review-pr` for PR review comment collection, fixes, pushes, and replies.
+- Use `commit` for actual commits.
+- Use `write-pr` for actual PR creation.
+- Use `review-pr` for PR review comment collection, fixes, pushes, and replies.
 
 ## Team Communication Protocol
 

@@ -3,7 +3,7 @@ description: 'Root-cause debugging, boundary tracing, and fix discipline rules f
 paths:
   - 'src/**/*'
   - '.claude/**/*.sh'
-  - '.claude/skills/everygsm-systematic-debugging/**/*'
+  - '.claude/skills/systematic-debugging/**/*'
 ---
 
 # Debugging Rules

@@ -1,5 +1,5 @@
 ---
-name: everygsm-commit
+name: commit
 description: 'Create actual EveryGSM Git commits by inspecting changed files, splitting logical units, staging the right files, and running git commit with project Conventional Commit messages. Use when the user explicitly asks to commit, make a commit, split commits, or commit staged/unstaged changes. Do not push.'
 allowed-tools: Bash(git *:*), Bash(bash *discover-changed-areas.sh:*), Read
 ---

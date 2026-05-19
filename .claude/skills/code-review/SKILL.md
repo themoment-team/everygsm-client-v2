@@ -1,5 +1,5 @@
 ---
-name: everygsm-code-review
+name: code-review
 description: 'Review EveryGSM-client-v2 changed files using dynamically discovered .claude/rules, FSD layering, UI conventions, API/data coherence, form/schema alignment, route/link checks, security basics, and validation results. Use for code review requests, staged diff review, pre-PR review, and after multi-file implementation.'
 ---
 

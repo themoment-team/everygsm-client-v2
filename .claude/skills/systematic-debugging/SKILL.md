@@ -1,5 +1,5 @@
 ---
-name: everygsm-systematic-debugging
+name: systematic-debugging
 description: 'Investigate EveryGSM-client-v2 bugs, build failures, lint failures, runtime errors, form issues, route issues, API/query mismatches, and unexpected behavior by finding root cause before fixes. Use whenever debugging, test failure, build failure, regression, or unclear behavior is mentioned.'
 ---
 

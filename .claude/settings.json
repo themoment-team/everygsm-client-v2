@@ -27,10 +27,10 @@
       "Bash(pnpm format:check)",
       "Bash(pnpm prettier --check*)",
       "Bash(pnpm build)",
-      "Bash(bash .claude/skills/everygsm-commit/scripts/discover-changed-areas.sh*)",
-      "Bash(bash .claude/skills/everygsm-write-pr/scripts/create-pr.sh*)",
-      "Bash(bash .claude/skills/everygsm-review-pr/scripts/get-pr-data.sh*)",
-      "Bash(bash .claude/skills/everygsm-review-pr/scripts/reply-review-comment.sh*)"
+      "Bash(bash .claude/skills/commit/scripts/discover-changed-areas.sh*)",
+      "Bash(bash .claude/skills/write-pr/scripts/create-pr.sh*)",
+      "Bash(bash .claude/skills/review-pr/scripts/get-pr-data.sh*)",
+      "Bash(bash .claude/skills/review-pr/scripts/reply-review-comment.sh*)"
     ]
   },
   "hooks": {

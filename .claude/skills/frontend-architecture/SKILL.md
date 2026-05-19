@@ -1,5 +1,5 @@
 ---
-name: everygsm-frontend-architecture
+name: frontend-architecture
 description: 'Plan and review EveryGSM-client-v2 architecture, Feature-Sliced Design layering, route ownership, public exports, import direction, client/server boundaries, and minimal implementation scope. Use for any EveryGSM feature, refactor, routing, dependency, or architecture decision.'
 ---
 

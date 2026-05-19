@@ -1,5 +1,5 @@
 ---
-name: everygsm-api-data-flow
+name: api-data-flow
 description: 'Implement and review EveryGSM-client-v2 API/data flow: apiUrls, server apiFetcher, Axios client, TanStack Query hooks, query keys, Zod schemas, response types, initialData hydration, auth cookies, and client/server data boundaries. Use whenever a task touches backend contracts, requests, mutations, forms, or domain data.'
 ---
 

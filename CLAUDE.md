@@ -30,6 +30,6 @@ Detailed conventions are split into `.claude/rules/*.md` and injected by path wh
 
 **Goal:** Coordinate focused EveryGSM-client-v2 frontend work through reusable agents, skills, and rules for architecture, UI implementation, API/data flow, debugging, code review, executable Git workflow, and QA.
 
-**Trigger:** For EveryGSM frontend implementation, review, refactor, bugfix, debugging, branch, commit, PR creation, PR review comments, UI, API/data, form, routing, QA, rerun, update, revision, partial rerun, or previous-result improvement requests, use the `everygsm-orchestrator` skill. Simple questions may be answered directly.
+**Trigger:** For EveryGSM frontend implementation, review, refactor, bugfix, debugging, branch, commit, PR creation, PR review comments, UI, API/data, form, routing, QA, rerun, update, revision, partial rerun, or previous-result improvement requests, use the `orchestrator` skill. Simple questions may be answered directly.
 
 Detailed harness changes are tracked in `.claude/CHANGELOG.md`.
