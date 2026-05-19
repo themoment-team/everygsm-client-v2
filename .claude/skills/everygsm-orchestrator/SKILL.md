@@ -1,6 +1,6 @@
 ---
 name: everygsm-orchestrator
-description: 'Coordinate the EveryGSM-client-v2 agent team for frontend features, bug fixes, refactors, UI work, API/data work, QA, routing, forms, TanStack Query, Zod, Axios, and FSD architecture. Use this skill for EveryGSM implementation tasks, reviews, reruns, updates, revisions, partial reruns, follow-up fixes, and requests to improve previous results. Simple one-off questions may be answered directly.'
+description: 'Coordinate the EveryGSM-client-v2 agent team for frontend features, bug fixes, refactors, UI work, API/data work, QA, code review, debugging, branch names, commits, PR drafts, routing, forms, TanStack Query, Zod, Axios, and FSD architecture. Use this skill for EveryGSM implementation tasks, reviews, reruns, updates, revisions, partial reruns, follow-up fixes, Git workflow tasks, and requests to improve previous results. Simple one-off questions may be answered directly.'
 ---
 
 # EveryGSM Orchestrator
@@ -19,6 +19,9 @@ Team members:
 | `ui-implementation-engineer` | custom | React and Tailwind implementation | `everygsm-ui-implementation`     | `_workspace/{phase}_ui-implementation-engineer_changes.md` |
 | `api-data-integrator`        | custom | API, hooks, schemas, and types    | `everygsm-api-data-flow`         | `_workspace/{phase}_api-data-integrator_data-flow.md`      |
 | `qa-inspector`               | custom | Cross-boundary verification       | `everygsm-quality-gate`          | `_workspace/{phase}_qa-inspector_report.md`                |
+| `code-reviewer`              | custom | Changed-file review               | `everygsm-code-review`           | `_workspace/{phase}_code-reviewer_review.md`               |
+| `bug-investigator`           | custom | Root-cause debugging              | `everygsm-systematic-debugging`  | `_workspace/{phase}_bug-investigator_report.md`            |
+| `git-workflow-assistant`     | custom | Branch, commit, and PR workflow   | `everygsm-git-workflow`          | `_workspace/{phase}_git-workflow-assistant_git.md`         |
 
 When invoking agents in a Claude harness that supports model selection, use `model: "opus"` for every agent.
 
@@ -31,7 +34,7 @@ Before starting work:
    - No `_workspace/`: initial run.
    - `_workspace/` exists and the user asks for a narrow correction: partial rerun. Read the relevant previous artifacts and update only the affected area.
    - `_workspace/` exists and the user provides a new broad request: fresh run. Preserve the old workspace by moving it to `_workspace_{YYYYMMDD_HHMMSS}/`, then create a new `_workspace/`.
-3. Read `CLAUDE.md`, `AGENTS.md`, `package.json`, and the relevant source files before assigning work.
+3. Read `CLAUDE.md`, `AGENTS.md`, `package.json`, dynamically discovered `.claude/rules/*.md`, and the relevant source files before assigning work.
 
 ## Phase 1: Classify the Task
 
@@ -41,6 +44,9 @@ Classify the request into one or more tracks:
 - UI, forms, modals, or layout: assign `ui-implementation-engineer`.
 - API calls, server fetches, queries, mutations, schemas, or response types: assign `api-data-integrator`.
 - Review, regression, or final acceptance: assign `qa-inspector`.
+- Explicit code review, staged diff review, or pre-PR review: assign `code-reviewer`.
+- Bugs, build failures, lint failures, runtime failures, or unclear behavior: assign `bug-investigator` before implementation.
+- Branch names, commit messages, logical commit splits, or PR drafts: assign `git-workflow-assistant`.
 
 For small tasks, use only the needed agents. For cross-layer tasks, use the full team.
 
@@ -49,9 +55,12 @@ For small tasks, use only the needed agents. For cross-layer tasks, use the full
 Use a supervisor plus producer-reviewer workflow:
 
 1. `frontend-architect` defines scope, layers, and file ownership.
-2. `ui-implementation-engineer` and `api-data-integrator` implement only their owned areas.
-3. `qa-inspector` verifies after each meaningful module boundary, not only at the end.
-4. The orchestrator integrates findings and keeps the final response concise.
+2. `bug-investigator` runs before fixes when the task starts from a failure or unclear behavior.
+3. `ui-implementation-engineer` and `api-data-integrator` implement only their owned areas.
+4. `qa-inspector` verifies after each meaningful module boundary, not only at the end.
+5. `code-reviewer` reviews changed files for multi-file or pre-PR work.
+6. `git-workflow-assistant` prepares branch, commit, or PR language when requested.
+7. The orchestrator integrates findings and keeps the final response concise.
 
 Expected task shape:
 
@@ -62,7 +71,10 @@ TeamCreate(
     { name: "frontend-architect", agent_type: "frontend-architect", model: "opus" },
     { name: "ui-implementation-engineer", agent_type: "ui-implementation-engineer", model: "opus" },
     { name: "api-data-integrator", agent_type: "api-data-integrator", model: "opus" },
-    { name: "qa-inspector", agent_type: "qa-inspector", model: "opus" }
+    { name: "qa-inspector", agent_type: "qa-inspector", model: "opus" },
+    { name: "code-reviewer", agent_type: "code-reviewer", model: "opus" },
+    { name: "bug-investigator", agent_type: "bug-investigator", model: "opus" },
+    { name: "git-workflow-assistant", agent_type: "git-workflow-assistant", model: "opus" }
   ]
 )
 ```
@@ -76,6 +88,9 @@ Use `_workspace/` for intermediate artifacts:
 - `_workspace/02_ui-implementation-engineer_changes.md`
 - `_workspace/02_api-data-integrator_data-flow.md`
 - `_workspace/03_qa-inspector_report.md`
+- `_workspace/03_code-reviewer_review.md`
+- `_workspace/01_bug-investigator_report.md`
+- `_workspace/04_git-workflow-assistant_git.md`
 
 Preserve `_workspace/` after completion for audit and follow-up work.
 
@@ -115,3 +130,16 @@ Partial rerun flow:
 2. Orchestrator reads `_workspace/` artifacts.
 3. Only `ui-implementation-engineer` and `qa-inspector` are assigned.
 4. The relevant artifact is updated and validation is rerun for the affected area.
+
+Debugging flow:
+
+1. User reports a bug, failed command, or unexpected behavior.
+2. `bug-investigator` reads the full error and traces the relevant boundary.
+3. The responsible implementation agent applies one root-cause fix.
+4. `qa-inspector` runs the smallest meaningful check, then the broader quality gate when practical.
+
+Git workflow flow:
+
+1. User asks for a branch name, commit message, or PR draft.
+2. `git-workflow-assistant` inspects actual git state and relevant templates.
+3. The final answer provides concise options without committing or pushing unless explicitly requested.

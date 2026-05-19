@@ -7,6 +7,16 @@ description: 'Verify EveryGSM-client-v2 changes with pnpm format:check, pnpm lin
 
 Use this skill to verify changes before final delivery.
 
+## Rule Loading
+
+Discover and read project harness rules before static review:
+
+```bash
+find .claude/rules -name "*.md" 2>/dev/null
+```
+
+Use these files together with `CLAUDE.md`, `AGENTS.md`, and nearby source patterns.
+
 ## Minimum Commands
 
 Run these when feasible:
