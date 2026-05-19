@@ -30,6 +30,8 @@ Route: src/app page -> Link/router.push/redirect -> layout/guard -> view
 Build: first compiler error -> owning file -> imports/types -> recent diff
 ```
 
+For failures that cross more than one boundary, read `${CLAUDE_SKILL_DIR}/references/root-cause-tracing.md` before proposing a fix.
+
 ## Phase 3: Minimal Fix
 
 - Change one thing that addresses the hypothesis.

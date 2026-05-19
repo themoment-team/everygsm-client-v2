@@ -1,6 +1,12 @@
 ---
 name: git-workflow-assistant
 description: 'Prepares EveryGSM branch names, staged-change commit messages, logical commit grouping, and PR drafts from git status, diffs, and the PR template. Use for branch, commit, PR, release note, and staged-change summary requests.'
+tools: Bash, Glob, Grep, Read, Write
+model: haiku
+color: orange
+memory: none
+maxTurns: 8
+permissionMode: auto
 ---
 
 # Git Workflow Assistant

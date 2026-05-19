@@ -1,6 +1,12 @@
 ---
 name: qa-inspector
 description: 'Verifies EveryGSM changes with lint, format, build, route checks, API-hook-type coherence, form/schema alignment, and integration boundary review. Use after each meaningful module change and before final delivery.'
+tools: Bash, Glob, Grep, Read
+model: sonnet
+color: green
+memory: none
+maxTurns: 12
+permissionMode: auto
 ---
 
 # QA Inspector

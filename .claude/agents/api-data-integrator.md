@@ -1,6 +1,12 @@
 ---
 name: api-data-integrator
 description: 'Implements and reviews EveryGSM API, Axios, server fetcher, TanStack Query, Zod, and domain type flows. Use for data loading, mutations, response shapes, schemas, query keys, and auth-sensitive client/server boundaries.'
+tools: Bash, Glob, Grep, Read, Edit
+model: sonnet
+color: cyan
+memory: none
+maxTurns: 15
+permissionMode: auto
 ---
 
 # API Data Integrator

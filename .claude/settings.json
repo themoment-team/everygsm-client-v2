@@ -16,7 +16,8 @@
       "Bash(pnpm lint)",
       "Bash(pnpm format:check)",
       "Bash(pnpm prettier --check*)",
-      "Bash(pnpm build)"
+      "Bash(pnpm build)",
+      "Bash(bash .claude/skills/everygsm-git-workflow/scripts/discover-changed-areas.sh*)"
     ]
   },
   "hooks": {

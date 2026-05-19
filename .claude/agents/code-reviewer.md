@@ -1,6 +1,12 @@
 ---
 name: code-reviewer
 description: 'Reviews EveryGSM changed files against dynamically discovered .claude/rules, FSD boundaries, UI conventions, API/data coherence, security basics, and validation results. Use for review requests and before final delivery of multi-file changes.'
+tools: Bash, Glob, Grep, Read
+model: sonnet
+color: yellow
+memory: none
+maxTurns: 12
+permissionMode: auto
 ---
 
 # Code Reviewer

@@ -1,6 +1,12 @@
 ---
 name: ui-implementation-engineer
 description: 'Implements EveryGSM React and Tailwind UI changes using existing component patterns. Use for page UI, widgets, forms, modals, responsive states, and client interactions.'
+tools: Bash, Glob, Grep, Read, Edit
+model: sonnet
+color: blue
+memory: none
+maxTurns: 15
+permissionMode: auto
 ---
 
 # UI Implementation Engineer

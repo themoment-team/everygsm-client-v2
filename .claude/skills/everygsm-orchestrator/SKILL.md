@@ -13,17 +13,17 @@ Use agent team mode by default.
 
 Team members:
 
-| Agent                        | Type   | Role                              | Skill                            | Primary Output                                             |
-| ---------------------------- | ------ | --------------------------------- | -------------------------------- | ---------------------------------------------------------- |
-| `frontend-architect`         | custom | FSD planning and scope control    | `everygsm-frontend-architecture` | `_workspace/{phase}_frontend-architect_plan.md`            |
-| `ui-implementation-engineer` | custom | React and Tailwind implementation | `everygsm-ui-implementation`     | `_workspace/{phase}_ui-implementation-engineer_changes.md` |
-| `api-data-integrator`        | custom | API, hooks, schemas, and types    | `everygsm-api-data-flow`         | `_workspace/{phase}_api-data-integrator_data-flow.md`      |
-| `qa-inspector`               | custom | Cross-boundary verification       | `everygsm-quality-gate`          | `_workspace/{phase}_qa-inspector_report.md`                |
-| `code-reviewer`              | custom | Changed-file review               | `everygsm-code-review`           | `_workspace/{phase}_code-reviewer_review.md`               |
-| `bug-investigator`           | custom | Root-cause debugging              | `everygsm-systematic-debugging`  | `_workspace/{phase}_bug-investigator_report.md`            |
-| `git-workflow-assistant`     | custom | Branch, commit, and PR workflow   | `everygsm-git-workflow`          | `_workspace/{phase}_git-workflow-assistant_git.md`         |
+| Agent                        | Type   | Model  | Role                              | Skill                            | Primary Output                                             |
+| ---------------------------- | ------ | ------ | --------------------------------- | -------------------------------- | ---------------------------------------------------------- |
+| `frontend-architect`         | custom | sonnet | FSD planning and scope control    | `everygsm-frontend-architecture` | `_workspace/{phase}_frontend-architect_plan.md`            |
+| `ui-implementation-engineer` | custom | sonnet | React and Tailwind implementation | `everygsm-ui-implementation`     | `_workspace/{phase}_ui-implementation-engineer_changes.md` |
+| `api-data-integrator`        | custom | sonnet | API, hooks, schemas, and types    | `everygsm-api-data-flow`         | `_workspace/{phase}_api-data-integrator_data-flow.md`      |
+| `qa-inspector`               | custom | sonnet | Cross-boundary verification       | `everygsm-quality-gate`          | `_workspace/{phase}_qa-inspector_report.md`                |
+| `code-reviewer`              | custom | sonnet | Changed-file review               | `everygsm-code-review`           | `_workspace/{phase}_code-reviewer_review.md`               |
+| `bug-investigator`           | custom | sonnet | Root-cause debugging              | `everygsm-systematic-debugging`  | `_workspace/{phase}_bug-investigator_report.md`            |
+| `git-workflow-assistant`     | custom | haiku  | Branch, commit, and PR workflow   | `everygsm-git-workflow`          | `_workspace/{phase}_git-workflow-assistant_git.md`         |
 
-When invoking agents in a Claude harness that supports model selection, use `model: "opus"` for every agent.
+When invoking agents in a Claude harness that supports model selection, use the `model` value from each agent frontmatter unless the user explicitly asks for a different model.
 
 ## Phase 0: Context Check
 
@@ -68,16 +68,18 @@ Expected task shape:
 TeamCreate(
   team_name: "everygsm-frontend-team",
   members: [
-    { name: "frontend-architect", agent_type: "frontend-architect", model: "opus" },
-    { name: "ui-implementation-engineer", agent_type: "ui-implementation-engineer", model: "opus" },
-    { name: "api-data-integrator", agent_type: "api-data-integrator", model: "opus" },
-    { name: "qa-inspector", agent_type: "qa-inspector", model: "opus" },
-    { name: "code-reviewer", agent_type: "code-reviewer", model: "opus" },
-    { name: "bug-investigator", agent_type: "bug-investigator", model: "opus" },
-    { name: "git-workflow-assistant", agent_type: "git-workflow-assistant", model: "opus" }
+    { name: "frontend-architect", agent_type: "frontend-architect", model: "sonnet" },
+    { name: "ui-implementation-engineer", agent_type: "ui-implementation-engineer", model: "sonnet" },
+    { name: "api-data-integrator", agent_type: "api-data-integrator", model: "sonnet" },
+    { name: "qa-inspector", agent_type: "qa-inspector", model: "sonnet" },
+    { name: "code-reviewer", agent_type: "code-reviewer", model: "sonnet" },
+    { name: "bug-investigator", agent_type: "bug-investigator", model: "sonnet" },
+    { name: "git-workflow-assistant", agent_type: "git-workflow-assistant", model: "haiku" }
   ]
 )
 ```
+
+The example above is illustrative. Keep it synchronized with each agent's frontmatter.
 
 ## Data Flow
 
@@ -93,6 +95,15 @@ Use `_workspace/` for intermediate artifacts:
 - `_workspace/04_git-workflow-assistant_git.md`
 
 Preserve `_workspace/` after completion for audit and follow-up work.
+
+## Bundled Resources
+
+Use skill resources only when they help the active task:
+
+- `everygsm-git-workflow/scripts/discover-changed-areas.sh` for branch, commit, and PR scope discovery.
+- `everygsm-git-workflow/references/scope-guide.md` for scope/type selection.
+- `everygsm-code-review/references/review-checklist.md` for multi-file or pre-PR reviews.
+- `everygsm-systematic-debugging/references/root-cause-tracing.md` for cross-boundary failures.
 
 ## Error Handling
 

@@ -7,6 +7,16 @@ description: 'Generate EveryGSM branch names, commit messages, logical commit sp
 
 Use this skill for branch, commit, and PR tasks.
 
+## Scope Discovery
+
+When a branch, commit, or PR scope depends on changed files, run:
+
+```bash
+bash "${CLAUDE_SKILL_DIR}/scripts/discover-changed-areas.sh" auto
+```
+
+Use `staged` instead of `auto` when the user specifically asks about staged changes. Then read `${CLAUDE_SKILL_DIR}/references/scope-guide.md` to choose the final scope and type.
+
 ## Branch Names
 
 Format:
@@ -32,6 +42,7 @@ Inspect the actual requested scope:
 
 - Staged changes: `git diff --staged --stat` and `git diff --staged --name-status`.
 - Unstaged changes: `git status` and `git diff --stat`.
+- Scope guide: `${CLAUDE_SKILL_DIR}/references/scope-guide.md`.
 
 Format:
 

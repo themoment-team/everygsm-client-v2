@@ -1,6 +1,12 @@
 ---
 name: frontend-architect
 description: 'Plans EveryGSM frontend changes, FSD boundaries, route composition, dependency direction, and minimal implementation scope. Use for feature planning, refactors, routing decisions, and architecture tradeoffs.'
+tools: Bash, Glob, Grep, Read
+model: sonnet
+color: purple
+memory: none
+maxTurns: 12
+permissionMode: auto
 ---
 
 # Frontend Architect

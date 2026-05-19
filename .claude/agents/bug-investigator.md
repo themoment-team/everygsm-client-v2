@@ -1,6 +1,12 @@
 ---
 name: bug-investigator
 description: 'Investigates EveryGSM bugs, test failures, build failures, and unexpected behavior through root-cause tracing before fixes. Use for debugging requests, failed validation, regressions, and unclear runtime behavior.'
+tools: Bash, Glob, Grep, Read
+model: sonnet
+color: red
+memory: none
+maxTurns: 16
+permissionMode: auto
 ---
 
 # Bug Investigator

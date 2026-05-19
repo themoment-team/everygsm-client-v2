@@ -21,6 +21,8 @@ Read every returned file. Rules in `CLAUDE.md` and `AGENTS.md` still apply; if r
 AGENTS.md > CLAUDE.md > .claude/rules/** > nearby source patterns
 ```
 
+For multi-file reviews or pre-PR checks, also read `${CLAUDE_SKILL_DIR}/references/review-checklist.md`.
+
 ## Step 2: Determine Review Scope
 
 Use the user's requested scope:
@@ -32,7 +34,7 @@ Use the user's requested scope:
 
 ## Step 3: Review Checklist
 
-Check only what is relevant to the changed files:
+Check only what is relevant to the changed files. Use the reference checklist for detailed prompts, and keep the final report focused on actual findings:
 
 - FSD layer direction and ownership.
 - Client/server component boundaries.
