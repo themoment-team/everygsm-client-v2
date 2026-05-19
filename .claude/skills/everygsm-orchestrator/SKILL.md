@@ -1,6 +1,6 @@
 ---
 name: everygsm-orchestrator
-description: 'Coordinate the EveryGSM-client-v2 agent team for frontend features, bug fixes, refactors, UI work, API/data work, QA, code review, debugging, branch names, commits, PR drafts, routing, forms, TanStack Query, Zod, Axios, and FSD architecture. Use this skill for EveryGSM implementation tasks, reviews, reruns, updates, revisions, partial reruns, follow-up fixes, Git workflow tasks, and requests to improve previous results. Simple one-off questions may be answered directly.'
+description: 'Coordinate the EveryGSM-client-v2 agent team for frontend features, bug fixes, refactors, UI work, API/data work, QA, code review, debugging, branch names, actual commits, PR creation, PR review comment replies, routing, forms, TanStack Query, Zod, Axios, and FSD architecture. Use this skill for EveryGSM implementation tasks, reviews, reruns, updates, revisions, partial reruns, follow-up fixes, Git workflow tasks, and requests to improve previous results. Simple one-off questions may be answered directly.'
 ---
 
 # EveryGSM Orchestrator
@@ -13,15 +13,15 @@ Use agent team mode by default.
 
 Team members:
 
-| Agent                        | Type   | Model  | Role                              | Skill                            | Primary Output                                             |
-| ---------------------------- | ------ | ------ | --------------------------------- | -------------------------------- | ---------------------------------------------------------- |
-| `frontend-architect`         | custom | sonnet | FSD planning and scope control    | `everygsm-frontend-architecture` | `_workspace/{phase}_frontend-architect_plan.md`            |
-| `ui-implementation-engineer` | custom | sonnet | React and Tailwind implementation | `everygsm-ui-implementation`     | `_workspace/{phase}_ui-implementation-engineer_changes.md` |
-| `api-data-integrator`        | custom | sonnet | API, hooks, schemas, and types    | `everygsm-api-data-flow`         | `_workspace/{phase}_api-data-integrator_data-flow.md`      |
-| `qa-inspector`               | custom | sonnet | Cross-boundary verification       | `everygsm-quality-gate`          | `_workspace/{phase}_qa-inspector_report.md`                |
-| `code-reviewer`              | custom | sonnet | Changed-file review               | `everygsm-code-review`           | `_workspace/{phase}_code-reviewer_review.md`               |
-| `bug-investigator`           | custom | sonnet | Root-cause debugging              | `everygsm-systematic-debugging`  | `_workspace/{phase}_bug-investigator_report.md`            |
-| `git-workflow-assistant`     | custom | haiku  | Branch, commit, and PR workflow   | `everygsm-git-workflow`          | `_workspace/{phase}_git-workflow-assistant_git.md`         |
+| Agent                        | Type   | Model  | Role                              | Skill                                                          | Primary Output                                             |
+| ---------------------------- | ------ | ------ | --------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------- |
+| `frontend-architect`         | custom | sonnet | FSD planning and scope control    | `everygsm-frontend-architecture`                               | `_workspace/{phase}_frontend-architect_plan.md`            |
+| `ui-implementation-engineer` | custom | sonnet | React and Tailwind implementation | `everygsm-ui-implementation`                                   | `_workspace/{phase}_ui-implementation-engineer_changes.md` |
+| `api-data-integrator`        | custom | sonnet | API, hooks, schemas, and types    | `everygsm-api-data-flow`                                       | `_workspace/{phase}_api-data-integrator_data-flow.md`      |
+| `qa-inspector`               | custom | sonnet | Cross-boundary verification       | `everygsm-quality-gate`                                        | `_workspace/{phase}_qa-inspector_report.md`                |
+| `code-reviewer`              | custom | sonnet | Changed-file review               | `everygsm-code-review`                                         | `_workspace/{phase}_code-reviewer_review.md`               |
+| `bug-investigator`           | custom | sonnet | Root-cause debugging              | `everygsm-systematic-debugging`                                | `_workspace/{phase}_bug-investigator_report.md`            |
+| `git-workflow-assistant`     | custom | haiku  | Commit, PR, and review workflow   | `everygsm-commit` / `everygsm-write-pr` / `everygsm-review-pr` | `_workspace/{phase}_git-workflow-assistant_git.md`         |
 
 When invoking agents in a Claude harness that supports model selection, use the `model` value from each agent frontmatter unless the user explicitly asks for a different model.
 
@@ -46,7 +46,7 @@ Classify the request into one or more tracks:
 - Review, regression, or final acceptance: assign `qa-inspector`.
 - Explicit code review, staged diff review, or pre-PR review: assign `code-reviewer`.
 - Bugs, build failures, lint failures, runtime failures, or unclear behavior: assign `bug-investigator` before implementation.
-- Branch names, commit messages, logical commit splits, or PR drafts: assign `git-workflow-assistant`.
+- Branch names, actual commits, logical commit splits, PR creation, or PR review comment replies: assign `git-workflow-assistant`.
 
 For small tasks, use only the needed agents. For cross-layer tasks, use the full team.
 
@@ -59,7 +59,7 @@ Use a supervisor plus producer-reviewer workflow:
 3. `ui-implementation-engineer` and `api-data-integrator` implement only their owned areas.
 4. `qa-inspector` verifies after each meaningful module boundary, not only at the end.
 5. `code-reviewer` reviews changed files for multi-file or pre-PR work.
-6. `git-workflow-assistant` prepares branch, commit, or PR language when requested.
+6. `git-workflow-assistant` prepares or executes commit, PR creation, and PR review workflows when explicitly requested.
 7. The orchestrator integrates findings and keeps the final response concise.
 
 Expected task shape:
@@ -100,8 +100,13 @@ Preserve `_workspace/` after completion for audit and follow-up work.
 
 Use skill resources only when they help the active task:
 
-- `everygsm-git-workflow/scripts/discover-changed-areas.sh` for branch, commit, and PR scope discovery.
-- `everygsm-git-workflow/references/scope-guide.md` for scope/type selection.
+- `everygsm-commit/scripts/discover-changed-areas.sh` for commit and PR scope discovery.
+- `everygsm-commit/references/scope-guide.md` for scope/type selection.
+- `everygsm-write-pr/scripts/create-pr.sh` for explicit PR creation requests.
+- `everygsm-write-pr/references/labels.md` for PR label selection.
+- `everygsm-review-pr/scripts/get-pr-data.sh` for explicit PR review comment handling.
+- `everygsm-review-pr/scripts/reply-review-comment.sh` for explicit GitHub review replies.
+- `everygsm-review-pr/references/reply-formats.md` for Korean reply templates.
 - `everygsm-code-review/references/review-checklist.md` for multi-file or pre-PR reviews.
 - `everygsm-systematic-debugging/references/root-cause-tracing.md` for cross-boundary failures.
 
@@ -151,6 +156,9 @@ Debugging flow:
 
 Git workflow flow:
 
-1. User asks for a branch name, commit message, or PR draft.
+1. User asks for a branch name, commit, PR creation, or PR review comment handling.
 2. `git-workflow-assistant` inspects actual git state and relevant templates.
-3. The final answer provides concise options without committing or pushing unless explicitly requested.
+3. For commit requests, use `everygsm-commit`.
+4. For PR creation requests, use `everygsm-write-pr`.
+5. For PR review comment handling, use `everygsm-review-pr`.
+6. Do not commit, push, create PRs, or post replies unless the user explicitly requested that side effect.

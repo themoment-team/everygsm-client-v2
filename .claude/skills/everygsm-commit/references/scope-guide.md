@@ -4,7 +4,7 @@ Use this guide when selecting branch names, commit scopes, PR title scopes, and 
 
 ## Runtime Discovery
 
-Prefer the changed files over guesses:
+Prefer changed files over guesses:
 
 ```bash
 bash "${CLAUDE_SKILL_DIR}/scripts/discover-changed-areas.sh" auto
@@ -56,7 +56,7 @@ Choose the most specific meaningful scope:
 ## Examples
 
 ```text
-chore(harness): add Git workflow resources
+chore(harness): add Git workflow automation
 fix(register): align form defaults with schema
 feat(project): add status filter
 docs: update setup instructions

@@ -1,0 +1,10 @@
+# EveryGSM Claude Harness Changelog
+
+| Date       | Change                                                                   | Target                                                           | Reason                                                                                          |
+| ---------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 2026-05-19 | Initial harness configuration                                            | `.claude/agents`, `.claude/skills`, `CLAUDE.md`                  | Establish reusable English-language frontend harness                                            |
+| 2026-05-19 | Expanded harness with rules, review, debugging, and Git workflow support | `.claude/rules`, `.claude/agents`, `.claude/skills`, `CLAUDE.md` | Adapt useful patterns from the backend example harness for frontend work                        |
+| 2026-05-19 | Added safe Claude settings and hooks                                     | `.claude/settings.json`, `.claude/hooks`                         | Log commands, block dangerous shell patterns, and remind validation without auto-mutating files |
+| 2026-05-19 | Added agent metadata and bundled skill resources                         | `.claude/agents`, `.claude/skills`, `.prettierignore`            | Align useful `.example` patterns with the frontend harness while keeping resources lightweight  |
+| 2026-05-19 | Added executable commit, PR creation, and PR review reply workflows      | `.claude/skills`, `.claude/settings.json`, `CLAUDE.md`           | Support explicit GitHub automation requests similar to the backend example harness              |
+| 2026-05-19 | Moved harness change history out of `CLAUDE.md`                          | `CLAUDE.md`, `.claude/CHANGELOG.md`                              | Keep `CLAUDE.md` focused on project instructions and harness trigger pointers                   |

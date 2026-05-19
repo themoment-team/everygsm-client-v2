@@ -66,14 +66,8 @@ Do not hardcode secrets, OAuth values, or API hosts. Check `.gitignore` before s
 
 ## Harness: EveryGSM Frontend
 
-**Goal:** Coordinate focused EveryGSM-client-v2 frontend work through reusable agents, skills, and rules for architecture, UI implementation, API/data flow, debugging, code review, Git workflow, and QA.
+**Goal:** Coordinate focused EveryGSM-client-v2 frontend work through reusable agents, skills, and rules for architecture, UI implementation, API/data flow, debugging, code review, executable Git workflow, and QA.
 
-**Trigger:** For EveryGSM frontend implementation, review, refactor, bugfix, debugging, branch, commit, PR, UI, API/data, form, routing, QA, rerun, update, revision, partial rerun, or previous-result improvement requests, use the `everygsm-orchestrator` skill. Simple questions may be answered directly.
+**Trigger:** For EveryGSM frontend implementation, review, refactor, bugfix, debugging, branch, commit, PR creation, PR review comments, UI, API/data, form, routing, QA, rerun, update, revision, partial rerun, or previous-result improvement requests, use the `everygsm-orchestrator` skill. Simple questions may be answered directly.
 
-**Change History:**
-| Date | Change | Target | Reason |
-| --- | --- | --- | --- |
-| 2026-05-19 | Initial harness configuration | `.claude/agents`, `.claude/skills`, `CLAUDE.md` | Establish reusable English-language frontend harness |
-| 2026-05-19 | Expanded harness with rules, review, debugging, and Git workflow support | `.claude/rules`, `.claude/agents`, `.claude/skills`, `CLAUDE.md` | Adapt useful patterns from the backend example harness for frontend work |
-| 2026-05-19 | Added safe Claude settings and hooks | `.claude/settings.json`, `.claude/hooks` | Log commands, block dangerous shell patterns, and remind validation without auto-mutating files |
-| 2026-05-19 | Added agent metadata and bundled skill resources | `.claude/agents`, `.claude/skills`, `.prettierignore` | Align useful `.example` patterns with the frontend harness while keeping resources lightweight |
+Detailed harness changes are tracked in `.claude/CHANGELOG.md`.

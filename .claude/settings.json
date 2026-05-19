@@ -11,13 +11,26 @@
       "Bash(git diff*)",
       "Bash(git status)",
       "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
       "Bash(git branch*)",
       "Bash(git rev-parse*)",
+      "Bash(gh repo view*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr create*)",
+      "Bash(gh api*)",
+      "Bash(mkdir -p .pr-tmp)",
+      "Bash(rm -f .pr-tmp/PR_BODY.md)",
+      "Bash(rm -rf .pr-tmp)",
       "Bash(pnpm lint)",
       "Bash(pnpm format:check)",
       "Bash(pnpm prettier --check*)",
       "Bash(pnpm build)",
-      "Bash(bash .claude/skills/everygsm-git-workflow/scripts/discover-changed-areas.sh*)"
+      "Bash(bash .claude/skills/everygsm-commit/scripts/discover-changed-areas.sh*)",
+      "Bash(bash .claude/skills/everygsm-write-pr/scripts/create-pr.sh*)",
+      "Bash(bash .claude/skills/everygsm-review-pr/scripts/get-pr-data.sh*)",
+      "Bash(bash .claude/skills/everygsm-review-pr/scripts/reply-review-comment.sh*)"
     ]
   },
   "hooks": {
