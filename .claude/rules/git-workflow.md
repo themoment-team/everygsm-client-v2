@@ -1,3 +1,13 @@
+---
+description: 'Branch, commit, PR text, and change grouping conventions for EveryGSM Git workflow and GitHub metadata.'
+paths:
+  - '.github/**/*'
+  - '.claude/skills/everygsm-commit/**/*'
+  - '.claude/skills/everygsm-write-pr/**/*'
+  - '.claude/skills/everygsm-review-pr/**/*'
+  - '.claude/rules/git-workflow.md'
+---
+
 # Git Workflow Rules
 
 Use these rules for branch names, commits, PR text, and change grouping.

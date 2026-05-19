@@ -1,3 +1,12 @@
+---
+description: 'API URL, fetcher, Axios, TanStack Query, Zod schema, and data contract conventions for EveryGSM data-flow files.'
+paths:
+  - 'src/shared/api/**/*'
+  - 'src/shared/lib/axios.ts'
+  - 'src/entities/**/*'
+  - 'src/features/**/model/**/*'
+---
+
 # API and Data Flow Conventions
 
 Use these rules for API, query, schema, and domain data changes.

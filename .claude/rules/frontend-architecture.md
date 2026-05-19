@@ -1,3 +1,11 @@
+---
+description: 'Feature-Sliced Design layering, project structure, ownership, and client/server architecture rules for EveryGSM frontend source files.'
+paths:
+  - 'src/**/*'
+  - 'CLAUDE.md'
+  - 'AGENTS.md'
+---
+
 # Frontend Architecture Rules
 
 Use these rules as the authoritative EveryGSM frontend architecture checklist.

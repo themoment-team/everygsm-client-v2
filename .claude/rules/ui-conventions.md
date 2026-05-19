@@ -1,3 +1,11 @@
+---
+description: 'React component, Tailwind CSS, form, and UI interaction conventions for EveryGSM TSX and style files.'
+paths:
+  - 'src/**/*.tsx'
+  - 'src/shared/styles/**/*'
+  - 'src/shared/assets/**/*'
+---
+
 # UI Conventions
 
 Use these rules when reviewing or implementing EveryGSM UI.

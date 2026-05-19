@@ -1,3 +1,11 @@
+---
+description: 'Root-cause debugging, boundary tracing, and fix discipline rules for EveryGSM bugs, validation failures, and scripts.'
+paths:
+  - 'src/**/*'
+  - '.claude/**/*.sh'
+  - '.claude/skills/everygsm-systematic-debugging/**/*'
+---
+
 # Debugging Rules
 
 Use these rules for bugs, test failures, build failures, and unexpected behavior.
