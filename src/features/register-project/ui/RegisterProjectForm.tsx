@@ -59,8 +59,12 @@ const RegisterProjectForm = () => {
   const { openModal, closeModal } = useModalStore();
 
   const debouncedParticipantName = useDebounce(participantInput, 500);
-  const { data: searchedUsersData } = useGetUsersSearch(debouncedParticipantName);
+  const { data: searchedUsersData, isFetching: isSearchingUsers } =
+    useGetUsersSearch(debouncedParticipantName);
   const searchedUsers = searchedUsersData?.data.users ?? [];
+
+  const isDebouncing = participantInput !== debouncedParticipantName;
+  const isSearching = isDebouncing || isSearchingUsers;
 
   const {
     register,
@@ -354,6 +358,7 @@ const RegisterProjectForm = () => {
         participants={selectedParticipants}
         participantInput={participantInput}
         searchedUsers={searchedUsers}
+        isSearching={isSearching}
         errorMessage={errors.participantIds?.message}
         onAddParticipant={addParticipant}
         onRemoveParticipant={removeParticipant}

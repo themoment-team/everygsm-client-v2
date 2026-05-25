@@ -17,6 +17,7 @@ interface ParticipantsFieldProps {
   participants: SearchedUserType[];
   participantInput: string;
   searchedUsers: SearchedUserType[];
+  isSearching?: boolean;
   errorMessage?: string;
   onRemoveParticipant: (index: number) => void;
   onParticipantInputChange: ChangeEventHandler<HTMLInputElement>;
@@ -27,6 +28,7 @@ const ParticipantsField = ({
   participants,
   participantInput,
   searchedUsers = [],
+  isSearching = false,
   errorMessage,
   onRemoveParticipant,
   onParticipantInputChange,
@@ -36,7 +38,9 @@ const ParticipantsField = ({
     onAddParticipant(user);
   };
 
-  const showSearchResults = participantInput.trim().length > 0 && searchedUsers.length > 0;
+  const hasInput = participantInput.trim().length > 0;
+  const showSearchResults = hasInput && searchedUsers.length > 0;
+  const showNoResults = hasInput && searchedUsers.length === 0 && !isSearching;
 
   return (
     <div className={cn('flex flex-col gap-3')}>
@@ -86,6 +90,15 @@ const ParticipantsField = ({
                 ))}
               </div>
             </>
+          )}
+          {showNoResults && (
+            <div className={cn('flex w-full flex-col gap-4')}>
+              <div className={cn('flex w-full items-center gap-4')}>
+                <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
+                <div className={cn('h-[1px] flex-1 bg-[#6A6A6A]')} />
+              </div>
+              <p className={cn('text-sm font-medium text-[#9A9A9A]')}>찾을 수 없는 사용자 입니다</p>
+            </div>
           )}
           {participants.length > 0 && (
             <>
