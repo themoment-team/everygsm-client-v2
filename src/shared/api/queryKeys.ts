@@ -23,6 +23,11 @@ export const authQueryKeys = {
   getMyInfo: () => ['auth', 'userinfo'] as const,
 } as const;
 
+export const userQueryKeys = {
+  all: () => ['users'] as const,
+  getUsersSearch: (name: string) => ['users', 'search', name] as const,
+} as const;
+
 export const imageQueryKeys = {
   postImageUpload: () => ['post', 'image'] as const,
 } as const;

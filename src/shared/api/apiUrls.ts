@@ -11,6 +11,7 @@ export const authUrl = {
 
 export const userUrl = {
   getMyInfo: () => '/api/v2/users/me',
+  getUsersSearch: (name: string) => `/api/v2/users/search?name=${name}`,
 } as const;
 
 export const projectUrl = {
