@@ -36,7 +36,7 @@ const ParticipantsField = ({
     onAddParticipant(user);
   };
 
-  const showSearchResults = searchedUsers.length > 0;
+  const showSearchResults = participantInput.trim().length > 0 && searchedUsers.length > 0;
 
   return (
     <div className={cn('flex flex-col gap-3')}>
