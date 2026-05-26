@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { type SearchedUserType, useGetUsersSearch } from '@/entities/user';
+import { useGetUsersSearch, type UserSummaryType } from '@/entities/user';
 import { useDebounce } from '@/shared/hooks';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
@@ -50,7 +50,7 @@ const RegisterProjectForm = () => {
   const [customTechStacks, setCustomTechStacks] = useState<string[]>([]);
   const [techStackInput, setTechStackInput] = useState('');
   const [participantInput, setParticipantInput] = useState<string>('');
-  const [selectedParticipants, setSelectedParticipants] = useState<SearchedUserType[]>([]);
+  const [selectedParticipants, setSelectedParticipants] = useState<UserSummaryType[]>([]);
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
@@ -194,7 +194,7 @@ const RegisterProjectForm = () => {
     addCustomTechStack();
   };
 
-  const addParticipant = (user: SearchedUserType) => {
+  const addParticipant = (user: UserSummaryType) => {
     if (participantIds.includes(user.userId)) {
       setParticipantInput('');
       return;

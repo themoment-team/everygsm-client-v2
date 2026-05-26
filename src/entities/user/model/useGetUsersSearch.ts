@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 
 import { get, userQueryKeys, userUrl } from '@/shared/api';
 
-import { UserSearchResponseDataType } from './types';
+import { UserSearchResponseType } from './types';
 
 export const useGetUsersSearch = (name: string) => {
   return useQuery({
     queryKey: userQueryKeys.getUsersSearch(name),
-    queryFn: () => get<UserSearchResponseDataType>(userUrl.getUsersSearch(name)),
+    queryFn: () => get<UserSearchResponseType>(userUrl.getUsersSearch(name)),
     enabled: !!name,
   });
 };

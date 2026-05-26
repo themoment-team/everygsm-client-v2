@@ -10,16 +10,16 @@ export interface UserType {
   role: UserRoleType;
 }
 
-export interface SearchedUserType {
+export interface UserSummaryType {
   userId: number;
   name: string;
   studentNumber: string;
 }
 
-export interface UserSearchResponseType {
-  users: SearchedUserType[];
+export interface UserSearchType {
+  users: UserSummaryType[];
 }
 
 export type UserInfoResponseType = ApiResponse<UserType>;
 
-export type UserSearchResponseDataType = ApiResponse<UserSearchResponseType>;
+export type UserSearchResponseType = ApiResponse<UserSearchType>;

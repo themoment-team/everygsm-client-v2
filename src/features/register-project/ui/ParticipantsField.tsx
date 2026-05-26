@@ -1,6 +1,6 @@
 import { type ChangeEventHandler } from 'react';
 
-import { type SearchedUserType } from '@/entities/user';
+import { type UserSummaryType } from '@/entities/user';
 import { XIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 
@@ -14,14 +14,14 @@ import {
 } from './styles';
 
 interface ParticipantsFieldProps {
-  participants: SearchedUserType[];
+  participants: UserSummaryType[];
   participantInput: string;
-  searchedUsers: SearchedUserType[];
+  searchedUsers: UserSummaryType[];
   isSearching?: boolean;
   errorMessage?: string;
   onRemoveParticipant: (index: number) => void;
   onParticipantInputChange: ChangeEventHandler<HTMLInputElement>;
-  onAddParticipant: (user: SearchedUserType) => void;
+  onAddParticipant: (user: UserSummaryType) => void;
 }
 
 const ParticipantsField = ({
@@ -34,7 +34,7 @@ const ParticipantsField = ({
   onParticipantInputChange,
   onAddParticipant,
 }: ParticipantsFieldProps) => {
-  const handleAddParticipant = (user: SearchedUserType) => {
+  const handleAddParticipant = (user: UserSummaryType) => {
     onAddParticipant(user);
   };
 
