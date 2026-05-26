@@ -58,12 +58,12 @@ const RegisterProjectForm = () => {
   const currentYear = new Date().getFullYear();
   const { openModal, closeModal } = useModalStore();
 
-  const debouncedParticipantName = useDebounce(participantInput, 500);
+  const debouncedParticipantInput = useDebounce(participantInput, 500);
   const { data: searchedUsersData, isFetching: isSearchingUsers } =
-    useGetUsersSearch(debouncedParticipantName);
+    useGetUsersSearch(debouncedParticipantInput);
   const searchedUsers = searchedUsersData?.data.users ?? [];
 
-  const isDebouncing = participantInput !== debouncedParticipantName;
+  const isDebouncing = participantInput !== debouncedParticipantInput;
   const isSearching = isDebouncing || isSearchingUsers;
 
   const {
