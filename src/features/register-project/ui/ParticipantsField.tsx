@@ -113,7 +113,7 @@ const ParticipantsField = ({
                 <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
               <p className={cn('text-sm font-medium text-[#9A9A9A]')}>
-                이미 참여자로 등록된 사용자입니다
+                이미 프로젝트 참여자로 추가된 사용자입니다
               </p>
             </div>
           )}
