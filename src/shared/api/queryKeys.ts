@@ -20,11 +20,11 @@ export const projectQueryKeys = {
 export const authQueryKeys = {
   all: () => ['auth'] as const,
   postSignIn: () => ['auth', 'signin'] as const,
-  getMyInfo: () => ['auth', 'userinfo'] as const,
 } as const;
 
 export const userQueryKeys = {
   all: () => ['users'] as const,
+  getMyInfo: () => ['auth', 'userinfo'] as const,
   getUsersSearch: (name: string) => ['users', 'search', name] as const,
 } as const;
 
