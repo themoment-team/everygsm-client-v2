@@ -62,7 +62,6 @@ const ParticipantsField = ({
             onChange={(e) => {
               onParticipantInputChange(e);
             }}
-            onFocus={() => {}}
             className={cn('w-full', inputTextClassName, placeholderClassName)}
           />
           {showSearchResults && (
