@@ -16,6 +16,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { useGetUsersSearch, type UserSummaryType } from '@/entities/user';
+import { useDebounce } from '@/shared/hooks';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
@@ -25,6 +27,7 @@ import { usePostImageUpload } from '../model/usePostImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
 import ImageCropModal from './ImageCropModal';
 import LogoUploadField from './LogoUploadField';
+import ParticipantsField from './ParticipantsField';
 import RepositoryUrlField from './RepositoryUrlField';
 import TechStackField from './TechStackField';
 import TextareaField from './TextareaField';
@@ -46,12 +49,22 @@ const RegisterProjectForm = () => {
 
   const [customTechStacks, setCustomTechStacks] = useState<string[]>([]);
   const [techStackInput, setTechStackInput] = useState('');
+  const [participantInput, setParticipantInput] = useState<string>('');
+  const [selectedParticipants, setSelectedParticipants] = useState<UserSummaryType[]>([]);
   const [logoFileName, setLogoFileName] = useState('');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const { openModal, closeModal } = useModalStore();
+
+  const debouncedParticipantInput = useDebounce(participantInput, 500);
+  const { data: searchedUsersData, isFetching: isSearchingUsers } =
+    useGetUsersSearch(debouncedParticipantInput);
+  const searchedUsers = searchedUsersData?.data.users ?? [];
+
+  const isDebouncing = participantInput !== debouncedParticipantInput;
+  const isSearching = isDebouncing || isSearchingUsers;
 
   const {
     register,
@@ -69,6 +82,7 @@ const RegisterProjectForm = () => {
       description: '',
       prodUrl: '',
       startYear: currentYear,
+      participantIds: [],
       techStack: [],
       repository: [],
     },
@@ -79,6 +93,7 @@ const RegisterProjectForm = () => {
 
   const selectedTechStackValues = useWatch({ control, name: 'techStack' }) ?? [];
   const repositoryUrls = useWatch({ control, name: 'repository' }) ?? [];
+  const participantIds = useWatch({ control, name: 'participantIds' }) ?? [];
   const logo = useWatch({ control, name: 'logo' });
 
   const selectedTechStacks = selectedTechStackValues.map((stack) => stack.stackName);
@@ -177,6 +192,24 @@ const RegisterProjectForm = () => {
 
     event.preventDefault();
     addCustomTechStack();
+  };
+
+  const addParticipant = (user: UserSummaryType) => {
+    setSelectedParticipants((prev) => [...prev, user]);
+    setValue('participantIds', [...participantIds, user.userId], {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setParticipantInput('');
+  };
+
+  const removeParticipant = (targetIndex: number) => {
+    setSelectedParticipants((prev) => prev.filter((_, index) => index !== targetIndex));
+    setValue(
+      'participantIds',
+      participantIds.filter((_, index) => index !== targetIndex),
+      { shouldDirty: true, shouldValidate: true },
+    );
   };
 
   const hasTechStackInput = techStackInput.trim().length > 0;
@@ -315,6 +348,16 @@ const RegisterProjectForm = () => {
         placeholder="프로젝트 시작 연도를 입력해주세요"
         registration={startYearRegistration}
         errorMessage={errors.startYear?.message}
+      />
+      <ParticipantsField
+        participants={selectedParticipants}
+        participantInput={participantInput}
+        searchedUsers={searchedUsers}
+        isSearching={isSearching}
+        errorMessage={errors.participantIds?.message}
+        onAddParticipant={addParticipant}
+        onRemoveParticipant={removeParticipant}
+        onParticipantInputChange={(event) => setParticipantInput(event.target.value)}
       />
       <TextareaField
         id="project-description"
