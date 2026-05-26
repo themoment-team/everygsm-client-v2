@@ -24,7 +24,7 @@ export const authQueryKeys = {
 
 export const userQueryKeys = {
   all: () => ['users'] as const,
-  getMyInfo: () => ['auth', 'userinfo'] as const,
+  getMyInfo: () => ['users', 'userinfo'] as const,
   getUsersSearch: (name: string) => ['users', 'search', name] as const,
 } as const;
 
