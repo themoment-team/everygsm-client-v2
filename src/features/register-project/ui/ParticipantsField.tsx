@@ -51,7 +51,7 @@ const ParticipantsField = ({
       <div
         className={cn('relative flex w-full flex-wrap gap-x-3 gap-y-4 p-4', fieldShellClassName)}
       >
-        <div className={cn('flex min-w-[200px] flex-1 flex-col items-center gap-4')}>
+        <div className={cn('flex min-w-50 flex-1 flex-col items-center gap-4')}>
           <input
             id="project-participants"
             name="participants"
@@ -68,7 +68,7 @@ const ParticipantsField = ({
             <>
               <div className={cn('flex w-full items-center gap-4')}>
                 <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
-                <div className={cn('h-[1px] flex-1 bg-[#6A6A6A]')} />
+                <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
               <div className={'flex w-full items-start gap-4'}>
                 {searchedUsers.map((user) => (
@@ -94,7 +94,7 @@ const ParticipantsField = ({
             <div className={cn('flex w-full flex-col gap-4')}>
               <div className={cn('flex w-full items-center gap-4')}>
                 <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
-                <div className={cn('h-[1px] flex-1 bg-[#6A6A6A]')} />
+                <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
               <p className={cn('text-sm font-medium text-[#9A9A9A]')}>찾을 수 없는 사용자 입니다</p>
             </div>
@@ -103,7 +103,7 @@ const ParticipantsField = ({
             <>
               <div className={cn('flex w-full items-center gap-4')}>
                 <p className={cn('shrink-0 whitespace-nowrap text-[#FC335A]')}>프로젝트 참여자</p>
-                <div className={cn('h-[1px] flex-1 bg-[#FC335A]')} />
+                <div className={cn('h-px flex-1 bg-[#FC335A]')} />
               </div>
               <div className={'flex w-full items-start gap-4'}>
                 {participants.map((participant, index) => (
