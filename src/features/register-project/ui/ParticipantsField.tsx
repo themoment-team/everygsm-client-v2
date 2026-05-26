@@ -70,7 +70,7 @@ const ParticipantsField = ({
                 <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
                 <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
-              <div className={'flex w-full items-start gap-4'}>
+              <div className={'flex w-full flex-wrap items-start gap-4'}>
                 {searchedUsers.map((user) => (
                   <button
                     key={user.userId}
@@ -105,7 +105,7 @@ const ParticipantsField = ({
                 <p className={cn('shrink-0 whitespace-nowrap text-[#FC335A]')}>프로젝트 참여자</p>
                 <div className={cn('h-px flex-1 bg-[#FC335A]')} />
               </div>
-              <div className={'flex w-full items-start gap-4'}>
+              <div className={'flex w-full flex-wrap items-start gap-4'}>
                 {participants.map((participant, index) => (
                   <button
                     key={participant.userId}
