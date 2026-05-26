@@ -39,8 +39,15 @@ const ParticipantsField = ({
   };
 
   const hasInput = participantInput.trim().length > 0;
-  const showSearchResults = hasInput && !isSearching && searchedUsers.length > 0;
+
+  const filteredSearchedUsers = searchedUsers.filter(
+    (user) => !participants.some((p) => p.userId === user.userId),
+  );
+
+  const showSearchResults = hasInput && !isSearching && filteredSearchedUsers.length > 0;
   const showNoResults = hasInput && !isSearching && searchedUsers.length === 0;
+  const isAlreadyParticipant =
+    hasInput && !isSearching && searchedUsers.length > 0 && filteredSearchedUsers.length === 0;
 
   return (
     <div className={cn('flex flex-col gap-3')}>
@@ -71,7 +78,7 @@ const ParticipantsField = ({
                 <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
               <div className={'flex w-full flex-wrap items-start gap-4'}>
-                {searchedUsers.map((user) => (
+                {filteredSearchedUsers.map((user) => (
                   <button
                     key={user.userId}
                     type="button"
@@ -97,6 +104,17 @@ const ParticipantsField = ({
                 <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
               <p className={cn('text-sm font-medium text-[#9A9A9A]')}>찾을 수 없는 사용자 입니다</p>
+            </div>
+          )}
+          {isAlreadyParticipant && (
+            <div className={cn('flex w-full flex-col gap-4')}>
+              <div className={cn('flex w-full items-center gap-4')}>
+                <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
+                <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
+              </div>
+              <p className={cn('text-sm font-medium text-[#9A9A9A]')}>
+                이미 참여자로 등록된 사용자입니다
+              </p>
             </div>
           )}
           {participants.length > 0 && (
