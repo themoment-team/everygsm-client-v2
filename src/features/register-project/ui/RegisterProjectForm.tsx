@@ -195,11 +195,6 @@ const RegisterProjectForm = () => {
   };
 
   const addParticipant = (user: UserSummaryType) => {
-    if (participantIds.includes(user.userId)) {
-      setParticipantInput('');
-      return;
-    }
-
     setSelectedParticipants((prev) => [...prev, user]);
     setValue('participantIds', [...participantIds, user.userId], {
       shouldDirty: true,
