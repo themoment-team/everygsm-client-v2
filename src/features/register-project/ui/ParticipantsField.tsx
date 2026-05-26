@@ -109,7 +109,7 @@ const ParticipantsField = ({
               <div className={'flex w-full items-start gap-4'}>
                 {participants.map((participant, index) => (
                   <button
-                    key={`${participant.userId}-${index}`}
+                    key={participant.userId}
                     type="button"
                     onClick={() => onRemoveParticipant(index)}
                     className={cn(
