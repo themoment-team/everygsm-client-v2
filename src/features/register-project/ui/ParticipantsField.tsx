@@ -39,8 +39,8 @@ const ParticipantsField = ({
   };
 
   const hasInput = participantInput.trim().length > 0;
-  const showSearchResults = hasInput && searchedUsers.length > 0;
-  const showNoResults = hasInput && searchedUsers.length === 0 && !isSearching;
+  const showSearchResults = hasInput && !isSearching && searchedUsers.length > 0;
+  const showNoResults = hasInput && !isSearching && searchedUsers.length === 0;
 
   return (
     <div className={cn('flex flex-col gap-3')}>
