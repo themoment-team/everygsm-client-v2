@@ -35,8 +35,7 @@ const ProjectActionMenu = ({ projectId }: ProjectActionMenuProps) => {
   return (
     <div ref={menuRef} className={cn('relative')}>
       <button
-        onClick={(e) => {
-          e.stopPropagation();
+        onClick={() => {
           setIsOpen((prev) => !prev);
         }}
         className={cn('cursor-pointer')}
