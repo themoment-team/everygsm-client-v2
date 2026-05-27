@@ -44,8 +44,9 @@ const DeleteConfirmModal = ({ projectId }: DeleteConfirmModalProps) => {
       <div className={cn('flex w-full items-center justify-between')}>
         <button
           onClick={closeModal}
+          disabled={isPending}
           className={cn(
-            'flex cursor-pointer items-center justify-center gap-28 rounded-xl border border-[#FC335A] px-9 py-3 text-[1.125rem] font-medium text-[#FC335A]',
+            'flex cursor-pointer items-center justify-center rounded-xl border border-[#FC335A] px-9 py-3 text-[1.125rem] font-medium text-[#FC335A] disabled:opacity-50',
           )}
         >
           취소
@@ -54,7 +55,7 @@ const DeleteConfirmModal = ({ projectId }: DeleteConfirmModalProps) => {
           onClick={handleConfirm}
           disabled={isPending}
           className={cn(
-            'flex cursor-pointer items-center justify-center gap-28 rounded-xl bg-[#FC335A] px-9 py-3 text-[1.125rem] font-medium text-white disabled:opacity-50',
+            'flex cursor-pointer items-center justify-center rounded-xl bg-[#FC335A] px-9 py-3 text-[1.125rem] font-medium text-white disabled:opacity-50',
           )}
         >
           확인
