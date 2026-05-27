@@ -14,6 +14,7 @@ export const projectQueryKeys = {
   getMyRejectedProjects: () => ['projects', 'my', 'rejected'] as const,
   getMyPendingProjects: () => ['projects', 'my', 'pending'] as const,
   postProjectRegistration: () => ['projects', 'create'] as const,
+  deleteMyProject: (projectId: number) => ['projects', 'my', 'delete', projectId] as const,
   toggleProjectLike: (projectId: number) => ['projects', 'like', 'toggle', projectId] as const,
 } as const;
 
