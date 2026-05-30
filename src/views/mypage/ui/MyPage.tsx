@@ -10,6 +10,7 @@ import {
   useGetMyRejectedProjects,
 } from '@/entities/project';
 import { useGetMyInfo, UserInfoResponseType } from '@/entities/user';
+import { ProjectActionMenu } from '@/features/delete-project';
 import { RequestStatusFilter, RequestStatusFilterType } from '@/features/request-status-filter';
 import { useHandleErrorQueryToast } from '@/shared/hooks';
 import { cn } from '@/shared/utils';
@@ -84,7 +85,10 @@ const MyPage = ({
               </>
             }
           />
-          <ProjectList projects={registeredProjects} />
+          <ProjectList
+            projects={registeredProjects}
+            renderActionButton={(project) => <ProjectActionMenu projectId={project.projectId} />}
+          />
         </div>
 
         <div className={cn('flex flex-col items-center gap-y-10')}>
