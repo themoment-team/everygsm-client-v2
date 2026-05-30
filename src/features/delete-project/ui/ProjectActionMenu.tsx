@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { ArrowIcon, HamburgerIcon } from '@/shared/assets';
+import { useOnClickOutside } from '@/shared/hooks';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
@@ -17,15 +18,7 @@ const ProjectActionMenu = ({ projectId }: ProjectActionMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const { openModal } = useModalStore();
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  useOnClickOutside(menuRef as React.RefObject<HTMLElement>, () => setIsOpen(false));
 
   const handleDelete = () => {
     setIsOpen(false);
