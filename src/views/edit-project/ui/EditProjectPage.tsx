@@ -62,12 +62,16 @@ const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps
           </Link>
           <div className={cn('flex w-full max-w-200 flex-col items-center justify-center gap-y-9')}>
             <HeroSection title="프로젝트 수정" />
-            <ProjectForm
-              mode="edit"
-              initialData={initialData}
-              initialParticipants={initialParticipants}
-              onValidSubmit={handleValidSubmit}
-            />
+            {project ? (
+              <ProjectForm
+                mode="edit"
+                initialData={initialData}
+                initialParticipants={initialParticipants}
+                onValidSubmit={handleValidSubmit}
+              />
+            ) : (
+              <div className="text-white">로딩 중...</div>
+            )}
           </div>
         </div>
       </div>

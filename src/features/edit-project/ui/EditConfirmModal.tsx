@@ -18,34 +18,39 @@ interface EditConfirmModalProps {
 const EditConfirmModal = ({ projectId, requestBody }: EditConfirmModalProps) => {
   const router = useRouter();
   const { closeModal } = useModalStore();
-  const { mutate: patchProject, isPending } = usePatchMyProject();
+  const { mutate: patchProject, isPending } = usePatchMyProject(projectId);
 
   const handleConfirm = () => {
-    patchProject(
-      { projectId, ...requestBody },
-      {
-        onSuccess: () => {
-          closeModal();
-          router.push('/mypage');
-          toast.success('프로젝트 수정 요청이 완료되었습니다.');
-        },
-        onError: () => {
-          toast.error('프로젝트 수정에 실패했습니다. 잠시 후 다시 시도해주세요.');
-        },
+    patchProject(requestBody, {
+      onSuccess: () => {
+        closeModal();
+        router.push('/mypage');
+        toast.success('프로젝트 수정 요청이 완료되었습니다.');
       },
-    );
+      onError: () => {
+        toast.error('프로젝트 수정에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      },
+    });
   };
 
   return (
     <div
       className={cn(
-        'flex w-120 flex-col items-center gap-6 rounded-xl border border-[#2F2F2F] bg-[rgba(34,34,34,0.50)] p-6 backdrop-blur-[18px]',
+        'flex w-120 flex-col items-center gap-6 rounded-xl bg-[rgba(34,34,34,0.50)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[1.125rem]',
       )}
     >
-      <h2 className={cn('w-full text-center text-[1.25rem] font-semibold text-white')}>
+      <h2
+        className={cn(
+          'w-full text-center text-xl leading-6 font-semibold tracking-[-0.0375rem] text-white',
+        )}
+      >
         프로젝트 내용 수정
       </h2>
-      <p className={cn('w-full text-center text-[1rem] leading-6 font-medium text-white')}>
+      <p
+        className={cn(
+          'w-full text-center text-base leading-4.75 font-medium tracking-[-0.03rem] text-white',
+        )}
+      >
         프로젝트 수정 시 수정 내용에 대해 관리자에게
         <br />
         승인을 받아야 합니다. 승인을 받기 전까지 EveryGSM에서는
@@ -56,7 +61,7 @@ const EditConfirmModal = ({ projectId, requestBody }: EditConfirmModalProps) => 
         onClick={handleConfirm}
         disabled={isPending}
         className={cn(
-          'w-full cursor-pointer rounded-xl bg-[#FC335A] px-9 py-3 text-[1.125rem] font-medium text-white disabled:opacity-50',
+          'w-full cursor-pointer rounded-xl bg-[#FC335A] px-9 py-3 text-lg leading-5 font-semibold text-white disabled:opacity-50',
         )}
       >
         확인
