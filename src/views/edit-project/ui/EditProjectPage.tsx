@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ProjectResponseType, useGetMyProject } from '@/entities/project';
 import { UserSummaryType } from '@/entities/user';
 import { EditConfirmModal, EditProjectReqType } from '@/features/edit-project';
-import { RegisterProjectForm } from '@/features/register-project';
+import { ProjectForm } from '@/features/project-form';
 import { ArrowIcon } from '@/shared/assets';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
@@ -62,7 +62,7 @@ const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps
           </Link>
           <div className={cn('flex w-full max-w-200 flex-col items-center justify-center gap-y-9')}>
             <HeroSection title="프로젝트 수정" />
-            <RegisterProjectForm
+            <ProjectForm
               mode="edit"
               initialData={initialData}
               initialParticipants={initialParticipants}

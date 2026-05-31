@@ -43,7 +43,7 @@ const resizeTextarea = (textarea: HTMLTextAreaElement) => {
   textarea.style.height = `${textarea.scrollHeight}px`;
 };
 
-interface RegisterProjectFormProps {
+interface ProjectFormProps {
   mode?: 'register' | 'edit';
   initialData?: {
     logo?: string;
@@ -60,12 +60,12 @@ interface RegisterProjectFormProps {
   onValidSubmit?: (data: ProjectRegistrationReqType) => void;
 }
 
-const RegisterProjectForm = ({
+const ProjectForm = ({
   mode = 'register',
   initialData,
   initialParticipants,
   onValidSubmit,
-}: RegisterProjectFormProps = {}) => {
+}: ProjectFormProps = {}) => {
   const router = useRouter();
   const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -449,4 +449,4 @@ const RegisterProjectForm = ({
   );
 };
 
-export default RegisterProjectForm;
+export default ProjectForm;

@@ -10,13 +10,14 @@ import {
   useGetMyRejectedProjects,
 } from '@/entities/project';
 import { useGetMyInfo, UserInfoResponseType } from '@/entities/user';
-import { ProjectActionMenu } from '@/features/delete-project';
 import { RequestStatusFilter, RequestStatusFilterType } from '@/features/request-status-filter';
 import { useHandleErrorQueryToast } from '@/shared/hooks';
 import { cn } from '@/shared/utils';
 import { HeroSection } from '@/widgets/hero-section';
 import { ProjectList } from '@/widgets/project-list';
 import { ProjectRequestList } from '@/widgets/project-request-list';
+
+import ProjectActionMenu from './ProjectActionMenu';
 
 interface MyPageProps {
   initialUserInfoData?: UserInfoResponseType;

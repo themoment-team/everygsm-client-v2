@@ -1,1 +1,1 @@
-export { default as ProjectActionMenu } from './ui/ProjectActionMenu';
+export { default as DeleteConfirmModal } from './ui/DeleteConfirmModal';

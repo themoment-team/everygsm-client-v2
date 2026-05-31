@@ -4,12 +4,11 @@ import React, { useRef, useState } from 'react';
 
 import Link from 'next/link';
 
+import { DeleteConfirmModal } from '@/features/delete-project';
 import { ArrowIcon, HamburgerIcon } from '@/shared/assets';
 import { useOnClickOutside } from '@/shared/hooks';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
-
-import DeleteConfirmModal from './DeleteConfirmModal';
 
 interface ProjectActionMenuProps {
   projectId: number;
