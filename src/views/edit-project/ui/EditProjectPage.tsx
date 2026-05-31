@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { ProjectResponseType } from '@/entities/project';
+import { ProjectResponseType, useGetMyProject } from '@/entities/project';
 import { UserSummaryType } from '@/entities/user';
 import { EditConfirmModal, EditProjectReqType } from '@/features/edit-project';
 import { RegisterProjectForm } from '@/features/register-project';
@@ -13,26 +13,29 @@ import { HeroSection } from '@/widgets/hero-section';
 
 interface EditProjectPageProps {
   projectId: number;
-  initialProjectData: ProjectResponseType;
+  initialProjectData: ProjectResponseType | undefined;
 }
 
 const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps) => {
   const { openModal } = useModalStore();
-  const project = initialProjectData.data;
+  const { data: myProjectData } = useGetMyProject(projectId, {
+    initialData: initialProjectData,
+  });
+  const project = myProjectData?.data ?? initialProjectData?.data;
 
   const initialData = {
-    logo: project.logo,
-    title: project.title,
-    affiliation: project.affiliation ?? '',
-    startYear: project.startYear,
-    description: project.description,
-    prodUrl: project.prodUrl,
-    techStack: project.techStack,
-    repository: project.repository.map((r) => r.repoUrl),
-    participantIds: project.participants.map((p) => p.userId),
+    logo: project?.logo,
+    title: project?.title,
+    affiliation: project?.affiliation ?? '',
+    startYear: project?.startYear,
+    description: project?.description,
+    prodUrl: project?.prodUrl,
+    techStack: project?.techStack,
+    repository: project?.repository.map((r) => r.repoUrl),
+    participantIds: project?.participants.map((p) => p.userId),
   };
 
-  const initialParticipants: UserSummaryType[] = project.participants;
+  const initialParticipants: UserSummaryType[] = project?.participants || [];
 
   const handleValidSubmit = (data: EditProjectReqType) => {
     openModal(<EditConfirmModal projectId={projectId} requestBody={data} />);

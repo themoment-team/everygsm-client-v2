@@ -46,15 +46,15 @@ const resizeTextarea = (textarea: HTMLTextAreaElement) => {
 interface RegisterProjectFormProps {
   mode?: 'register' | 'edit';
   initialData?: {
-    logo: string;
-    title: string;
-    affiliation: string;
-    startYear: number;
-    description: string;
-    prodUrl: string;
-    techStack: { stackName: string }[];
-    repository: string[];
-    participantIds: number[];
+    logo?: string;
+    title?: string;
+    affiliation?: string;
+    startYear?: number;
+    description?: string;
+    prodUrl?: string;
+    techStack?: { stackName: string }[];
+    repository?: string[];
+    participantIds?: number[];
   };
   initialParticipants?: UserSummaryType[];
   onValidSubmit?: (data: ProjectRegistrationReqType) => void;

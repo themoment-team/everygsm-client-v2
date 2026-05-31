@@ -27,7 +27,7 @@ const EditProject = async ({ params }: { params: Promise<{ id: string }> }) => {
     redirect('/mypage');
   }
 
-  if (initialProjectData?.code === 404 || !initialProjectData?.data) {
+  if (initialProjectData?.code === 404) {
     notFound();
   }
 
