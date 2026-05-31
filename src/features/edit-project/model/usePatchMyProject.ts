@@ -1,20 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { ProjectFormReqType } from '@/entities/project';
 import { patch, projectQueryKeys, projectUrl } from '@/shared/api';
 
-export interface EditProjectReqType {
-  logo: string;
-  title: string;
-  affiliation: string;
-  startYear: number;
-  participantIds: number[];
-  description: string;
-  prodUrl: string;
-  techStack: { stackName: string }[];
-  repository: string[];
-}
-
-type PatchProjectParams = { projectId: number } & EditProjectReqType;
+type PatchProjectParams = { projectId: number } & ProjectFormReqType;
 
 export const usePatchMyProject = () => {
   const queryClient = useQueryClient();

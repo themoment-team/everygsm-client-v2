@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 
-import { ProjectResponseType, useGetMyProject } from '@/entities/project';
+import { ProjectFormReqType, ProjectResponseType, useGetMyProject } from '@/entities/project';
 import { UserSummaryType } from '@/entities/user';
-import { EditConfirmModal, EditProjectReqType } from '@/features/edit-project';
+import { EditConfirmModal } from '@/features/edit-project';
 import { ProjectForm } from '@/features/project-form';
 import { ArrowIcon } from '@/shared/assets';
 import { useModalStore } from '@/shared/stores';
@@ -37,7 +37,7 @@ const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps
 
   const initialParticipants: UserSummaryType[] = project?.participants || [];
 
-  const handleValidSubmit = (data: EditProjectReqType) => {
+  const handleValidSubmit = (data: ProjectFormReqType) => {
     openModal(<EditConfirmModal projectId={projectId} requestBody={data} />);
   };
 

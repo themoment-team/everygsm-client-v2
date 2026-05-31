@@ -48,3 +48,15 @@ export interface MyProjectsType {
 }
 
 export type MyProjectsListResponseType = ApiResponse<MyProjectsType>;
+
+export interface ProjectFormReqType {
+  logo: string;
+  title: string;
+  affiliation: string;
+  startYear: number;
+  participantIds: number[];
+  description: string;
+  prodUrl: string;
+  techStack: TechStackType[];
+  repository: string[];
+}

@@ -4,14 +4,15 @@ import { useRouter } from 'next/navigation';
 
 import { toast } from 'sonner';
 
+import { ProjectFormReqType } from '@/entities/project';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
-import { EditProjectReqType, usePatchMyProject } from '../model/usePatchMyProject';
+import { usePatchMyProject } from '../model/usePatchMyProject';
 
 interface EditConfirmModalProps {
   projectId: number;
-  requestBody: EditProjectReqType;
+  requestBody: ProjectFormReqType;
 }
 
 const EditConfirmModal = ({ projectId, requestBody }: EditConfirmModalProps) => {
