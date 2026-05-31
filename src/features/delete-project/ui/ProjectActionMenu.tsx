@@ -2,6 +2,8 @@
 
 import React, { useRef, useState } from 'react';
 
+import Link from 'next/link';
+
 import { ArrowIcon, HamburgerIcon } from '@/shared/assets';
 import { useOnClickOutside } from '@/shared/hooks';
 import { useModalStore } from '@/shared/stores';
@@ -43,14 +45,16 @@ const ProjectActionMenu = ({ projectId }: ProjectActionMenuProps) => {
             'absolute top-8 right-0 z-50 inline-flex flex-col items-end justify-center gap-2 rounded-xl border border-[#2F2F2F] bg-[rgba(34,34,34,0.50)] p-3 backdrop-blur-[18px]',
           )}
         >
-          <button
+          <Link
+            href={`/mypage/edit/${projectId}`}
+            onClick={() => setIsOpen(false)}
             className={cn(
               'flex cursor-pointer items-center gap-4 py-1.5 text-base leading-6 font-medium whitespace-nowrap text-white',
             )}
           >
             프로젝트 수정하기
             <ArrowIcon />
-          </button>
+          </Link>
           <button
             onClick={handleDelete}
             className={cn(

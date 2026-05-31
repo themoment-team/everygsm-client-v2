@@ -43,15 +43,44 @@ const resizeTextarea = (textarea: HTMLTextAreaElement) => {
   textarea.style.height = `${textarea.scrollHeight}px`;
 };
 
-const RegisterProjectForm = () => {
+interface RegisterProjectFormProps {
+  mode?: 'register' | 'edit';
+  initialData?: {
+    logo: string;
+    title: string;
+    affiliation: string;
+    startYear: number;
+    description: string;
+    prodUrl: string;
+    techStack: { stackName: string }[];
+    repository: string[];
+    participantIds: number[];
+  };
+  initialParticipants?: UserSummaryType[];
+  onValidSubmit?: (data: ProjectRegistrationReqType) => void;
+}
+
+const RegisterProjectForm = ({
+  mode = 'register',
+  initialData,
+  initialParticipants,
+  onValidSubmit,
+}: RegisterProjectFormProps = {}) => {
   const router = useRouter();
   const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [customTechStacks, setCustomTechStacks] = useState<string[]>([]);
+  const [customTechStacks, setCustomTechStacks] = useState<string[]>(() => {
+    if (!initialData?.techStack) return [];
+    return initialData.techStack
+      .map((s) => s.stackName)
+      .filter((name) => !(DEFAULT_TECH_STACKS as readonly string[]).includes(name));
+  });
   const [techStackInput, setTechStackInput] = useState('');
   const [participantInput, setParticipantInput] = useState<string>('');
-  const [selectedParticipants, setSelectedParticipants] = useState<UserSummaryType[]>([]);
-  const [logoFileName, setLogoFileName] = useState('');
+  const [selectedParticipants, setSelectedParticipants] = useState<UserSummaryType[]>(
+    initialParticipants ?? [],
+  );
+  const [logoFileName, setLogoFileName] = useState(initialData?.logo ? '(기존 로고)' : '');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
 
@@ -76,15 +105,15 @@ const RegisterProjectForm = () => {
     resolver: zodResolver(projectRegistrationSchema),
     mode: 'onChange',
     defaultValues: {
-      logo: '',
-      title: '',
-      affiliation: '',
-      description: '',
-      prodUrl: '',
-      startYear: currentYear,
-      participantIds: [],
-      techStack: [],
-      repository: [],
+      logo: initialData?.logo ?? '',
+      title: initialData?.title ?? '',
+      affiliation: initialData?.affiliation ?? '',
+      description: initialData?.description ?? '',
+      prodUrl: initialData?.prodUrl ?? '',
+      startYear: initialData?.startYear ?? currentYear,
+      participantIds: initialData?.participantIds ?? [],
+      techStack: initialData?.techStack ?? [],
+      repository: initialData?.repository ?? [],
     },
   });
 
@@ -296,6 +325,11 @@ const RegisterProjectForm = () => {
   ) => {
     if (hasSubmittedSuccessfully) return;
 
+    if (onValidSubmit) {
+      onValidSubmit(requestBody);
+      return;
+    }
+
     try {
       await postProjectRegistration(requestBody);
       setHasSubmittedSuccessfully(true);
@@ -407,7 +441,9 @@ const RegisterProjectForm = () => {
           isValid && !hasSubmittedSuccessfully && 'bg-[#FC335A] text-white',
         )}
       >
-        {isFormSubmitting ? '프로젝트 등록 중' : '프로젝트 등록'}
+        {isFormSubmitting
+          ? `프로젝트 ${mode === 'edit' ? '수정' : '등록'} 중`
+          : `프로젝트 ${mode === 'edit' ? '수정' : '등록'}`}
       </button>
     </form>
   );
