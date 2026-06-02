@@ -61,7 +61,7 @@ const EditConfirmModal = ({ projectId, requestBody }: EditConfirmModalProps) => 
         onClick={handleConfirm}
         disabled={isPending}
         className={cn(
-          'w-full cursor-pointer rounded-xl bg-[#FC335A] px-9 py-3 text-lg leading-5 font-semibold text-white disabled:opacity-50',
+          'cursor-pointer rounded-xl bg-[#FC335A] px-9 py-3 text-lg leading-5 font-semibold text-white disabled:opacity-50',
         )}
       >
         확인
