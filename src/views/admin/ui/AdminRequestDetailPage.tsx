@@ -5,7 +5,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import {
@@ -14,7 +13,6 @@ import {
   useAdminRejectProject,
   useGetAdminRequest,
 } from '@/entities/project';
-import { adminQueryKeys } from '@/shared/api';
 import { ArrowIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import { ProjectRequestDetailContent } from '@/widgets/project-request-detail';
@@ -29,7 +27,6 @@ const AdminRequestDetailPage = ({
   initialRequestedProjectData,
 }: AdminRequestDetailPageProps) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const [rejectReason, setRejectReason] = useState('');
 
   const { data: adminRequestData } = useGetAdminRequest(requestId, {
@@ -51,7 +48,6 @@ const AdminRequestDetailPage = ({
   const handleApprove = async () => {
     try {
       await approveMutation.mutateAsync(project.projectId);
-      await queryClient.invalidateQueries({ queryKey: adminQueryKeys.all() });
       router.push('/admin');
     } catch (error) {
       console.error('Failed to approve project:', error);
@@ -67,7 +63,6 @@ const AdminRequestDetailPage = ({
         projectId: project.projectId,
         reason: rejectReason,
       });
-      await queryClient.invalidateQueries({ queryKey: adminQueryKeys.all() });
       router.push('/admin');
     } catch (error) {
       console.error('Failed to reject project:', error);
