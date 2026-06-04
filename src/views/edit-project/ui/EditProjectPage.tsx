@@ -27,9 +27,10 @@ const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps
   const extractLogoKey = (logo?: string) => {
     if (!logo) return logo;
     try {
-      return new URL(logo).pathname.slice(1);
+      const { pathname } = new URL(logo);
+      return pathname.startsWith('/') ? pathname.slice(1) : pathname;
     } catch {
-      return logo;
+      return logo.startsWith('/') ? logo.slice(1) : logo;
     }
   };
 

@@ -48,14 +48,16 @@ const ProjectActionMenu = ({
       setIsOpen(false);
     };
 
-    const handleScroll = () => setIsOpen(false);
+    const handleClose = () => setIsOpen(false);
 
     document.addEventListener('mousedown', handleOutside);
-    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    window.addEventListener('scroll', handleClose, { passive: true, capture: true });
+    window.addEventListener('resize', handleClose);
 
     return () => {
       document.removeEventListener('mousedown', handleOutside);
-      window.removeEventListener('scroll', handleScroll, { capture: true });
+      window.removeEventListener('scroll', handleClose, { capture: true });
+      window.removeEventListener('resize', handleClose);
     };
   }, [isOpen]);
 
