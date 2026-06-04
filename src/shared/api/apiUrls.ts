@@ -15,9 +15,6 @@ export const userUrl = {
 } as const;
 
 export const projectUrl = {
-  deleteMyProject: (projectId: number) => `/api/v2/projects/my/${projectId}`,
-  patchMyProject: (projectId: number) => `/api/v2/projects/my/${projectId}`,
-  deleteProjectLike: (projectId: number) => `/api/v2/projects/like/${projectId}`,
   getProjects: () => '/api/v2/projects',
   getMyProjects: () => '/api/v2/projects/my',
   getMyProject: (id?: number) => `/api/v2/projects/my/${id}`,
@@ -25,6 +22,10 @@ export const projectUrl = {
   getMyPendingProjects: () => '/api/v2/projects/my/pending',
   postProjectRegistration: () => '/api/v2/projects/registration',
   postProjectLike: (projectId: number) => `/api/v2/projects/like/${projectId}`,
+  patchMyProject: (projectId: number) => `/api/v2/projects/my/${projectId}`,
+  patchProjectParticipants: (projectId: number) => `/api/v2/projects/${projectId}/participants`,
+  deleteMyProject: (projectId: number) => `/api/v2/projects/my/${projectId}`,
+  deleteProjectLike: (projectId: number) => `/api/v2/projects/like/${projectId}`,
 } as const;
 
 export const imageUrl = {
