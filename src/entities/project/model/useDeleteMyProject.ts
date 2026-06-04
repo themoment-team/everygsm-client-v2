@@ -10,6 +10,8 @@ export const useDeleteMyProject = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProjects() }),
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyPendingProjects() }),
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyRejectedProjects() }),
         queryClient.invalidateQueries({ queryKey: projectQueryKeys.getProjects() }),
       ]);
     },

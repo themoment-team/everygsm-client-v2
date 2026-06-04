@@ -11,7 +11,7 @@ export const useAdminApproveProject = () => {
     mutationFn: (projectId: number) =>
       patch<ProjectResponseType>(adminUrl.patchAdminApproveProject(projectId)),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: adminQueryKeys.all() });
+      await queryClient.invalidateQueries({ queryKey: adminQueryKeys.getAdminRequests() });
     },
   });
 };
