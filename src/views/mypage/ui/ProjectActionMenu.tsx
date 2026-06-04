@@ -32,8 +32,8 @@ const ProjectActionMenu = ({
     if (!isOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setDropdownStyle({
-        top: rect.bottom + 8,
-        right: window.innerWidth - rect.right,
+        top: rect.top + 8,
+        right: window.innerWidth - rect.right - 4,
       });
     }
     setIsOpen((prev) => !prev);
