@@ -8,10 +8,12 @@ export const usePatchMyProject = (projectId: number) => {
 
   return useMutation({
     mutationFn: (body: ProjectFormReqType) => patch(projectUrl.patchMyProject(projectId), body),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProjects() });
-      queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyPendingProjects() });
-      queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProject(projectId) });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProjects() }),
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyPendingProjects() }),
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProject(projectId) }),
+      ]);
     },
   });
 };

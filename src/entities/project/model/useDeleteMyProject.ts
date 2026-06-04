@@ -7,9 +7,11 @@ export const useDeleteMyProject = () => {
 
   return useMutation({
     mutationFn: (projectId: number) => del(projectUrl.deleteMyProject(projectId)),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProjects() });
-      queryClient.invalidateQueries({ queryKey: projectQueryKeys.getProjects() });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProjects() }),
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getProjects() }),
+      ]);
     },
   });
 };
