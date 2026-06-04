@@ -34,8 +34,8 @@ const AdminRequestDetailPage = ({
   });
   const project = adminRequestData?.data ?? initialRequestedProjectData?.data;
 
-  const approveMutation = useAdminApproveProject();
-  const rejectMutation = useAdminRejectProject();
+  const { mutateAsync: approveProject, isPending: isApprovePending } = useAdminApproveProject();
+  const { mutateAsync: rejectProject, isPending: isRejectPending } = useAdminRejectProject();
 
   if (!project) {
     return (
@@ -47,7 +47,7 @@ const AdminRequestDetailPage = ({
 
   const handleApprove = async () => {
     try {
-      await approveMutation.mutateAsync(project.projectId);
+      await approveProject(project.projectId);
       router.push('/admin');
     } catch (error) {
       console.error('Failed to approve project:', error);
@@ -59,7 +59,7 @@ const AdminRequestDetailPage = ({
     if (!rejectReason.trim()) return;
 
     try {
-      await rejectMutation.mutateAsync({
+      await rejectProject({
         projectId: project.projectId,
         reason: rejectReason,
       });
@@ -70,7 +70,7 @@ const AdminRequestDetailPage = ({
     }
   };
 
-  const isRejectDisabled = rejectMutation.isPending || !rejectReason.trim();
+  const isRejectDisabled = isRejectPending || !rejectReason.trim();
 
   return (
     <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919]')}>
@@ -117,7 +117,7 @@ const AdminRequestDetailPage = ({
                   'flex cursor-pointer items-center justify-end gap-x-4 text-sm text-[#FC335A] transition disabled:cursor-not-allowed disabled:text-[#542730]',
                 )}
               >
-                {rejectMutation.isPending ? '거절 중...' : '등록 거절'}
+                {isRejectPending ? '거절 중...' : '등록 거절'}
                 <ArrowIcon color={isRejectDisabled ? '#542730' : '#FC335A'} />
               </button>
             </div>
@@ -129,10 +129,10 @@ const AdminRequestDetailPage = ({
             >
               <button
                 onClick={handleApprove}
-                disabled={approveMutation.isPending}
+                disabled={isApprovePending}
                 className={cn('flex cursor-pointer items-center gap-x-4 text-white transition')}
               >
-                {approveMutation.isPending ? '승인 중...' : '등록 확인'}
+                {isApprovePending ? '승인 중...' : '등록 확인'}
                 <ArrowIcon color="#FFFFFF" />
               </button>
             </div>
