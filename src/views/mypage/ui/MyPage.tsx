@@ -17,6 +17,8 @@ import { HeroSection } from '@/widgets/hero-section';
 import { ProjectList } from '@/widgets/project-list';
 import { ProjectRequestList } from '@/widgets/project-request-list';
 
+import ProjectActionMenu from './ProjectActionMenu';
+
 interface MyPageProps {
   initialUserInfoData?: UserInfoResponseType;
   initialMyProjectsData?: MyProjectsListResponseType;
@@ -84,7 +86,10 @@ const MyPage = ({
               </>
             }
           />
-          <ProjectList projects={registeredProjects} />
+          <ProjectList
+            projects={registeredProjects}
+            renderActionButton={(project) => <ProjectActionMenu projectId={project.projectId} />}
+          />
         </div>
 
         <div className={cn('flex flex-col items-center gap-y-10')}>
