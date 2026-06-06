@@ -7,7 +7,6 @@ import { cn } from '@/shared/utils';
 import FieldErrorMessage from './FieldErrorMessage';
 import {
   fieldShellClassName,
-  hintClassName,
   inputTextClassName,
   labelClassName,
   placeholderClassName,
@@ -72,9 +71,15 @@ const ParticipantsField = ({
             className={cn('w-full', inputTextClassName, placeholderClassName)}
           />
           {showSearchResults && (
-            <>
+            <div className={cn('flex w-full flex-col gap-y-3')}>
               <div className={cn('flex w-full items-center gap-4')}>
-                <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
+                <p
+                  className={cn(
+                    'shrink-0 text-xs leading-3.5 font-normal whitespace-nowrap text-[#6A6A6A]',
+                  )}
+                >
+                  검색결과
+                </p>
                 <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
               <div className={'flex w-full flex-wrap items-start gap-4'}>
@@ -84,43 +89,69 @@ const ParticipantsField = ({
                     type="button"
                     onClick={() => handleAddParticipant(user)}
                     className={cn(
-                      'flex items-center justify-between gap-[0.62rem] rounded-[62.5rem] bg-[#4F4F4F] px-3 py-[0.38rem] text-left transition-colors',
+                      'rounded-full bg-[#4F4F4F] px-3 py-1.5 text-base leading-[1.2rem] font-normal text-[#DDDDDD] transition-colors',
                     )}
                   >
-                    <div>
-                      <span className={cn(labelClassName)}>
-                        {user.studentNumber} {user.name}
-                      </span>
-                    </div>
+                    <span>
+                      {user.studentNumber} {user.name}
+                    </span>
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           )}
           {showNoResults && (
-            <div className={cn('flex w-full flex-col gap-4')}>
+            <div className={cn('flex w-full flex-col gap-y-3')}>
               <div className={cn('flex w-full items-center gap-4')}>
-                <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
+                <p
+                  className={cn(
+                    'shrink-0 text-xs leading-3.5 font-normal whitespace-nowrap text-[#6A6A6A]',
+                  )}
+                >
+                  검색결과
+                </p>
                 <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
-              <p className={cn('text-sm font-medium text-[#9A9A9A]')}>찾을 수 없는 사용자 입니다</p>
+              <p
+                className={cn(
+                  'text-xs leading-7.75 font-medium tracking-[-0.0225rem] text-[#6A6A6A]',
+                )}
+              >
+                검색 결과가 없습니다
+              </p>
             </div>
           )}
           {isAlreadyParticipant && (
-            <div className={cn('flex w-full flex-col gap-4')}>
+            <div className={cn('flex w-full flex-col gap-y-3')}>
               <div className={cn('flex w-full items-center gap-4')}>
-                <p className={cn('shrink-0 whitespace-nowrap', hintClassName)}>검색결과</p>
+                <p
+                  className={cn(
+                    'shrink-0 text-xs leading-7.75 font-normal whitespace-nowrap text-[#6A6A6A]',
+                  )}
+                >
+                  검색결과
+                </p>
                 <div className={cn('h-px flex-1 bg-[#6A6A6A]')} />
               </div>
-              <p className={cn('text-sm font-medium text-[#9A9A9A]')}>
+              <p
+                className={cn(
+                  'text-xs leading-7.75 font-medium tracking-[-0.0225rem] text-[#6A6A6A]',
+                )}
+              >
                 이미 프로젝트 참여자로 추가된 사용자입니다
               </p>
             </div>
           )}
           {participants.length > 0 && (
-            <>
+            <div className={cn('flex w-full flex-col gap-y-3')}>
               <div className={cn('flex w-full items-center gap-4')}>
-                <p className={cn('shrink-0 whitespace-nowrap text-[#FC335A]')}>프로젝트 참여자</p>
+                <p
+                  className={cn(
+                    'shrink-0 text-xs leading-3.5 font-normal whitespace-nowrap text-[#FC335A]',
+                  )}
+                >
+                  프로젝트 참여자
+                </p>
                 <div className={cn('h-px flex-1 bg-[#FC335A]')} />
               </div>
               <div className={'flex w-full flex-wrap items-start gap-4'}>
@@ -130,7 +161,7 @@ const ParticipantsField = ({
                     type="button"
                     onClick={() => onRemoveParticipant(index)}
                     className={cn(
-                      'flex items-center gap-2.5 rounded-full bg-[#FC335A] px-4 py-2 text-base leading-[1.2rem] font-medium tracking-[-0.03rem] text-white transition-colors',
+                      'flex items-center gap-2.5 rounded-full bg-[#FC335A] px-3 py-1.5 text-base leading-[1.2rem] font-normal text-white transition-colors',
                     )}
                   >
                     <p>
@@ -140,7 +171,7 @@ const ParticipantsField = ({
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
