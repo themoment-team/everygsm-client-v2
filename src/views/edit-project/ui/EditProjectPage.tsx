@@ -23,8 +23,19 @@ const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps
   });
   const project = myProjectData?.data ?? initialProjectData?.data;
 
+  // 백엔드가 logo를 pre-signed URL로 반환하므로 키 경로만 추출
+  const extractLogoKey = (logo?: string) => {
+    if (!logo) return logo;
+    try {
+      const { pathname } = new URL(logo);
+      return pathname.startsWith('/') ? pathname.slice(1) : pathname;
+    } catch {
+      return logo.startsWith('/') ? logo.slice(1) : logo;
+    }
+  };
+
   const initialData = {
-    logo: project?.logo,
+    logo: extractLogoKey(project?.logo),
     title: project?.title,
     affiliation: project?.affiliation ?? '',
     startYear: project?.startYear,

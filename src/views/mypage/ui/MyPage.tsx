@@ -97,7 +97,7 @@ const MyPage = ({
             <HeroSection
               title={
                 <>
-                  <span className={cn('text-[#FC335A]')}>{displayName}</span> 님이 등록 요청한
+                  <span className={cn('text-[#FC335A]')}>{displayName}</span> 님이 등록/수정 요청한
                   프로젝트
                 </>
               }
@@ -107,7 +107,16 @@ const MyPage = ({
               onChange={setSelectedRequestStatus}
             />
           </div>
-          <ProjectRequestList projects={requestProjects} />
+          <ProjectRequestList
+            projects={requestProjects}
+            renderActionButton={(project) => (
+              <ProjectActionMenu
+                projectId={project.projectId}
+                editLabel="프로젝트 등록내용 수정하기"
+                deleteLabel="프로젝트 등록 요청 삭제"
+              />
+            )}
+          />
         </div>
       </div>
     </main>
