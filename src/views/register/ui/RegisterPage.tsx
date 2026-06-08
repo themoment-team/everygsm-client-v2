@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { RegisterProjectForm } from '@/features/register-project';
+import { ProjectForm } from '@/features/project-form';
 import { ArrowIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import { HeroSection } from '@/widgets/hero-section';
@@ -27,7 +27,7 @@ const RegisterPage = () => {
           </Link>
           <div className={cn('flex w-full max-w-200 flex-col items-center justify-center gap-y-9')}>
             <HeroSection title="프로젝트 등록" />
-            <RegisterProjectForm />
+            <ProjectForm />
           </div>
         </div>
       </div>

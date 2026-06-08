@@ -11,9 +11,14 @@ import { cn } from '@/shared/utils';
 interface ProjectListProps {
   projects: ProjectType[];
   showRegisterCard?: boolean;
+  renderActionButton?: (project: ProjectType) => React.ReactNode;
 }
 
-const ProjectList = ({ projects, showRegisterCard = false }: ProjectListProps) => {
+const ProjectList = ({
+  projects,
+  showRegisterCard = false,
+  renderActionButton,
+}: ProjectListProps) => {
   const { openModal } = useModalStore();
 
   return (
@@ -40,7 +45,13 @@ const ProjectList = ({ projects, showRegisterCard = false }: ProjectListProps) =
         <ProjectCard
           key={project.projectId}
           data={project}
-          likeButton={<LikeButton isLiked={project.liked} projectId={project.projectId} />}
+          likeButton={
+            renderActionButton ? (
+              renderActionButton(project)
+            ) : (
+              <LikeButton isLiked={project.liked} projectId={project.projectId} />
+            )
+          }
           onDetailClick={() =>
             openModal(
               <ProjectDetailModal

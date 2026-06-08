@@ -16,6 +16,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { useGetUsersSearch, type UserSummaryType } from '@/entities/user';
+import { useDebounce } from '@/shared/hooks';
 import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
@@ -25,6 +27,7 @@ import { usePostImageUpload } from '../model/usePostImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
 import ImageCropModal from './ImageCropModal';
 import LogoUploadField from './LogoUploadField';
+import ParticipantsField from './ParticipantsField';
 import RepositoryUrlField from './RepositoryUrlField';
 import TechStackField from './TechStackField';
 import TextareaField from './TextareaField';
@@ -40,18 +43,57 @@ const resizeTextarea = (textarea: HTMLTextAreaElement) => {
   textarea.style.height = `${textarea.scrollHeight}px`;
 };
 
-const RegisterProjectForm = () => {
+interface ProjectFormProps {
+  mode?: 'register' | 'edit';
+  initialData?: {
+    logo?: string;
+    title?: string;
+    affiliation?: string;
+    startYear?: number;
+    description?: string;
+    prodUrl?: string;
+    techStack?: { stackName: string }[];
+    repository?: string[];
+    participantIds?: number[];
+  };
+  initialParticipants?: UserSummaryType[];
+  onValidSubmit?: (data: ProjectRegistrationReqType) => void;
+}
+
+const ProjectForm = ({
+  mode = 'register',
+  initialData,
+  initialParticipants,
+  onValidSubmit,
+}: ProjectFormProps = {}) => {
   const router = useRouter();
   const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [customTechStacks, setCustomTechStacks] = useState<string[]>([]);
+  const [customTechStacks, setCustomTechStacks] = useState<string[]>(() => {
+    if (!initialData?.techStack) return [];
+    return initialData.techStack
+      .map((s) => s.stackName)
+      .filter((name) => !(DEFAULT_TECH_STACKS as readonly string[]).includes(name));
+  });
   const [techStackInput, setTechStackInput] = useState('');
-  const [logoFileName, setLogoFileName] = useState('');
+  const [participantInput, setParticipantInput] = useState<string>('');
+  const [selectedParticipants, setSelectedParticipants] = useState<UserSummaryType[]>(
+    initialParticipants ?? [],
+  );
+  const [logoFileName, setLogoFileName] = useState(initialData?.logo ? '(기존 로고)' : '');
   const [logoInputKey, setLogoInputKey] = useState(0);
   const [hasSubmittedSuccessfully, setHasSubmittedSuccessfully] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const { openModal, closeModal } = useModalStore();
+
+  const debouncedParticipantInput = useDebounce(participantInput, 500);
+  const { data: searchedUsersData, isFetching: isSearchingUsers } =
+    useGetUsersSearch(debouncedParticipantInput);
+  const searchedUsers = searchedUsersData?.data.users ?? [];
+
+  const isDebouncing = participantInput !== debouncedParticipantInput;
+  const isSearching = isDebouncing || isSearchingUsers;
 
   const {
     register,
@@ -63,14 +105,15 @@ const RegisterProjectForm = () => {
     resolver: zodResolver(projectRegistrationSchema),
     mode: 'onChange',
     defaultValues: {
-      logo: '',
-      title: '',
-      affiliation: '',
-      description: '',
-      prodUrl: '',
-      startYear: currentYear,
-      techStack: [],
-      repository: [],
+      logo: initialData?.logo ?? '',
+      title: initialData?.title ?? '',
+      affiliation: initialData?.affiliation ?? '',
+      description: initialData?.description ?? '',
+      prodUrl: initialData?.prodUrl ?? '',
+      startYear: initialData?.startYear ?? currentYear,
+      participantIds: initialData?.participantIds ?? [],
+      techStack: initialData?.techStack ?? [],
+      repository: initialData?.repository ?? [],
     },
   });
 
@@ -79,6 +122,7 @@ const RegisterProjectForm = () => {
 
   const selectedTechStackValues = useWatch({ control, name: 'techStack' }) ?? [];
   const repositoryUrls = useWatch({ control, name: 'repository' }) ?? [];
+  const participantIds = useWatch({ control, name: 'participantIds' }) ?? [];
   const logo = useWatch({ control, name: 'logo' });
 
   const selectedTechStacks = selectedTechStackValues.map((stack) => stack.stackName);
@@ -179,6 +223,24 @@ const RegisterProjectForm = () => {
     addCustomTechStack();
   };
 
+  const addParticipant = (user: UserSummaryType) => {
+    setSelectedParticipants((prev) => [...prev, user]);
+    setValue('participantIds', [...participantIds, user.userId], {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    setParticipantInput('');
+  };
+
+  const removeParticipant = (targetIndex: number) => {
+    setSelectedParticipants((prev) => prev.filter((_, index) => index !== targetIndex));
+    setValue(
+      'participantIds',
+      participantIds.filter((_, index) => index !== targetIndex),
+      { shouldDirty: true, shouldValidate: true },
+    );
+  };
+
   const hasTechStackInput = techStackInput.trim().length > 0;
   const canAddRepository = repositoryUrls.length < MAX_REPOSITORY_COUNT;
 
@@ -263,6 +325,11 @@ const RegisterProjectForm = () => {
   ) => {
     if (hasSubmittedSuccessfully) return;
 
+    if (onValidSubmit) {
+      onValidSubmit(requestBody);
+      return;
+    }
+
     try {
       await postProjectRegistration(requestBody);
       setHasSubmittedSuccessfully(true);
@@ -316,6 +383,16 @@ const RegisterProjectForm = () => {
         registration={startYearRegistration}
         errorMessage={errors.startYear?.message}
       />
+      <ParticipantsField
+        participants={selectedParticipants}
+        participantInput={participantInput}
+        searchedUsers={searchedUsers}
+        isSearching={isSearching}
+        errorMessage={errors.participantIds?.message}
+        onAddParticipant={addParticipant}
+        onRemoveParticipant={removeParticipant}
+        onParticipantInputChange={(event) => setParticipantInput(event.target.value)}
+      />
       <TextareaField
         id="project-description"
         label="프로젝트 설명"
@@ -364,10 +441,12 @@ const RegisterProjectForm = () => {
           isValid && !hasSubmittedSuccessfully && 'bg-[#FC335A] text-white',
         )}
       >
-        {isFormSubmitting ? '프로젝트 등록 중' : '프로젝트 등록'}
+        {isFormSubmitting
+          ? `프로젝트 ${mode === 'edit' ? '수정' : '등록'} 중`
+          : `프로젝트 ${mode === 'edit' ? '수정' : '등록'}`}
       </button>
     </form>
   );
 };
 
-export default RegisterProjectForm;
+export default ProjectForm;
