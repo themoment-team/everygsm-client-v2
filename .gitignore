@@ -42,3 +42,9 @@ next-env.d.ts
 
 # jetbrains
 .idea/
+
+# llm outputs
+PR_BODY.md
+/.pr-tmp/
+/.claude/command.log
+/_workspace
