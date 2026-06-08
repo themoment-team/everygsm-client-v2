@@ -8,12 +8,13 @@ import { ProjectRegistrationReqType, ProjectRegistrationResponseType } from './t
 export const usePostProjectRegistration = (
   options?: Omit<
     UseMutationOptions<ProjectRegistrationResponseType, AxiosError, ProjectRegistrationReqType>,
-    'mutationFn'
+    'mutationKey' | 'mutationFn'
   >,
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: projectQueryKeys.postProjectRegistration(),
     mutationFn: (requestBody: ProjectRegistrationReqType) =>
       post<ProjectRegistrationResponseType>(projectUrl.postProjectRegistration(), requestBody),
     ...options,

@@ -1,17 +1,18 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { imageUrl, post } from '@/shared/api';
+import { imageQueryKeys, imageUrl, post } from '@/shared/api';
 
 import { ImageUploadReqType, ImageUploadResponseType } from './types';
 
 export const usePostImageUpload = (
   options?: Omit<
     UseMutationOptions<ImageUploadResponseType, AxiosError, ImageUploadReqType>,
-    'mutationFn'
+    'mutationKey' | 'mutationFn'
   >,
 ) =>
   useMutation({
+    mutationKey: imageQueryKeys.postImageUpload(),
     mutationFn: ({ image }: ImageUploadReqType) => {
       const formData = new FormData();
       formData.append('image', image);
