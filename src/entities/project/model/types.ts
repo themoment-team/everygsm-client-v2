@@ -11,6 +11,12 @@ export interface ProjectRepositoryType {
   repoUrl: string;
 }
 
+export interface ParticipantType {
+  userId: number;
+  name: string;
+  studentNumber: string;
+}
+
 export interface ProjectType {
   projectId: number;
   logo: string;
@@ -24,6 +30,7 @@ export interface ProjectType {
   createdAt: string;
   techStack: TechStackType[];
   repository: ProjectRepositoryType[];
+  participants: ParticipantType[];
   liked: boolean;
 }
 
@@ -41,3 +48,15 @@ export interface MyProjectsType {
 }
 
 export type MyProjectsListResponseType = ApiResponse<MyProjectsType>;
+
+export interface ProjectFormReqType {
+  logo: string;
+  title: string;
+  affiliation: string;
+  startYear: number;
+  participantIds: number[];
+  description: string;
+  prodUrl: string;
+  techStack: TechStackType[];
+  repository: string[];
+}
