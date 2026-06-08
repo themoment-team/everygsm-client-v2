@@ -28,7 +28,6 @@ export const myProjectsMockData: MyProjectsListResponseType = {
             repoUrl: 'https://github.com/themoment-team/EveryGSM-client-v2',
           },
         ],
-        participants: [],
         liked: true,
       },
       {
@@ -49,7 +48,6 @@ export const myProjectsMockData: MyProjectsListResponseType = {
             repoUrl: 'https://github.com/themoment-team/hellogsm-client',
           },
         ],
-        participants: [],
         liked: true,
       },
     ],
@@ -72,7 +70,6 @@ export const myProjectsMockData: MyProjectsListResponseType = {
             repoUrl: 'https://github.com/example/dormitorymate',
           },
         ],
-        participants: [],
         liked: false,
       },
       {
@@ -93,7 +90,6 @@ export const myProjectsMockData: MyProjectsListResponseType = {
             repoUrl: 'https://github.com/example/mealboard',
           },
         ],
-        participants: [],
         liked: false,
       },
     ],
@@ -124,7 +120,6 @@ export const myPendingProjectsMockData: ProjectsListResponseType = {
             repoUrl: 'https://github.com/example/studyflow',
           },
         ],
-        participants: [],
         liked: false,
       },
       {
@@ -145,7 +140,6 @@ export const myPendingProjectsMockData: ProjectsListResponseType = {
             repoUrl: 'https://github.com/example/teamplanner',
           },
         ],
-        participants: [],
         liked: true,
       },
     ],
@@ -176,7 +170,6 @@ export const myRejectedProjectsMockData: ProjectsListResponseType = {
             repoUrl: 'https://github.com/example/campusmap',
           },
         ],
-        participants: [],
         liked: false,
       },
       {
@@ -197,7 +190,6 @@ export const myRejectedProjectsMockData: ProjectsListResponseType = {
             repoUrl: 'https://github.com/example/clubhub',
           },
         ],
-        participants: [],
         liked: true,
       },
     ],

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import {
@@ -13,6 +14,7 @@ import {
   useAdminRejectProject,
   useGetAdminRequest,
 } from '@/entities/project';
+import { adminQueryKeys } from '@/shared/api';
 import { ArrowIcon } from '@/shared/assets';
 import { cn } from '@/shared/utils';
 import { ProjectRequestDetailContent } from '@/widgets/project-request-detail';
@@ -27,6 +29,7 @@ const AdminRequestDetailPage = ({
   initialRequestedProjectData,
 }: AdminRequestDetailPageProps) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [rejectReason, setRejectReason] = useState('');
 
   const { data: adminRequestData } = useGetAdminRequest(requestId, {
@@ -34,8 +37,8 @@ const AdminRequestDetailPage = ({
   });
   const project = adminRequestData?.data ?? initialRequestedProjectData?.data;
 
-  const { mutateAsync: approveProject, isPending: isApprovePending } = useAdminApproveProject();
-  const { mutateAsync: rejectProject, isPending: isRejectPending } = useAdminRejectProject();
+  const approveMutation = useAdminApproveProject();
+  const rejectMutation = useAdminRejectProject();
 
   if (!project) {
     return (
@@ -47,7 +50,8 @@ const AdminRequestDetailPage = ({
 
   const handleApprove = async () => {
     try {
-      await approveProject(project.projectId);
+      await approveMutation.mutateAsync(project.projectId);
+      await queryClient.invalidateQueries({ queryKey: adminQueryKeys.all() });
       router.push('/admin');
     } catch (error) {
       console.error('Failed to approve project:', error);
@@ -59,10 +63,11 @@ const AdminRequestDetailPage = ({
     if (!rejectReason.trim()) return;
 
     try {
-      await rejectProject({
+      await rejectMutation.mutateAsync({
         projectId: project.projectId,
         reason: rejectReason,
       });
+      await queryClient.invalidateQueries({ queryKey: adminQueryKeys.all() });
       router.push('/admin');
     } catch (error) {
       console.error('Failed to reject project:', error);
@@ -70,7 +75,7 @@ const AdminRequestDetailPage = ({
     }
   };
 
-  const isRejectDisabled = isRejectPending || !rejectReason.trim();
+  const isRejectDisabled = rejectMutation.isPending || !rejectReason.trim();
 
   return (
     <main className={cn('min-h-[calc(100vh-72px)] bg-[#191919]')}>
@@ -117,7 +122,7 @@ const AdminRequestDetailPage = ({
                   'flex cursor-pointer items-center justify-end gap-x-4 text-sm text-[#FC335A] transition disabled:cursor-not-allowed disabled:text-[#542730]',
                 )}
               >
-                {isRejectPending ? '거절 중...' : '등록 거절'}
+                {rejectMutation.isPending ? '거절 중...' : '등록 거절'}
                 <ArrowIcon color={isRejectDisabled ? '#542730' : '#FC335A'} />
               </button>
             </div>
@@ -129,10 +134,10 @@ const AdminRequestDetailPage = ({
             >
               <button
                 onClick={handleApprove}
-                disabled={isApprovePending}
+                disabled={approveMutation.isPending}
                 className={cn('flex cursor-pointer items-center gap-x-4 text-white transition')}
               >
-                {isApprovePending ? '승인 중...' : '등록 확인'}
+                {approveMutation.isPending ? '승인 중...' : '등록 확인'}
                 <ArrowIcon color="#FFFFFF" />
               </button>
             </div>

@@ -115,7 +115,7 @@ const Header = ({ initialUserInfoData }: HeaderProps) => {
             {isOpen && (
               <div
                 className={cn(
-                  'absolute top-9 right-14 flex w-full max-w-60 flex-col gap-2 rounded-xl bg-[rgba(34,34,34,0.5)] p-6 shadow-[inset_0_0_0_1px_#2F2F2F] backdrop-blur-[18px]',
+                  'absolute top-9 right-14 flex w-full max-w-60 flex-col items-end gap-2 rounded-xl border border-[#2F2F2F] bg-[rgba(34,34,34,0.5)] p-6 backdrop-blur-[18px]',
                 )}
               >
                 <div className={cn('flex w-full flex-col gap-2')}>

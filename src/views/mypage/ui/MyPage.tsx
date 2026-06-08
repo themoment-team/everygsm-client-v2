@@ -17,8 +17,6 @@ import { HeroSection } from '@/widgets/hero-section';
 import { ProjectList } from '@/widgets/project-list';
 import { ProjectRequestList } from '@/widgets/project-request-list';
 
-import ProjectActionMenu from './ProjectActionMenu';
-
 interface MyPageProps {
   initialUserInfoData?: UserInfoResponseType;
   initialMyProjectsData?: MyProjectsListResponseType;
@@ -86,10 +84,7 @@ const MyPage = ({
               </>
             }
           />
-          <ProjectList
-            projects={registeredProjects}
-            renderActionButton={(project) => <ProjectActionMenu projectId={project.projectId} />}
-          />
+          <ProjectList projects={registeredProjects} />
         </div>
 
         <div className={cn('flex flex-col items-center gap-y-10')}>
@@ -97,7 +92,7 @@ const MyPage = ({
             <HeroSection
               title={
                 <>
-                  <span className={cn('text-[#FC335A]')}>{displayName}</span> 님이 등록/수정 요청한
+                  <span className={cn('text-[#FC335A]')}>{displayName}</span> 님이 등록 요청한
                   프로젝트
                 </>
               }
@@ -107,16 +102,7 @@ const MyPage = ({
               onChange={setSelectedRequestStatus}
             />
           </div>
-          <ProjectRequestList
-            projects={requestProjects}
-            renderActionButton={(project) => (
-              <ProjectActionMenu
-                projectId={project.projectId}
-                editLabel="프로젝트 등록내용 수정하기"
-                deleteLabel="프로젝트 등록 요청 삭제"
-              />
-            )}
-          />
+          <ProjectRequestList projects={requestProjects} />
         </div>
       </div>
     </main>
