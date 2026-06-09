@@ -8,5 +8,5 @@ export const useGetUsersSearch = (name: string) =>
   useQuery({
     queryKey: userQueryKeys.getUsersSearch(name),
     queryFn: () => get<UserSearchResponseType>(userUrl.getUsersSearch(name)),
-    enabled: !!name,
+    enabled: !!name.trim(),
   });

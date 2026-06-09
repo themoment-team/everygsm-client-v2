@@ -23,6 +23,8 @@ const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps
   });
   const project = myProjectData?.data ?? initialProjectData?.data;
 
+  if (!project) return <div className="text-white">로딩 중...</div>;
+
   // 백엔드가 logo를 pre-signed URL로 반환하므로 키 경로만 추출
   const extractLogoKey = (logo?: string) => {
     if (!logo) return logo;
@@ -73,16 +75,12 @@ const EditProjectPage = ({ projectId, initialProjectData }: EditProjectPageProps
           </Link>
           <div className={cn('flex w-full max-w-200 flex-col items-center justify-center gap-y-9')}>
             <HeroSection title="프로젝트 수정" />
-            {project ? (
-              <ProjectForm
-                mode="edit"
-                initialData={initialData}
-                initialParticipants={initialParticipants}
-                onValidSubmit={handleValidSubmit}
-              />
-            ) : (
-              <div className="text-white">로딩 중...</div>
-            )}
+            <ProjectForm
+              mode="edit"
+              initialData={initialData}
+              initialParticipants={initialParticipants}
+              onValidSubmit={handleValidSubmit}
+            />
           </div>
         </div>
       </div>
