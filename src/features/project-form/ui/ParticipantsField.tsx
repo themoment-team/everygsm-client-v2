@@ -68,6 +68,9 @@ const ParticipantsField = ({
             onChange={(e) => {
               onParticipantInputChange(e);
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.nativeEvent.isComposing) e.preventDefault();
+            }}
             className={cn('w-full', inputTextClassName, placeholderClassName)}
           />
           {showSearchResults && (
