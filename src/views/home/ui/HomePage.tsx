@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { toast } from 'sonner';
 
 import { ProjectsListResponseType, useGetProjects } from '@/entities/project';
 import { useGetMyInfo, UserInfoResponseType } from '@/entities/user';
+import { ProjectSortSelect, ProjectSortType } from '@/features/project-sort-select';
 import { COOKIE_KEYS } from '@/shared/constants';
 import { useHandleErrorQueryToast } from '@/shared/hooks';
 import { cn, getCookie } from '@/shared/utils';
@@ -18,6 +19,8 @@ interface HomePageProps {
 }
 
 const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) => {
+  const [sort, setSort] = useState<ProjectSortType>('LATEST');
+
   const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
 
   const { data: userInfoData } = useGetMyInfo({
@@ -49,10 +52,15 @@ const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) =
   return (
     <main className="min-h-[calc(100vh-72px)] bg-[#191919]">
       <div className={cn('flex flex-col gap-y-10 px-15 py-10')}>
-        <HeroSection
-          title={`GSM의 프로젝트를 한 눈에,\nEveryGSM에서 간편하게 확인해보세요!`}
-          description={`EveryGSM은 GSM의 프로젝트들을 한 곳에 모아 트래픽을 집중시키기 위한 서비스로,\n사용자가 GSM의 사이트를 보다 쉽게 방문하기 위해 만들어졌습니다.`}
-        />
+        <div className={cn('flex items-end gap-6')}>
+          <HeroSection
+            title={`GSM의 프로젝트를 한 눈에,\nEveryGSM에서 간편하게 확인해보세요!`}
+            description={`EveryGSM은 GSM의 프로젝트들을 한 곳에 모아 트래픽을 집중시키기 위한 서비스로,\n사용자가 GSM의 사이트를 보다 쉽게 방문하기 위해 만들어졌습니다.`}
+          />
+          <div className={cn('flex flex-row-reverse')}>
+            <ProjectSortSelect selectedSort={sort} onChange={setSort} />
+          </div>
+        </div>
         <ProjectList projects={projects} showRegisterCard={isLoggedIn} />
       </div>
     </main>
