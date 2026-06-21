@@ -1,1 +1,1 @@
-export type ProjectSortType = 'LIKE' | 'LATEST' | 'OLDEST';
+export type { ProjectSortType } from '@/shared/types';

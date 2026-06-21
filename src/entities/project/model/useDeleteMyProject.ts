@@ -12,7 +12,7 @@ export const useDeleteMyProject = () => {
         queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyProjects() }),
         queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyPendingProjects() }),
         queryClient.invalidateQueries({ queryKey: projectQueryKeys.getMyRejectedProjects() }),
-        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getProjects() }),
+        queryClient.invalidateQueries({ queryKey: projectQueryKeys.getProjectsList() }),
       ]);
     },
   });

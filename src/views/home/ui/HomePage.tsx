@@ -1,12 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { toast } from 'sonner';
 
 import { ProjectsListResponseType, useGetProjects } from '@/entities/project';
 import { useGetMyInfo, UserInfoResponseType } from '@/entities/user';
-import { ProjectSortSelect, ProjectSortType } from '@/features/project-sort-select';
+import {
+  DEFAULT_PROJECT_SORT,
+  isProjectSortType,
+  ProjectSortSelect,
+  ProjectSortType,
+} from '@/features/project-sort-select';
 import { COOKIE_KEYS } from '@/shared/constants';
 import { useHandleErrorQueryToast } from '@/shared/hooks';
 import { cn, getCookie } from '@/shared/utils';
@@ -19,7 +26,18 @@ interface HomePageProps {
 }
 
 const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) => {
-  const [sort, setSort] = useState<ProjectSortType>('LATEST');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const sortParam = searchParams.get('sort');
+  const sort: ProjectSortType = isProjectSortType(sortParam) ? sortParam : DEFAULT_PROJECT_SORT;
+
+  const handleSortChange = (nextSort: ProjectSortType) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', nextSort);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
 
@@ -27,7 +45,7 @@ const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) =
     initialData: initialUserInfoData,
     enabled: hasAccessToken,
   });
-  const { data: projectsData } = useGetProjects({ initialData: initialProjectsData });
+  const { data: projectsData } = useGetProjects(sort, { initialData: initialProjectsData });
 
   const isLoggedIn = Boolean(userInfoData?.data?.id);
   const projects = projectsData?.data.projects ?? [];
@@ -58,7 +76,7 @@ const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) =
             description={`EveryGSM은 GSM의 프로젝트들을 한 곳에 모아 트래픽을 집중시키기 위한 서비스로,\n사용자가 GSM의 사이트를 보다 쉽게 방문하기 위해 만들어졌습니다.`}
           />
           <div className={cn('flex flex-row-reverse')}>
-            <ProjectSortSelect selectedSort={sort} onChange={setSort} />
+            <ProjectSortSelect selectedSort={sort} onChange={handleSortChange} />
           </div>
         </div>
         <ProjectList projects={projects} showRegisterCard={isLoggedIn} />

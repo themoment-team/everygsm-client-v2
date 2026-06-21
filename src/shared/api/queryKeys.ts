@@ -1,3 +1,5 @@
+import type { ProjectSortType } from '@/shared/types';
+
 export const adminQueryKeys = {
   all: () => ['admin'] as const,
   getAdminRequests: () => ['admin', 'requests', 'list'] as const,
@@ -6,7 +8,8 @@ export const adminQueryKeys = {
 
 export const projectQueryKeys = {
   all: () => ['projects'] as const,
-  getProjects: () => ['projects', 'list'] as const,
+  getProjectsList: () => ['projects', 'list'] as const,
+  getProjects: (sort?: ProjectSortType) => ['projects', 'list', sort] as const,
   getMyProjects: () => ['projects', 'my', 'list'] as const,
   getMyProject: (projectId?: number) => ['projects', 'my', 'detail', projectId] as const,
   getMyRejectedProjects: () => ['projects', 'my', 'rejected'] as const,

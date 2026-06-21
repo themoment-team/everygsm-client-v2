@@ -1,3 +1,5 @@
+export type ProjectSortType = 'LIKES' | 'NEWEST' | 'OLDEST';
+
 export interface BaseApiResponse {
   status: string;
   code: number;
