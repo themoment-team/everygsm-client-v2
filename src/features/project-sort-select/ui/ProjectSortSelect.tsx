@@ -28,16 +28,13 @@ const ProjectSortSelect = ({ selectedSort, onChange }: ProjectSortSelectProps) =
   };
 
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        'flex w-45 flex-col items-start gap-2.5 rounded-xl border border-[#2F2F2F] bg-[rgba(34,34,34,0.5)] px-4 py-3 shadow-[0px_0px_16px_0px_rgba(10,6,29,0.25)] backdrop-blur-[1.125rem]',
-      )}
-    >
+    <div ref={containerRef} className={cn('relative w-45')}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={cn('flex w-full items-center justify-between')}
+        className={cn(
+          'flex w-full items-center justify-between rounded-xl border border-[#2F2F2F] bg-[rgba(34,34,34,0.5)] px-4 py-3 shadow-[0px_0px_16px_0px_rgba(10,6,29,0.25)] backdrop-blur-[1.125rem]',
+        )}
       >
         <span className={cn('text-base font-medium tracking-[-0.03em] text-white')}>
           {selectedLabel}
@@ -48,7 +45,11 @@ const ProjectSortSelect = ({ selectedSort, onChange }: ProjectSortSelectProps) =
       </button>
 
       {isOpen && (
-        <>
+        <div
+          className={cn(
+            'absolute top-full left-0 z-10 mt-2 flex w-full flex-col items-start gap-2.5 rounded-xl border border-[#2F2F2F] bg-[rgba(34,34,34,0.5)] px-4 py-3 shadow-[0px_0px_16px_0px_rgba(10,6,29,0.25)] backdrop-blur-[1.125rem]',
+          )}
+        >
           <div className={cn('flex w-full items-center gap-4')}>
             <span className={cn('text-xs text-[#6A6A6A]')}>정렬</span>
             <div className={cn('h-px flex-1 bg-[#2F2F2F]')} />
@@ -67,7 +68,7 @@ const ProjectSortSelect = ({ selectedSort, onChange }: ProjectSortSelectProps) =
               {option.label}
             </button>
           ))}
-        </>
+        </div>
       )}
     </div>
   );
