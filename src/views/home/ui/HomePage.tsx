@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import { toast } from 'sonner';
 
@@ -26,17 +26,24 @@ interface HomePageProps {
 }
 
 const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-
   const sortParam = searchParams.get('sort');
-  const sort: ProjectSortType = isProjectSortType(sortParam) ? sortParam : DEFAULT_PROJECT_SORT;
+  const initialSort: ProjectSortType = isProjectSortType(sortParam)
+    ? sortParam
+    : DEFAULT_PROJECT_SORT;
+
+  const [sort, setSort] = useState<ProjectSortType>(initialSort);
+
+  // 실제 네비게이션/Link 등 외부 요인으로 URL의 sort가 바뀌면 상태를 동기화
+  useEffect(() => {
+    setSort(initialSort);
+  }, [initialSort]);
 
   const handleSortChange = (nextSort: ProjectSortType) => {
-    const params = new URLSearchParams(searchParams.toString());
+    setSort(nextSort);
+    const params = new URLSearchParams(window.location.search);
     params.set('sort', nextSort);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
   };
 
   const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
@@ -45,7 +52,9 @@ const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) =
     initialData: initialUserInfoData,
     enabled: hasAccessToken,
   });
-  const { data: projectsData } = useGetProjects(sort, { initialData: initialProjectsData });
+  const { data: projectsData } = useGetProjects(sort, {
+    initialData: sort === initialSort ? initialProjectsData : undefined,
+  });
 
   const isLoggedIn = Boolean(userInfoData?.data?.id);
   const projects = projectsData?.data.projects ?? [];
