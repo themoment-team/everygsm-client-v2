@@ -22,7 +22,7 @@ import { useModalStore } from '@/shared/stores';
 import { cn } from '@/shared/utils';
 
 import { DEFAULT_TECH_STACKS, MAX_FILE_SIZE } from '../model/constants';
-import { type ProjectRegistrationReqType, projectRegistrationSchema } from '../model/schema';
+import { type ProjectRegistrationReqType, ProjectRegistrationSchema } from '../model/schema';
 import { usePostImageUpload } from '../model/usePostImageUpload';
 import { usePostProjectRegistration } from '../model/usePostProjectRegistration';
 import ImageCropModal from './ImageCropModal';
@@ -102,7 +102,7 @@ const ProjectForm = ({
     setValue,
     formState: { errors, isSubmitting: isFormSubmitting, isValid },
   } = useForm<ProjectRegistrationReqType>({
-    resolver: zodResolver(projectRegistrationSchema),
+    resolver: zodResolver(ProjectRegistrationSchema),
     mode: 'onChange',
     defaultValues: {
       logo: initialData?.logo ?? '',
