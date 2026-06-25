@@ -1,3 +1,5 @@
+import type { ProjectSortType } from '@/shared/types';
+
 export const adminUrl = {
   getAdminRequests: () => '/api/v2/admin/requests',
   getAdminRequest: (id: number) => `/api/v2/admin/requests/${id}`,
@@ -15,7 +17,8 @@ export const userUrl = {
 } as const;
 
 export const projectUrl = {
-  getProjects: () => '/api/v2/projects',
+  getProjects: (sort?: ProjectSortType) =>
+    sort ? `/api/v2/projects?sort=${sort}` : '/api/v2/projects',
   getMyProjects: () => '/api/v2/projects/my',
   getMyProject: (id?: number) => `/api/v2/projects/my/${id}`,
   getMyRejectedProjects: () => '/api/v2/projects/my/rejected',

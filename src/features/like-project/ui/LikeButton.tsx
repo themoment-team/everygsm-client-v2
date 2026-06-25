@@ -64,8 +64,9 @@ const LikeButton = ({ isLiked, projectId }: LikeButtonProps) => {
     onMutate: () => setLocalIsLiked((prev) => !prev), // 낙관적 업데이트: 좋아요 상태를 즉시 반전
     onError: () => setLocalIsLiked((prev) => !prev), // 에러 발생 시 직전 상태로 롤백
     onSuccess: (_, currentIsLiked) => {
-      queryClient.setQueryData<ProjectsListResponseType>(projectQueryKeys.getProjects(), (old) =>
-        updateProjectsListLike(old, currentIsLiked),
+      queryClient.setQueriesData<ProjectsListResponseType>(
+        { queryKey: projectQueryKeys.getProjectsList() },
+        (old) => updateProjectsListLike(old, currentIsLiked),
       );
       queryClient.setQueryData<MyProjectsListResponseType>(
         projectQueryKeys.getMyProjects(),

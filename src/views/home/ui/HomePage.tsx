@@ -1,11 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useSearchParams } from 'next/navigation';
 
 import { toast } from 'sonner';
 
 import { ProjectsListResponseType, useGetProjects } from '@/entities/project';
 import { useGetMyInfo, UserInfoResponseType } from '@/entities/user';
+import {
+  DEFAULT_PROJECT_SORT,
+  isProjectSortType,
+  ProjectSortSelect,
+  ProjectSortType,
+} from '@/features/project-sort-select';
 import { COOKIE_KEYS } from '@/shared/constants';
 import { useHandleErrorQueryToast } from '@/shared/hooks';
 import { cn, getCookie } from '@/shared/utils';
@@ -18,13 +26,35 @@ interface HomePageProps {
 }
 
 const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) => {
+  const searchParams = useSearchParams();
+  const sortParam = searchParams.get('sort');
+  const initialSort: ProjectSortType = isProjectSortType(sortParam)
+    ? sortParam
+    : DEFAULT_PROJECT_SORT;
+
+  const [sort, setSort] = useState<ProjectSortType>(initialSort);
+
+  // 실제 네비게이션/Link 등 외부 요인으로 URL의 sort가 바뀌면 상태를 동기화
+  useEffect(() => {
+    setSort(initialSort);
+  }, [initialSort]);
+
+  const handleSortChange = (nextSort: ProjectSortType) => {
+    setSort(nextSort);
+    const params = new URLSearchParams(window.location.search);
+    params.set('sort', nextSort);
+    window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
+  };
+
   const hasAccessToken = Boolean(getCookie(COOKIE_KEYS.ACCESS_TOKEN));
 
   const { data: userInfoData } = useGetMyInfo({
     initialData: initialUserInfoData,
     enabled: hasAccessToken,
   });
-  const { data: projectsData } = useGetProjects({ initialData: initialProjectsData });
+  const { data: projectsData } = useGetProjects(sort, {
+    initialData: sort === initialSort ? initialProjectsData : undefined,
+  });
 
   const isLoggedIn = Boolean(userInfoData?.data?.id);
   const projects = projectsData?.data.projects ?? [];
@@ -49,10 +79,15 @@ const HomePage = ({ initialUserInfoData, initialProjectsData }: HomePageProps) =
   return (
     <main className="min-h-[calc(100vh-72px)] bg-[#191919]">
       <div className={cn('flex flex-col gap-y-10 px-15 py-10')}>
-        <HeroSection
-          title={`GSM의 프로젝트를 한 눈에,\nEveryGSM에서 간편하게 확인해보세요!`}
-          description={`EveryGSM은 GSM의 프로젝트들을 한 곳에 모아 트래픽을 집중시키기 위한 서비스로,\n사용자가 GSM의 사이트를 보다 쉽게 방문하기 위해 만들어졌습니다.`}
-        />
+        <div className={cn('mx-auto flex w-full max-w-295 items-end gap-6')}>
+          <HeroSection
+            title={`GSM의 프로젝트를 한 눈에,\nEveryGSM에서 간편하게 확인해보세요!`}
+            description={`EveryGSM은 GSM의 프로젝트들을 한 곳에 모아 트래픽을 집중시키기 위한 서비스로,\n사용자가 GSM의 사이트를 보다 쉽게 방문하기 위해 만들어졌습니다.`}
+          />
+          <div className={cn('flex flex-row-reverse')}>
+            <ProjectSortSelect selectedSort={sort} onChange={handleSortChange} />
+          </div>
+        </div>
         <ProjectList projects={projects} showRegisterCard={isLoggedIn} />
       </div>
     </main>
